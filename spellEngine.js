@@ -22,7 +22,18 @@ SpellEngine.prototype.evaluate = function (queue,player){
 		dumpQ(queue);
 	}
 	var spellLayer = queue[0];
-	queue.splice(0,1);
+	
+	/// Protect the loop
+	if(queue.length == 1)
+	{
+		queue.pop();
+	}
+	else
+	{
+		queue.splice(0,1);
+	}
+	
+	
 	if (spellLayer != undefined)
 	{
 		var spell =  this.buildSpell(spellLayer,player);
@@ -43,7 +54,11 @@ SpellEngine.prototype.evaluate = function (queue,player){
 			var weapon = player.search(spell.base);
 			if(weapon == undefined)
 			{
-				
+				spell.power = base;
+			}
+			else
+			{
+				spell.power += weapon.power;
 			}
 			return spell.power;
 		}
@@ -54,6 +69,8 @@ SpellEngine.prototype.evaluate = function (queue,player){
 	}
 	return 0;
 };
+
+
 
  /*
  [[["test","v,n"],["spell","n,"]]]
@@ -132,11 +149,11 @@ SpellEngine.prototype.build = function(token,finisher){
 			{
 			  token.power += token.seq[i].length;
 			}
-			  token.power += finisher[0].length; //later ^ 1.5
-			  //power *= i; // multiplier
+			if(finisher != undefined){
+				token.power += finisher[0].length; //later ^ 1.5
+			}
 			return token;
 		case 'Cast':
-			token.power = power;
 			return token;
 		default:
 			dump(token);
@@ -193,10 +210,9 @@ SpellToken.prototype.parse = function()
 {
 
 		var buff = buffToken(this.next);
-
+		var length = this.pos.length;
 		if(buff !=  "")
 		{
-			var length = this.pos.length;
 			var jLength = buff.pos.length ;
 			for (var i=0;i<length;i++)
 			{
@@ -214,9 +230,24 @@ SpellToken.prototype.parse = function()
 					}
 			}
 		}
-			return 'reset';
+	
+		// Singular case.
+		else
+		{
+			for(var k=0; k<length; k++)
+			{
+				var message = this.match(this.pos[k],undefined);	
+				if(message != 'reset')
+				{
+					return message;
+				}
+			}
+			
+		}
 };
 
+
+/// TODO pass tokens
 SpellToken.prototype.match = function (current,next)
 {
 	var message = 'reset';
@@ -245,6 +276,22 @@ SpellToken.prototype.match = function (current,next)
 			}
 	}
 	
+	// Singlulars
+	else if(next == undefined)
+	{
+		if (current == 'n')
+		{
+			message = 'build';
+			this.type= 'Weapon';
+			this.base = this.word;
+		}
+		if(current == 'v')
+		{
+			message = 'cast';
+			this.base(this.word);
+		}
+	}
+	
 	return message;
 };
 
@@ -262,9 +309,6 @@ function dumpQ(queue)
 	console.log(JSON.stringify(queue));
 
 }
-
-
-
 
 
 

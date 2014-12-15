@@ -45,11 +45,13 @@ function BattleController()
 	
 	function processQueue()
 	{
-		var damage = engine.evaluate(spellQueue,player);
-		if(damage != 0)
-		{
-			boss.reduceHealth(damage);
-			boss.update();
+		if(spellQueue.length != 0){
+			var damage = engine.evaluate(spellQueue,player);
+			if(damage != 0)
+			{
+				boss.reduceHealth(damage);
+				boss.update();
+			}
 		}
 	}
 	

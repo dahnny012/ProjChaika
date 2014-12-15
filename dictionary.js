@@ -28,10 +28,6 @@ function Dictionary()
 		}
 		});
 	};
-
-	
-
-
 	
 	
 	
