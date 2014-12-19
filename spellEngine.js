@@ -138,7 +138,6 @@ SpellEngine.prototype.buildSpell = function(spell,player){
 
 
 SpellEngine.prototype.build = function(token,finisher){
-	token.base = finisher;
 	token.power += token.word.length; // head of stack
 	console.log("Build Step");
 	switch(token.type)
@@ -151,6 +150,7 @@ SpellEngine.prototype.build = function(token,finisher){
 			}
 			if(finisher != undefined){
 				token.power += finisher[0].length; //later ^ 1.5
+				token.base = finisher;
 			}
 			return token;
 		case 'Cast':

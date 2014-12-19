@@ -1,3 +1,5 @@
+unstated:adj
+unstated:adj,n
 471:number
 999:number
 unstated:adj
@@ -1099,7 +1101,6 @@ upper class:n
 us:pn
 vernacular:adj,n
 variety:n
-,n
 valor:n
 valve:n
 Virgo:n
