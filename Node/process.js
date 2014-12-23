@@ -2,8 +2,10 @@ var Reader = require("line-by-line");
 var fs = require("fs");
 var reader = new Reader("newBank.txt");
 
-var numLines = 10000;
+var numLines = 100000;
+var maxLines = numLines;
 var buffer = {};
+buffer.constructor = undefined;
 
 reader.on('error', function (err) {
     // 'err' contains error object
@@ -27,7 +29,7 @@ reader.on('line', function (line) {
 	if(numLines == 0)
 	{
 		buffer = JSON.stringify(buffer);
-		fs.writeFileSync("temp.json", buffer);
+		fs.writeFileSync("temp.json", "var a = " + buffer);
 		process.exit(1);
 	}
 });
@@ -49,13 +51,14 @@ function fillData(line)
 	{
 		console.log("Original: " + line);
 		console.log("Modded: " + modLine);
-		console.log(10000 - numLines);
+		console.log(maxLines - numLines);
 		return;
 	}
 	var word = modLine[0].trim();
 	var pos= modLine[1].trim();
+	var wordPair =buffer["'"+word+"'"];
 	//console.log(buffer["'"+word+"'"]);
-	if(	buffer["'"+word+"'"] == undefined)
+	if(	wordPair == undefined)
 	{
 		buffer["'"+word+"'"] = pos;
 		//console.log("Pair not found");
@@ -64,7 +67,7 @@ function fillData(line)
 	{
 	//	console.log(buffer["'"+word+"'"]);
 	//	console.log("Pair exists");
-		var currentPos = buffer["'"+word+"'"].split(",");
+		var currentPos = wordPair.split(",");
 		var newPos = pos.split(",");
 		
 		for(var i=0; i<newPos.length; i++){
@@ -89,18 +92,24 @@ function convert(pos)
 	switch(pos){
 		case 'adjective':
 		case 'adj':
+		case 'adje':
 			return 'adj';
 		case 'noun':
     	case 'n':
+		case 'non':
 			return 'n';
 		case 'verb':
     	case 'v':
 			return 'v';
 		case 'adverb':
     	case 'adv':
+		case 'ad':
+		case 'adveb':
 			return 'adv';
+		case 'prep'
+			return 'prep'
 		default:
-			console.log(pos + " not in parsed");
+			console.log(pos + " not in parsed, Line: " + (maxLines-numLines));
        		return '';
 		}
 }
