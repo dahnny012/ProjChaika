@@ -93,8 +93,20 @@ function convert(pos)
 		case 'adjective':
 		case 'adj':
 		case 'adje':
+		case 'adxj':
+		case 'determine':
+		case 'number'
+		case 'num':
+		case 'numbe':
+		case 'nm':
+		case 'numbr':
+		case 'determinr':
+		case 'determiner':
+		case 'quantifir':
 			return 'adj';
 		case 'noun':
+		case 'pnon':
+		case 'pn':
     	case 'n':
 		case 'non':
 			return 'n';
@@ -106,8 +118,13 @@ function convert(pos)
 		case 'ad':
 		case 'adveb':
 			return 'adv';
-		case 'prep'
-			return 'prep'
+		case 'prep':
+			return 'prep';
+		case 'pfx':
+		case 'sfx':
+		case 'prefx':
+		case 'suffx':
+			return 'fix';
 		default:
 			console.log(pos + " not in parsed, Line: " + (maxLines-numLines));
        		return '';

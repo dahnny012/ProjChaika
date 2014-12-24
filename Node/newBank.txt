@@ -39028,7 +39028,6 @@ dishy:adj
 jokingly:adv
 Jordanian:adj
 dormouse:n
-,noun
 sociability:n
 small fortune:n
 small hours:n
@@ -50492,7 +50491,6 @@ gawp:v
 full-length:adj,adveb
 funeral:n
 funeral director:n
-G:n,s,adj
 ill will:n
 im-:prefx
 hypermarket:n
@@ -50504,7 +50502,7 @@ housekeeper:n
 houseman:n
 House of Commons:n
 House of Representatives:n
-however:adv,cj,av
+however:adv,cj
 humane:v
 humankind:n
 hurricane:n
