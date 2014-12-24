@@ -12,7 +12,6 @@ reader.on('error', function (err) {
 });
 
 reader.on('line', function (line) {
-    var data = new Array();
 	fillData(line);
 	//console.log(buffer);
 
@@ -26,7 +25,7 @@ reader.on('line', function (line) {
 	}*/
 	
 	numLines--;
-	if(numLines == 0)
+	if(numLines === 0)
 	{
 		buffer = JSON.stringify(buffer);
 		fs.writeFileSync("temp.json", "var a = " + buffer);
@@ -42,12 +41,12 @@ reader.on('end', function () {
 
 function fillData(line)
 {
-	if(line == "")
+	if(line === "")
 	{
 		return;
 	}
 	var modLine = line.split(":");
-	if(modLine[0] == undefined || modLine[1] == undefined)
+	if(modLine[0] === undefined || modLine[1] === undefined)
 	{
 		console.log("Original: " + line);
 		console.log("Modded: " + modLine);
@@ -58,7 +57,7 @@ function fillData(line)
 	var pos= modLine[1].trim();
 	var wordPair =buffer["'"+word+"'"];
 	//console.log(buffer["'"+word+"'"]);
-	if(	wordPair == undefined)
+	if(	wordPair === undefined)
 	{
 		buffer["'"+word+"'"] = pos;
 		//console.log("Pair not found");
@@ -72,7 +71,7 @@ function fillData(line)
 		
 		for(var i=0; i<newPos.length; i++){
 	//		console.log("element " + newPos[i]);
-			element = convert(newPos[i]);
+			var element = convert(newPos[i]);
 			if(currentPos.indexOf(element) < 0 && element !== '')
 			{
 				currentPos.push(element);
@@ -95,7 +94,7 @@ function convert(pos)
 		case 'adje':
 		case 'adxj':
 		case 'determine':
-		case 'number'
+		case 'number':
 		case 'num':
 		case 'numbe':
 		case 'nm':
@@ -103,15 +102,26 @@ function convert(pos)
 		case 'determinr':
 		case 'determiner':
 		case 'quantifir':
+		case 'quantifier':
+		case 'quat':
+		case 'quant':
 			return 'adj';
 		case 'noun':
 		case 'pnon':
 		case 'pn':
     	case 'n':
 		case 'non':
+		case 'pron':
+		case 'pronon':
+		case 'prn':
 			return 'n';
 		case 'verb':
     	case 'v':
+    	case 'modal v':
+    	case 'auxiliary v':
+    	case 'modal ver':
+    	case 'modal veb':
+    		
 			return 'v';
 		case 'adverb':
     	case 'adv':
@@ -124,7 +134,18 @@ function convert(pos)
 		case 'sfx':
 		case 'prefx':
 		case 'suffx':
+		case 'sx':
+		case 'suffix':
 			return 'fix';
+		case 'ij':
+		case 'interj':
+		case 'coj':
+		case 'ijectin':
+		case 'cj':
+		case 'intej':
+		case 'interjectin':
+		case 'cjunctio':
+			return 'j';
 		default:
 			console.log(pos + " not in parsed, Line: " + (maxLines-numLines));
        		return '';

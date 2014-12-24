@@ -53538,7 +53538,6 @@ beside:prep
 better off:v
 biased:v
 bibliography:n ,adje
-weekle
 bishop:n
 burglar:n
 attacker:n
@@ -55658,7 +55657,7 @@ discourse:n
 discrimination:n
 department store:n
 depend:v
-dependant:ns
+dependant:adj,n
 depose:v
 depraved:adj
 depression:n
@@ -56906,7 +56905,6 @@ influenza:n,noun
 info:n
 flan:n
 inadequacy:n
-inasmuch as:linking wor,
 inborn:adj
 incarnate:adj,v
 inception:n
