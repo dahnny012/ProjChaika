@@ -28,7 +28,7 @@ reader.on('line', function (line) {
 	if(numLines === 0)
 	{
 		buffer = JSON.stringify(buffer);
-		fs.writeFileSync("temp.json", "var a = " + buffer);
+		fs.writeFileSync("temp.js", "var a = " + buffer);
 		process.exit(1);
 	}
 });
@@ -121,7 +121,7 @@ function convert(pos)
     	case 'auxiliary v':
     	case 'modal ver':
     	case 'modal veb':
-    		
+    	case 'vb':
 			return 'v';
 		case 'adverb':
     	case 'adv':
@@ -147,7 +147,7 @@ function convert(pos)
 		case 'cjunctio':
 			return 'j';
 		default:
-			console.log(pos + " not in parsed, Line: " + (maxLines-numLines));
+			//console.log(pos + " not in parsed, Line: " + (maxLines-numLines));
        		return '';
 		}
 }
