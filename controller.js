@@ -33,8 +33,10 @@ function BattleController()
 		{	
 			var spell = $("#controller").val();
 			$("#controller").val(null);
-			var promise = spellBook.spellSearch(spell);
-			checkResults(promise,spell);
+			spell = spellBook.spellSearch(spell);
+			spellQueue.push(spell);
+			//var promise = spellBook.spellSearch(spell);
+			//checkResults(promise,spell);
 			
 		}
 	}

@@ -7,7 +7,6 @@ Data incoming in the form:
 		[    ] Spell layer
 			[     ] Token layer
 				Word, Pos
-
 */
 
 function SpellEngine()
