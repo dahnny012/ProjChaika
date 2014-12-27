@@ -337,7 +337,7 @@ SpellToken.prototype.match = function (current,next)
 };
 
 
-SpellToken.prototype.matchV(current,next)
+SpellToken.prototype.matchV = function(current,next)
 {
 	var message = 'reset';
 	if(current != 'v')
@@ -352,7 +352,7 @@ SpellToken.prototype.matchV(current,next)
 	return message;
 }
 
-SpellToken.prototype.matchCast(current,next){
+SpellToken.prototype.matchCast = function(current,next){
 	if(next !== 0)
 		return 'reset';
 	
@@ -407,7 +407,7 @@ SpellToken.prototype.matchN = function(current,next)
 	return this.matchWeapon(current,next);
 }
 
-SpellToken.prototype.matchWeapon(current,next)
+SpellToken.prototype.matchWeapon = function(current,next)
 {
 	if(next !== 0)
 		return 'reset'
