@@ -225,6 +225,7 @@ SpellToken.prototype.parse = function()
 {
 
 		var buff = buffToken(this.next);
+		var message = 'reset';
 		var length = this.pos.length;
 		if(buff !=  "")
 		{
@@ -233,7 +234,7 @@ SpellToken.prototype.parse = function()
 			{
 					for(var j=0; j<jLength; j++)
 					{
-						var message = this.match(this.pos[i],buff.pos[j]);
+						message = this.match(this.pos[i],buff.pos[j]);
 						if(message != 'reset')
 						{
 							return message;
@@ -246,9 +247,14 @@ SpellToken.prototype.parse = function()
 			}
 		}
 	
-		// Singular case.
-		else
-		{
+	
+	
+		// Two cases where this happens:
+		// 	- We cant find any pair matches so we find singles.
+		//  - Person entered a single.
+		if(message === 'reset'){
+			console.log("Couldnt find any Enforced Weapons or Casted Weapons")
+			this.next = undefined;
 			for(var k=0; k<length; k++)
 			{
 				var message = this.match(this.pos[k],undefined);	
@@ -257,8 +263,9 @@ SpellToken.prototype.parse = function()
 					return message;
 				}
 			}
-			
 		}
+			
+		
 };
 
 
