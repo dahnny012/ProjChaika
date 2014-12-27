@@ -59,6 +59,6 @@ Human.prototype.updateWeaponQueue = function()
 		if(this.history != undefined){
 			var length = this.history.length - 1;
 			var current = this.history[length];
-			$("#WeaponQueue").append('<div>'+current.base + " : " +current.power+'</div>');
+			$("#WeaponQueue").append('<div> The '+current.full + " : " +current.power+' damage </div>');
 		}
 }

@@ -14,7 +14,7 @@ function storyController()
 	//has a persistent pointer to dialogue tree
 }
 
-
+var cDebug;
 function BattleController()
 {
 	var spellBook = new Dictionary();
@@ -35,6 +35,7 @@ function BattleController()
 			$("#controller").val(null);
 			spell = spellBook.spellSearch(spell);
 			spellQueue.push(spell);
+			cDebug = spellQueue;
 			//var promise = spellBook.spellSearch(spell);
 			//checkResults(promise,spell);
 			
@@ -87,7 +88,7 @@ function BattleController()
 	$(document).on("input","#controller",printSpell);
 	$(document).on("keydown","#controller",processSpell);
 	$(document).on("click","#queue",dumpQueue);
-	setInterval(processQueue,200);
+	setInterval(processQueue,100);
 }
 
 

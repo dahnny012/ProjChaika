@@ -8,7 +8,8 @@ Data incoming in the form:
 			[     ] Token layer
 				Word, Pos
 */
-
+var WORD = 0;
+var POS = 1;
 function SpellEngine()
 {
 	return this;
@@ -21,7 +22,8 @@ SpellEngine.prototype.evaluate = function (queue,player){
 		dumpQ(queue);
 	}
 	var spellLayer = queue[0];
-	
+	console.log("Spell layer");
+	console.log(spellLayer);
 	/// Protect the loop
 	if(queue.length == 1)
 	{
@@ -31,7 +33,6 @@ SpellEngine.prototype.evaluate = function (queue,player){
 	{
 		queue.splice(0,1);
 	}
-	
 	
 	if (spellLayer != undefined)
 	{
@@ -83,29 +84,29 @@ SpellEngine.prototype.buildSpell = function(spell,player){
 	var token = undefined;
 	
 	// while spell has tokens
-	var i =0;
 	var length = spell.length;
-	while(spell.length > 0)
+	for(var i=0; i<length; i++)
 	{
-		console.log(spell.length);
-		console.log("Spell1");
-			console.log(spell);
 		if (token == undefined)
 		{
 			try{
 			debug = spell;
+			console.log("Splice");
 			var splice = spell.splice(0,1).pop();
-			token = new SpellToken(splice,spell[0]); // Token layer
-			console.log("Spell length = "+ spell.length);
-			length--;
-			console.log("Token");
-			console.log(token);
-			console.log("Spell2");
-			console.log(spell);
+			var nextTok;
+			console.log(splice);
+			console.log("spell length " +  spell.length);
+			if(spell.length != 0)
+			{
+				nextTok = spell.splice(0,1).pop();
+			}
+			token = new SpellToken(splice,nextTok); // Token layer
 			}
 			catch(err){
+				console.log(err);
 				console.log("spell is null");
-				console.log(spell[0]);
+				console.log(nextTok);
+				return;
 			}
 		}
 				console.log(spell.length);
@@ -113,15 +114,22 @@ SpellEngine.prototype.buildSpell = function(spell,player){
 		switch(msg)
 		{
 			case 'build':
-				return this.build(token,spell[0]);
+				return this.build(token,nextTok);
 			case 'enforce':
-				this.enforce(token,spell[0]);
+				this.enforce(token,nextTok);
+				token.next = spell.splice(0,1).pop();
+				nextTok = token.next;
+				if(token.next === 0)
+				{
+					console.log("Unable to finish enforce");
+					return;
+				}
 				break;
 			case 'reset':
+				console.log("Couldnt find any valid tokens");
 				token = undefined;
 				break;
 		}
-		i++;
 	}
 	
 	if(token == undefined)
@@ -142,13 +150,17 @@ SpellEngine.prototype.build = function(token,finisher){
 	switch(token.type)
 	{
 		case 'Weapon':
-			var length = token.seq.length - 1;
-			for (var i=0; i<length; i++)
+			var length = token.seq.length;
+			for(var i=0; i<length; i++)
 			{
-			  token.power += token.seq[i].length;
+			  var base = 1;
+			  var combo = base + (i+1)/10;
+			  token.full += " " + token.seq[i][WORD];
+			  token.power += (combo * token.seq[i].length);
 			}
 			if(finisher != undefined){
-				token.power += finisher[0].length; //later ^ 1.5
+				token.full += " " + finisher[WORD];
+				token.power *= finisher[WORD].length; //later ^ 1.5
 				token.base = finisher;
 			}
 			return token;
@@ -178,13 +190,14 @@ function SpellToken(block,spell)
 	}
 	console.log("making block");
 	console.log(block);
-	this.word = block[0];
-	this.pos = block[1].split(",");
+	this.word = block[WORD];
+	this.pos = block[POS].split(",");
 	this.next = spell;
 	this.type = '';
 	this.seq = [];
-	this.power =0;
+	this.power = 0;
 	this.base = '';
+	this.full = this.word;
 	return this;
 }
 
@@ -194,8 +207,8 @@ function buffToken(block)
 	{
 		return "";
 	}
-	this.word = block[0];
-	this.pos = block[1].split(",");
+	this.word = block[WORD];
+	this.pos = block[POS].split(",");
 	return this;
 }
 
@@ -270,7 +283,7 @@ SpellToken.prototype.match = function (current,next)
 			{
 				message = 'build';
 				this.type = 'Weapon';
-				this.base = this.next.word;
+				this.base = this.next[WORD];
 				return message;
 			}
 	}
@@ -308,6 +321,7 @@ function dumpQ(queue)
 	console.log(JSON.stringify(queue));
 
 }
+
 
 
 

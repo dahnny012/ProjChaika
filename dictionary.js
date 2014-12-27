@@ -64,12 +64,10 @@ function Dictionary()
 			   }});
 				pos = empty;
 				pos = pos.join(",");
-				
-				return [word,pos]
+				return [word,pos];
 			}
 		})
-		list = JSON.stringify(list);
-		return list;
+		return list
 	}
 	
 	
