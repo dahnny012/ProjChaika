@@ -103,7 +103,16 @@ SpellEngine.prototype.buildSpell = function(spell,player,spec){
 			{
 				nextTok = spell.splice(0,1).pop();
 			}
-			token = new SpellToken(splice,nextTok); // Token layer
+			token = new SpellToken(splice,nextTok,spec); // Token layer
+			switch(spec)
+			{
+				case 'Weapon':
+				case 'Cast':
+					this.addSpecQueue(token,spell);
+					break;
+				default:
+			}
+				
 			}
 			catch(err){
 				console.log(err);
@@ -112,7 +121,7 @@ SpellEngine.prototype.buildSpell = function(spell,player,spec){
 				return;
 			}
 		}
-				console.log(spell.length);
+		console.log(spell.length);
 		var msg = token.parse();
 		switch(msg)
 		{
@@ -175,6 +184,11 @@ SpellEngine.prototype.build = function(token,finisher){
 	}
 };
 
+SpellEngine.prototype.addSpecQueue = function(token,spellLayer)
+{
+	token.specQueue = spellLayer;
+}
+
 SpellEngine.prototype.enforce = function(token,enforce)
 {
 	token.seq.push(enforce);
@@ -183,7 +197,7 @@ SpellEngine.prototype.enforce = function(token,enforce)
 
 
 
-function SpellToken(block,spell)
+function SpellToken(block,spell,spec)
 {
 	if(block == undefined || block == null)
 	{
@@ -197,9 +211,11 @@ function SpellToken(block,spell)
 	this.pos = block[POS].split(",");
 	this.next = spell;
 	this.type = '';
+	this.spec = spec;
 	this.seq = [];
 	this.power = 0;
 	this.base = '';
+	this.specQueue = [];
 	this.full = this.word;
 	return this;
 }
@@ -319,6 +335,86 @@ SpellToken.prototype.match = function (current,next)
 	
 	return message;
 };
+
+
+SpellToken.prototype.matchV(current,next)
+{
+	var message = 'reset';
+	if(current != 'v')
+		return 'reset';
+	
+	message = this.matchCast(current,next);
+	if(message !== 'reset')
+	{
+		return message
+	}
+	message = this.matchCastWeapon(current,next);
+	return message;
+}
+
+SpellToken.prototype.matchCast(current,next){
+	if(next !== 0)
+		return 'reset';
+	
+	this.type = 'Cast';
+	this.base = this.word;
+	return 'build';
+}
+
+SpellToken.prototype.matchCastWeapon = function(current,next){
+	if(next !== "n")
+		return 'reset';
+	
+	this.type = 'Cast';
+	this.base = this.next[WORD];
+	return 'build';
+}
+
+SpellToken.prototype.matchAdj = function(current,next)
+{
+	if (current =! 'adj')
+		return 'reset'
+	message = this.matchEnforce(current,next);
+	
+	if(message != 'reset')
+		return message;
+	
+	message = this.matchBuildWeapon(current,next);
+	return message;
+}
+
+SpellToken.prototype.matchEnforce = function(current,next)
+{
+	if(next != 'adj')
+		return 'reset';
+	return 'enforce';
+}
+
+SpellToken.prototype.matchBuildWeapon = function(current,next)
+{
+	
+	if(next != 'n')
+		return 'reset';
+	this.type = 'Weapon';
+	this.base = this.next[WORD];
+	return 'build';
+}
+
+SpellToken.prototype.matchN = function(current,next)
+{
+	if(current =! 'n')
+		return 'reset';
+	return this.matchWeapon(current,next);
+}
+
+SpellToken.prototype.matchWeapon(current,next)
+{
+	if(next !== 0)
+		return 'reset'
+	this.type= 'Weapon';
+	this.base = this.word;
+	return 'build';
+}
 
 function dump(token)
 {
