@@ -36,7 +36,7 @@ SpellEngine.prototype.evaluate = function (queue,player){
 	
 	if (spellLayer != undefined)
 	{
-		var spell =  this.buildSpell(spellLayer,player);
+		var spell =  this.buildSpell(spellLayer,player,spellLayer.spec);
 		if(spell == undefined)
 		{
 			return undefined
@@ -83,7 +83,7 @@ SpellEngine.prototype.evaluate = function (queue,player){
 */
 
 var debug;
-SpellEngine.prototype.buildSpell = function(spell,player){
+SpellEngine.prototype.buildSpell = function(spell,player,spec){
 	var token = undefined;
 	
 	// while spell has tokens

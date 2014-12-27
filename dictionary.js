@@ -35,13 +35,17 @@ function Dictionary()
 	
 	Dictionary.prototype.spellSearch = function(spell)
 	{
+		//Determine spec and trim them.
+		var spec = getSpecfier(spell);
+		spell = trimSpec(spell,spec);
 		var list = spell.split(" ");
+		
 		list = list.map(function(word){
+			// Format which the db accepts
 			var modWord = dbFormat(word);
 			if(db[modWord] !== 0)
 			{
 				console.log("found one");
-
 				console.log(db[modWord]);
 				
 				var pos = db[modWord].split(",");
@@ -49,11 +53,10 @@ function Dictionary()
 				spell[0] = word;
 				
 				
-				//
+				//Convert malformed pos
 				pos = pos.map(function (elements){
 					return convert(elements);
 				});
-				
 				
 			   var empty = [];
 				
@@ -62,12 +65,17 @@ function Dictionary()
 			   if(empty.indexOf(element) === -1){
 			   	empty.push(element)
 			   }});
+				
+				//Merge back together
 				pos = empty;
 				pos = pos.join(",");
 				return [word,pos];
 			}
 		})
-		return list
+		
+		list.spec = spec;
+		console.log("Spell Specifer: " + list.spec);
+		return list;
 	}
 	
 	
@@ -141,6 +149,34 @@ function convert(pos)
 			//console.log(pos + " not in parsed, Line: " + (maxLines-numLines));
        		return '';
 		}
+}
+
+
+function getSpecfier(spell)
+{
+	var lastChar = spell.substr(spell.length - 1);
+
+	switch(lastChar)
+	{
+		case '.':
+			return "Weapon";
+		case '!':
+			return "Cast";
+		default:
+			return "Default";
+	}
+}
+
+function trimSpec(spell,spec)
+{
+	if(spec !== "Default" && spec !== 0)
+	{
+		return spell.substring(0, spell.length - 1);
+	}
+	else
+	{
+		return spell;	
+	}
 }
 	
 	
