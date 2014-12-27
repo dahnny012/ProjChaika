@@ -54,11 +54,14 @@ SpellEngine.prototype.evaluate = function (queue,player){
 			var weapon = player.search(spell.base);
 			if(weapon == undefined)
 			{
-				spell.power = base;
+				spell.power = spell.base.length;
 			}
 			else
 			{
-				spell.power += weapon.power;
+				var base = 1;
+				var combo = base + spell.power/10;
+				
+				spell.power = combo *  weapon.power;
 			}
 			return spell.power;
 		}
@@ -268,6 +271,7 @@ SpellToken.prototype.match = function (current,next)
 		if (next == 'n'){
 			message = 'build';
 			this.type = 'Cast';
+			this.base = this.next[WORD];
 			return message;
 		}
 	}
@@ -289,7 +293,7 @@ SpellToken.prototype.match = function (current,next)
 	}
 	
 	// Singlulars
-	else if(next == undefined)
+	if(next == undefined)
 	{
 		if (current == 'n')
 		{
@@ -299,8 +303,10 @@ SpellToken.prototype.match = function (current,next)
 		}
 		if(current == 'v')
 		{
-			message = 'cast';
-			this.base(this.word);
+			message = 'build';
+			this.type = 'Cast';
+			
+			this.base = this.word;
 		}
 	}
 	
