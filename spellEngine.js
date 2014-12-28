@@ -199,7 +199,7 @@ SpellEngine.prototype.enforce = function(token,enforce)
 
 function SpellToken(block,spell,spec)
 {
-	if(block == undefined || block == null)
+	if(block === 0)
 	{
 		this.type = '';
 		console.log("Null block");
@@ -285,8 +285,23 @@ SpellToken.prototype.parse = function()
 };
 
 
-/// TODO pass tokens
-SpellToken.prototype.match = function (current,next)
+SpellToken.prototype.xMatch = function(current,next){
+	var message = 'reset';
+	console.log("Current: " + current + " " + "Next: " + next);
+	message = this.matchV(current,next);
+	if(message != 'reset')
+		return message;
+	
+	message = this.matchAdj(current,next);
+	if(message != 'reset')
+		return message;
+	
+	message = this.matchN(current,next);
+	return message;
+}
+
+
+SpellToken.prototype.match = function(current,next)
 {
 	var message = 'reset';
 	if(current== 'v')
@@ -372,7 +387,7 @@ SpellToken.prototype.matchCastWeapon = function(current,next){
 
 SpellToken.prototype.matchAdj = function(current,next)
 {
-	if (current =! 'adj')
+	if (current != 'adj')
 		return 'reset'
 	message = this.matchEnforce(current,next);
 	
@@ -432,5 +447,11 @@ function dumpQ(queue)
 }
 
 
-
+function dummyToken()
+{
+	var block = ["test","n,v,adj"];
+	var next = buffToken(["orange","n,v,adj"]);
+	var dummy = new SpellToken(block,next,"Default");
+	return dummy;
+}
 
