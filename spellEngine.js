@@ -15,7 +15,7 @@ function SpellEngine()
 	return this;
 }
 SpellEngine.prototype.evaluate = function (queue,player){
-
+	
 	if(queue.length > 0)
 	{
 		console.log("Queue:");
@@ -27,17 +27,17 @@ SpellEngine.prototype.evaluate = function (queue,player){
 	/// Protect the loop
 	if(queue.length == 1)
 	{
-		queue.pop(dummy);
+		queue.pop();
 	}
 	else
 	{
 		queue.splice(0,1);
 	}
 	
-	if (spellLayer != undefined)
+	if (spellLayer !== 0)
 	{
 		var spell =  this.buildSpell(spellLayer,player,spellLayer.spec);
-		if(spell == undefined)
+		if(spell === 0)
 		{
 			return undefined
 		}
@@ -52,7 +52,7 @@ SpellEngine.prototype.evaluate = function (queue,player){
 			console.log("Spellcasting");
 			console.log(player);
 			var weapon = player.search(spell.base);
-			if(weapon == undefined)
+			if(weapon === 0)
 			{
 				spell.power = spell.base.length;
 			}
@@ -84,13 +84,13 @@ SpellEngine.prototype.evaluate = function (queue,player){
 
 var debug;
 SpellEngine.prototype.buildSpell = function(spell,player,spec){
-	var token = undefined;
+	var token;
 	
 	// while spell has tokens
 	var length = spell.length;
 	for(var i=0; i<length; i++)
 	{
-		if (token == undefined)
+		if (token === 0)
 		{
 			try{
 			debug = spell;
@@ -99,7 +99,7 @@ SpellEngine.prototype.buildSpell = function(spell,player,spec){
 			var nextTok;
 			console.log(splice);
 			console.log("spell length " +  spell.length);
-			if(spell.length != 0)
+			if(spell.length !== 0)
 			{
 				nextTok = spell.splice(0,1).pop();
 			}
@@ -144,7 +144,7 @@ SpellEngine.prototype.buildSpell = function(spell,player,spec){
 		}
 	}
 	
-	if(token == undefined)
+	if(token === 0)
 	{
 		
 		return new SpellToken(null,null);
@@ -170,7 +170,7 @@ SpellEngine.prototype.build = function(token,finisher){
 			  token.full += " " + token.seq[i][WORD];
 			  token.power += (combo * token.seq[i].length);
 			}
-			if(finisher != undefined){
+			if(finisher !== 0){
 				token.full += " " + finisher[WORD];
 				token.power *= finisher[WORD].length; //later ^ 1.5
 				token.base = finisher;
@@ -187,7 +187,7 @@ SpellEngine.prototype.build = function(token,finisher){
 SpellEngine.prototype.addSpecQueue = function(token,spellLayer)
 {
 	token.specQueue = spellLayer;
-}
+};
 
 SpellEngine.prototype.enforce = function(token,enforce)
 {
@@ -222,7 +222,7 @@ function SpellToken(block,spell,spec)
 
 function buffToken(block)
 {
-	if(block == undefined | block == null)
+	if(block === 0)
 	{
 		return "";
 	}
@@ -243,7 +243,7 @@ SpellToken.prototype.parse = function()
 		var buff = buffToken(this.next);
 		var message = 'reset';
 		var length = this.pos.length;
-		if(buff !=  "")
+		if(buff !== "")
 		{
 			var jLength = buff.pos.length ;
 			for (var i=0;i<length;i++)
@@ -269,11 +269,11 @@ SpellToken.prototype.parse = function()
 		// 	- We cant find any pair matches so we find singles.
 		//  - Person entered a single.
 		if(message === 'reset'){
-			console.log("Couldnt find any Enforced Weapons or Casted Weapons")
+			console.log("Couldnt find any Enforced Weapons or Casted Weapons");
 			this.next = undefined;
 			for(var k=0; k<length; k++)
 			{
-				var message = this.match(this.pos[k],undefined);	
+				message = this.match(this.pos[k],undefined);	
 				if(message != 'reset')
 				{
 					return message;
@@ -298,7 +298,7 @@ SpellToken.prototype.xMatch = function(current,next){
 	
 	message = this.matchN(current,next);
 	return message;
-}
+};
 
 
 SpellToken.prototype.match = function(current,next)
@@ -331,7 +331,7 @@ SpellToken.prototype.match = function(current,next)
 	}
 	
 	// Singlulars
-	if(next == undefined)
+	if(next === 0)
 	{
 		if (current == 'n')
 		{
@@ -360,11 +360,11 @@ SpellToken.prototype.matchV = function(current,next) {
 	message = this.matchCast(current,next);
 	if(message !== 'reset')
 	{
-		return message
+		return message;
 	}
 	message = this.matchCastWeapon(current,next);
 	return message;
-}
+};
 
 SpellToken.prototype.matchCast = function(current,next){
 	if(next !== 0)
@@ -373,7 +373,7 @@ SpellToken.prototype.matchCast = function(current,next){
 	this.type = 'Cast';
 	this.base = this.word;
 	return 'build';
-}
+};
 
 SpellToken.prototype.matchCastWeapon = function(current,next){
 	if(next !== "n")
@@ -382,25 +382,25 @@ SpellToken.prototype.matchCastWeapon = function(current,next){
 	this.type = 'Cast';
 	this.base = this.next[WORD];
 	return 'build';
-}
+};
 
 SpellToken.prototype.matchAdj = function(current,next) {
 	if (current != 'adj')
-		return 'reset'
-	message = this.matchEnforce(current,next);
+		return 'reset';
+	var message = this.matchEnforce(current,next);
 	
 	if(message != 'reset')
 		return message;
 	
 	message = this.matchBuildWeapon(current,next);
 	return message;
-}
+};
 
 SpellToken.prototype.matchEnforce = function(current,next) {
 	if(next != 'adj')
 		return 'reset';
 	return 'enforce';
-}
+};
 
 SpellToken.prototype.matchBuildWeapon = function(current,next) {
 	if(next != 'n')
@@ -408,21 +408,21 @@ SpellToken.prototype.matchBuildWeapon = function(current,next) {
 	this.type = 'Weapon';
 	this.base = this.next[WORD];
 	return 'build';
-}
+};
 
 SpellToken.prototype.matchN = function(current,next) {
-	if(current =! 'n')
+	if(current != 'n')
 		return 'reset';
 	return this.matchWeapon(current,next);
-}
+};
 
 SpellToken.prototype.matchWeapon = function(current,next) {
 	if(next !== 0)
-		return 'reset'
+		return 'reset';
 	this.type= 'Weapon';
 	this.base = this.word;
 	return 'build';
-}
+};
 
 function dump(token)
 {
@@ -462,7 +462,7 @@ SpellToken.prototype.pos1 = function(testPos)
 			console.log("Error");
 			return null;
 	}
-}
+};
 
 SpellToken.prototype.pos2 = function(testPos)
 {
@@ -477,63 +477,61 @@ SpellToken.prototype.pos2 = function(testPos)
 			console.log("Error");
 			return null;
 	}
-}
+};
 
 function xParseTests()
 {
 	// Basic tests
 	// n , n ---> Reset
 	var dummy = new dummyToken();
-	var nn = function(dummy)
-	{
+	var nn = function(dummy){
 		dummy.hi();
 		var message = dummy.xMatch(dummy.pos1("n"),dummy.pos2("n"));
 		if(message !== "reset")
 			throw("nn failed " + message);
 	}(dummy);
 
-	var dummy = new dummyToken();
+	dummy = new dummyToken();
 	// n , v --->  Reset
-	var nv = function(dummy)
-	{
+	var nv = function(dummy){
 		var message = dummy.xMatch(dummy.pos1("n"),dummy.pos2("v"));
 		if(message !== "reset")
 			throw("nv failed " + message);
 	}(dummy);
-	var dummy = new dummyToken();
+	
+	dummy = new dummyToken();
 	// n , adj ----> Reset
 	var na = function(dummy) {
 		var message = dummy.xMatch(dummy.pos1("n"), dummy.pos2("adj"));
 		if (message !== "reset")
 			throw("na failed " + message);
 	}(dummy);
-	var dummy = new dummyToken();
+	
+	dummy = new dummyToken();
 	// adj , n -----> Enforced build
-	var an = function(dummy)
-	{
+	var an = function(dummy){
 		var message = dummy.xMatch(dummy.pos1("adj"),dummy.pos2("n"));
 		if(message !== "build")
 			throw("an failed " + message);
 	}(dummy);
 
-	var dummy = new dummyToken();
+	dummy = new dummyToken();
 	/// adj , adj ----> enforce , enforce build
-	var aa = function(dummy)
-	{
+	var aa = function(dummy){
 		var message = dummy.xMatch(dummy.pos1("adj"),dummy.pos2("adj"));
 		if(message !== "enforce")
 			throw("aa failed " + message);
 	}(dummy);
 
-	var dummy = new dummyToken();
+	dummy = new dummyToken();
 	/// adj , v ---->  Reset
-	var av = function(dummy)
-	{
+	var av = function(dummy){
 		var message = dummy.xMatch(dummy.pos1("adj"),dummy.pos2("v"));
 		if(message !== "reset")
 			throw("av failed " + message);
 	}(dummy);
-	var dummy = new dummyToken();
+	
+	dummy = new dummyToken();
 	/// v , n ---->  build , type cast
 	var vn = function(dummy)
 	{
@@ -541,7 +539,9 @@ function xParseTests()
 		if(message !== "build" && dummy.type !== "Cast")
 			throw("vn failed: " + message);
 	}(dummy);
-	var dummy = new dummyToken();
+	
+	
+	dummy = new dummyToken();
 	/// v , a ---->  Reset
 	var va = function(dummy)
 	{
@@ -550,7 +550,7 @@ function xParseTests()
 			throw("vn failed " + message);
 	}(dummy);
 
-	var dummy = new dummyToken();
+	dummy = new dummyToken();
 	/// v , v ---->  Reset
 	var vv = function(dummy)
 	{
