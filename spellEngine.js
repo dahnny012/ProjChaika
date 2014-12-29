@@ -455,3 +455,142 @@ function dummyToken()
 	return dummy;
 }
 
+dummyToken.prototype.pos1 = function(testPos)
+{
+	switch(testPos) {
+		case 'v':
+			return dummy.pos[2];
+		case 'n':
+			return dummy.pos[1];
+		case 'adj':
+			return dummy.pos[3];
+		default:
+			console.log("Error");
+			return null;
+	}
+}
+
+dummyToken.prototype.pos2 = function(testPos)
+{
+	switch(testPos) {
+		case 'v':
+			return dummy.next.pos[2];
+		case 'n':
+			return dummy.next.pos[1];
+		case 'adj':
+			return dummy.next.pos[3];
+		default:
+			console.log("Error");
+			return null;
+	}
+}
+
+function tests()
+{
+	// Basic tests
+	// n , n ---> Reset
+	var dummy = new dummyToken();
+	var nn = function(dummy)
+	{
+		var message = dummy.xMatch(dummy.pos1("n"),dummy.pos2("n"));
+		if(message !== "reset")
+			throw("nn failed" + message);
+	}();
+
+
+	// n , v --->  Reset
+	var nv = function(dummy)
+	{
+		var message = dummy.xMatch(dummy.pos1("n"),dummy.pos2("v"));
+		if(message !== "reset")
+			throw("nv failed" + message);
+	}();
+
+	// n , adj ----> Reset
+	var na = function(dummy)
+	{
+		var message = dummy.xMatch(dummy.pos1("n"),dummy.pos2("adj"));
+		if(message !== "reset")
+			throw("na failed" + message);
+	}();
+
+
+
+	// adj , n -----> Enforced build
+	var an = function(dummy)
+	{
+		var message = dummy.xMatch(dummy.pos1("adj"),dummy.pos2("n"));
+		if(message !== "build")
+			throw("an failed" + message);
+	}();
+	/// adj , adj ----> enforce , enforce build
+	var aa = function(dummy)
+	{
+		var message = dummy.xMatch(dummy.pos1("adj"),dummy.pos2("adj"));
+		if(message !== "enforce")
+			throw("aa failed" + message);
+	}();
+
+
+	/// adj , v ---->  Reset
+	var av = function(dummy)
+	{
+		var message = dummy.xMatch(dummy.pos1("adj"),dummy.pos2("v"));
+		if(message !== "reset")
+			throw("av failed" + message);
+	}();
+
+	/// v , n ---->  build , type cast
+	var vn = function(dummy)
+	{
+		var message = dummy.xMatch(dummy.pos1("v"),dummy.pos2("n"));
+		if(message !== "build" && dummy.type !== "Cast")
+			throw("vn failed: " + message);
+	}();
+
+	/// v , a ---->  Reset
+	var va = function(dummy)
+	{
+		var message = dummy.xMatch(dummy.pos1("v"),dummy.pos2("a"));
+		if(message !== "reset")
+			throw("vn failed" + message);
+	}();
+
+
+	/// v , v ---->  Reset
+	var vv = function(dummy)
+	{
+		var message = dummy.xMatch(dummy.pos1("v"),dummy.pos2("v"));
+		if(message !== "reset")
+			throw("vn failed" + message);
+	}();
+
+
+
+	// v, n(in queue) ---> attack with noun in queue
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
