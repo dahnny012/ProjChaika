@@ -636,75 +636,74 @@ function tests()
 	// Basic tests
 	// n , n ---> Reset
 	var dummy = new dummyToken();
-	var nn = function(dummy)
+	var nn = function()
 	{
 		var message = dummy.xMatch(dummy.pos1("n"),dummy.pos2("n"));
 		if(message !== "reset")
 			throw("nn failed" + message);
 	}();
 
-
+	var dummy = new dummyToken();
 	// n , v --->  Reset
-	var nv = function(dummy)
+	var nv = function()
 	{
 		var message = dummy.xMatch(dummy.pos1("n"),dummy.pos2("v"));
 		if(message !== "reset")
 			throw("nv failed" + message);
 	}();
-
+	var dummy = new dummyToken();
 	// n , adj ----> Reset
-	var na = function(dummy)
+	var na = function()
 	{
 		var message = dummy.xMatch(dummy.pos1("n"),dummy.pos2("adj"));
 		if(message !== "reset")
 			throw("na failed" + message);
 	}();
-
-
-
+	var dummy = new dummyToken();
 	// adj , n -----> Enforced build
-	var an = function(dummy)
+	var an = function()
 	{
 		var message = dummy.xMatch(dummy.pos1("adj"),dummy.pos2("n"));
 		if(message !== "build")
 			throw("an failed" + message);
 	}();
+	var dummy = new dummyToken();
 	/// adj , adj ----> enforce , enforce build
-	var aa = function(dummy)
+	var aa = function()
 	{
 		var message = dummy.xMatch(dummy.pos1("adj"),dummy.pos2("adj"));
 		if(message !== "enforce")
 			throw("aa failed" + message);
 	}();
 
-
+	var dummy = new dummyToken();
 	/// adj , v ---->  Reset
-	var av = function(dummy)
+	var av = function()
 	{
 		var message = dummy.xMatch(dummy.pos1("adj"),dummy.pos2("v"));
 		if(message !== "reset")
 			throw("av failed" + message);
 	}();
-
+	var dummy = new dummyToken();
 	/// v , n ---->  build , type cast
-	var vn = function(dummy)
+	var vn = function()
 	{
 		var message = dummy.xMatch(dummy.pos1("v"),dummy.pos2("n"));
 		if(message !== "build" && dummy.type !== "Cast")
 			throw("vn failed: " + message);
 	}();
-
+	var dummy = new dummyToken();
 	/// v , a ---->  Reset
-	var va = function(dummy)
+	var va = function()
 	{
 		var message = dummy.xMatch(dummy.pos1("v"),dummy.pos2("a"));
 		if(message !== "reset")
 			throw("vn failed" + message);
 	}();
 
-
+	var dummy = new dummyToken();
 	/// v , v ---->  Reset
-	var vv = function(dummy)
+	var vv = function()
 	{
 		var message = dummy.xMatch(dummy.pos1("v"),dummy.pos2("v"));
 		if(message !== "reset")
