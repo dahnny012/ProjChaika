@@ -352,8 +352,7 @@ SpellToken.prototype.match = function(current,next)
 };
 
 
-SpellToken.prototype.matchV = function(current,next)
-{
+SpellToken.prototype.matchV = function(current,next) {
 	var message = 'reset';
 	if(current != 'v')
 		return 'reset';
@@ -385,8 +384,7 @@ SpellToken.prototype.matchCastWeapon = function(current,next){
 	return 'build';
 }
 
-SpellToken.prototype.matchAdj = function(current,next)
-{
+SpellToken.prototype.matchAdj = function(current,next) {
 	if (current != 'adj')
 		return 'reset'
 	message = this.matchEnforce(current,next);
@@ -398,16 +396,13 @@ SpellToken.prototype.matchAdj = function(current,next)
 	return message;
 }
 
-SpellToken.prototype.matchEnforce = function(current,next)
-{
+SpellToken.prototype.matchEnforce = function(current,next) {
 	if(next != 'adj')
 		return 'reset';
 	return 'enforce';
 }
 
-SpellToken.prototype.matchBuildWeapon = function(current,next)
-{
-	
+SpellToken.prototype.matchBuildWeapon = function(current,next) {
 	if(next != 'n')
 		return 'reset';
 	this.type = 'Weapon';
@@ -415,15 +410,13 @@ SpellToken.prototype.matchBuildWeapon = function(current,next)
 	return 'build';
 }
 
-SpellToken.prototype.matchN = function(current,next)
-{
+SpellToken.prototype.matchN = function(current,next) {
 	if(current =! 'n')
 		return 'reset';
 	return this.matchWeapon(current,next);
 }
 
-SpellToken.prototype.matchWeapon = function(current,next)
-{
+SpellToken.prototype.matchWeapon = function(current,next) {
 	if(next !== 0)
 		return 'reset'
 	this.type= 'Weapon';
@@ -486,7 +479,7 @@ SpellToken.prototype.pos2 = function(testPos)
 	}
 }
 
-function tests()
+function xParseTests()
 {
 	// Basic tests
 	// n , n ---> Reset
