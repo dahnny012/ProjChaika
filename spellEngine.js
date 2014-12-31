@@ -486,13 +486,7 @@ SpellToken.prototype.pos2 = function(testPos)
 };
 
 
-/*TODO
-Check if set values are correct
-*/
-
-
-function xParseTests()
-{
+function xParseTests(){
 	// Basic tests
 	// n , n ---> Reset
 	var nn = function(){
@@ -503,9 +497,11 @@ function xParseTests()
 		dummy = new dummyToken();
 		
 		// test single n match
-		message = dummy.xMatch(dummy.pos1("n"),null);
-		if(message !== "build" && dummy.type != "Weapon")
+		message = dummy.xMatch(dummy.pos1("n"),0);
+		if(message !== "build" || dummy.type != "Weapon")
 			throw("n0 failed " + message);
+		if(dummy.base !== dummy.word)
+		 throw("single n failed verfification");
 	}();
 
 	
@@ -533,6 +529,8 @@ function xParseTests()
 		var message = dummy.xMatch(dummy.pos1("adj"),dummy.pos2("n"));
 		if(message !== "build")
 			throw("an failed " + message);
+		if(dummy.type !== 'Weapon' || dummy.base !== dummy.next[WORD])
+		 throw("an failed verification");
 	}();
 
 	
@@ -558,14 +556,16 @@ function xParseTests()
 	var vn = function(){
 		var dummy = new dummyToken();
 		var message = dummy.xMatch(dummy.pos1("v"),dummy.pos2("n"));
-		if(message !== "build" && dummy.type !== "Cast")
+		if(message !== "build" || dummy.type !== "Cast")
 			throw("vn failed: " + message);
+		if(dummy.base !== dummy.next[WORD])
+		 throw("vn failed verification");
 	}();
 	
 	/// v , a ---->  Reset
 	var va = function(){
 		var dummy = new dummyToken();
-		var message = dummy.xMatch(dummy.pos1("v"),dummy.pos2("a"));
+		var message = dummy.xMatch(dummy.pos1("v"),dummy.pos2("adj"));
 		if(message !== "reset")
 			throw("vn failed " + message);
 	}();
@@ -580,9 +580,11 @@ function xParseTests()
 			
 	/// test single v match
 		dummy = new dummyToken();
-		message = dummy.xMatch(dummy.pos1("v"),null);
+		message = dummy.xMatch(dummy.pos1("v"),0);
 		if(message !== "build" && dummy.type != "Cast")
 			throw("v0 failed " + message);
+		if(dummy.base !== dummy.word)
+		 throw("single v failed verification")
 	}();
 
 
