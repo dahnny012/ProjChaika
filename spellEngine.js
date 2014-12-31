@@ -122,7 +122,7 @@ SpellEngine.prototype.buildSpell = function(spell,player,spec){
 			}
 		}
 		console.log(spell.length);
-		var msg = token.parse();
+		var msg = token.parse(spell.length);
 		switch(msg)
 		{
 			case 'build':
@@ -217,6 +217,7 @@ function SpellToken(block,spell,spec)
 	this.base = '';
 	this.specQueue = [];
 	this.full = this.word;
+	this.
 	return this;
 }
 
@@ -233,12 +234,67 @@ function buffToken(block)
 
 
 
-/*
-TODO: Add all matches so player can choose what wants.
+// TODO write prototype xParse(with enforcing)
 
-*/
-SpellToken.prototype.parse = function()
-{
+SpellToken.prototype.xParse = function(tokesLeft){
+	
+	var buff = buffToken(this.next);
+	var message = 'reset';
+	var numTokes;
+	var numTokesBuff;
+	numTokes = this.pos.length;
+	if(numTokesBuff !== 0)
+		numTokesBuff = buff.pos.length;
+		
+	switch(this.spec)
+	{
+		case 'Weapon':
+			if(tokesLeft < 1){
+				message = this.matchN(this.pos.indexOf("n"),getBuffPos(buff,"n"));
+				if(message != 'reset')
+					return message;
+			 message = this.matchAdj(this.pos.indexOf("adj"),getBuffPos(buff,"n"));
+			 if(message != 'reset')
+			  return message;
+			}
+			else
+			{
+				message = this.matchAdj(this.pos.indexOf("adj"),getBuffPos(buff,"adj"))
+				if(message != 'reset')
+				 return message;
+			}
+		case 'Cast':
+	 if(tokesLeft == 0)
+	   message = this.matchV(this.pos.indexOf("v"),getBuffPos(buff,"n"));
+	   if(message != 'reset')
+	    return message;
+		case 'Default':
+	 	this.pos.forEach(function(current){
+	 		if(buff !== 0 && buff.pos !== 0)
+	 		{
+	 			buff.pos.forEach(function(next){
+	 				message = this.xMatch(current,next)
+	 				if(message != 'reset'){
+							return message;
+						}
+						else if(message == 'Cast'){
+							this.base = buff.word;
+						};
+	 			});
+	 		}
+	 		else{
+	 			message = this.xMatch(current,0);
+	 			if(message != 'reset'){
+							return message;
+						}
+	 		}
+	 	});
+	}
+}
+
+
+
+SpellToken.prototype.parse = function(tokesLeft){
 
 		var buff = buffToken(this.next);
 		var message = 'reset';
@@ -424,6 +480,16 @@ SpellToken.prototype.matchWeapon = function(current,next) {
 	return 'build';
 };
 
+
+function getBuffPos(buff,targetPos)
+{
+	if(buff === 0)
+		return 0;
+	return buff.pos.indexOf(targetPos);
+}
+
+
+//####### Debug and Testing functions
 function dump(token){
 	console.log("Something wrong occurred");
 	console.log(token.word);
@@ -455,8 +521,7 @@ function dummyTokenNull(){
 
 // pos1 and pos2 is for tests. Their function will be useful in enforce though.
 // Might want to add it.
-SpellToken.prototype.pos1 = function(testPos)
-{
+SpellToken.prototype.pos1 = function(testPos){
 	switch(testPos) {
 		case 'v':
 			return this.pos[1];
@@ -470,8 +535,7 @@ SpellToken.prototype.pos1 = function(testPos)
 	}
 };
 
-SpellToken.prototype.pos2 = function(testPos)
-{
+SpellToken.prototype.pos2 = function(testPos){
 	switch(testPos) {
 		case 'v':
 			return this.next.pos[1];
