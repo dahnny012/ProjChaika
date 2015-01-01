@@ -222,7 +222,7 @@ function SpellToken(block,spell,spec)
 
 function buffToken(block)
 {
-	if(block === 0)
+	if(block === 0 || block === undefined)
 	{
 		return 0;
 	}
@@ -263,19 +263,21 @@ SpellToken.prototype.xParse = function(tokesLeft){
 			else
 			{
 				current = this.pos[this.pos.indexOf("adj")];
-				next = buff.pos[getBuffPos(buff,"adj")];
+				if(buff !== 0)
+					next = buff.pos[getBuffPos(buff,"adj")];
 				message = this.matchAdj(current,next);
 				if(message != 'reset')
 				 return message;
 			}
 		case 'Cast':
-		 if(tokesLeft === 0)
+		 if(tokesLeft === 0){
 		   current = this.pos[this.pos.indexOf("v")];
 		   if(buff !== 0)
 		   	next = buff.pos[getBuffPos(buff,"n")];
 		   message = this.matchV(current,next);
 		   if(message != 'reset')
 		    return message;
+		 }
 		case 'Default':
 			for(var i in this.pos){
 				var current = this.pos[i];
@@ -671,7 +673,7 @@ function xParseToken(pos1,pos2,spec)
 {
 		var block = ["test",pos1];
 		
-		if(pos2 === 0){
+		if(pos2 === 0 || pos2 === "" || pos2 === undefined){
 			var next = 0;
 		}
 		else{
@@ -776,8 +778,10 @@ function xParseTest_doubles(){
 		if(extra === undefined)
 			extra = dummy.base !== dummy.next[WORD];
 			
-	 if(message !== build || dummy.type !== type || extra)
-			throw("makeBuildWeapon failed " + message + " " + type);
+	 if(message !== build || dummy.type !== type || extra){
+	  console.log("Actual: " + dummy.type + " " + extra + " " + message);
+			throw("makeBuildWeapon failed " + build + " " + type);
+	 }
 	};
 	
 	var makeEnforceBuildWeapon = function(){
@@ -789,11 +793,18 @@ function xParseTest_doubles(){
 	};
 	
 	
-	
+	// sunny side 
 	makeBuildWeapon("n,v,adj","adj,n,v");
 	makeCastWeapon("n,v,adj","adj,n,v");
 	makeBuildWeapon("n,v,adj","adj,n,v","enforce","",false,1);
 	makeEnforceBuildWeapon()
+	
+	console.log("In cloudy");
+	//cloud side
+	makeBuildWeapon("v","n,adj","build","Cast",undefined,0);
+	makeCastWeapon("n,adj","v","reset","",false,0);
+ makeBuildWeapon("v","","build","Cast",false,0);
+	
 }
 
 
