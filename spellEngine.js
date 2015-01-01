@@ -217,7 +217,6 @@ function SpellToken(block,spell,spec)
 	this.base = '';
 	this.specQueue = [];
 	this.full = this.word;
-	this.
 	return this;
 }
 
@@ -225,7 +224,7 @@ function buffToken(block)
 {
 	if(block === 0)
 	{
-		return "";
+		return 0;
 	}
 	this.word = block[WORD];
 	this.pos = block[POS].split(",");
@@ -241,56 +240,70 @@ SpellToken.prototype.xParse = function(tokesLeft){
 	var buff = buffToken(this.next);
 	var message = 'reset';
 	var numTokes;
-	var numTokesBuff;
 	numTokes = this.pos.length;
-	if(numTokesBuff !== 0)
-		numTokesBuff = buff.pos.length;
-		
+ var current;
+	var next;
 	switch(this.spec)
 	{
 		case 'Weapon':
 			if(tokesLeft < 1){
-				message = this.matchN(this.pos.indexOf("n"),getBuffPos(buff,"n"));
+				if(buff !== 0)
+					next = 1;
+				current = this.pos[this.pos.indexOf("n")];
+				message = this.matchN(current,next);
 				if(message != 'reset')
 					return message;
-			 message = this.matchAdj(this.pos.indexOf("adj"),getBuffPos(buff,"n"));
+				current = this.pos[this.pos.indexOf("adj")];
+				if(buff !== 0)
+					next = buff.pos[getBuffPos(buff,"n")];
+			 message = this.matchAdj(current,next);
 			 if(message != 'reset')
 			  return message;
 			}
 			else
 			{
-				message = this.matchAdj(this.pos.indexOf("adj"),getBuffPos(buff,"adj"))
+				current = this.pos[this.pos.indexOf("adj")];
+				next = buff.pos[getBuffPos(buff,"adj")];
+				message = this.matchAdj(current,next);
 				if(message != 'reset')
 				 return message;
 			}
 		case 'Cast':
-	 if(tokesLeft == 0)
-	   message = this.matchV(this.pos.indexOf("v"),getBuffPos(buff,"n"));
-	   if(message != 'reset')
-	    return message;
+		 if(tokesLeft === 0)
+		   current = this.pos[this.pos.indexOf("v")];
+		   if(buff !== 0)
+		   	next = buff.pos[getBuffPos(buff,"n")];
+		   message = this.matchV(current,next);
+		   if(message != 'reset')
+		    return message;
 		case 'Default':
-	 	this.pos.forEach(function(current){
-	 		if(buff !== 0 && buff.pos !== 0)
-	 		{
-	 			buff.pos.forEach(function(next){
-	 				message = this.xMatch(current,next)
-	 				if(message != 'reset'){
-							return message;
+			for(var i in this.pos){
+				var current = this.pos[i];
+			 	if(buff !== 0 && buff.pos !== 0)
+			 	{
+			 		for(var j in buff.pos){
+			 			message = this.xMatch(current,buff.pos[j]);
+			 			if(message !== 'reset'){
+			 				return message;
+			 			}
+							else if(message == 'Cast'){
+							 this.base = buff.word;
+			 	  }
+			 	 }
+			  }
+			  else{
+			 		message = this.xMatch(current,0);
+			 		if(message != 'reset'){
+								return message;
 						}
-						else if(message == 'Cast'){
-							this.base = buff.word;
-						};
-	 			});
-	 		}
-	 		else{
-	 			message = this.xMatch(current,0);
-	 			if(message != 'reset'){
-							return message;
-						}
-	 		}
-	 	});
-	}
-}
+			 	}
+		 }
+		 return message;
+ }
+};
+	 	
+	 	
+	 
 
 
 
@@ -423,7 +436,7 @@ SpellToken.prototype.matchV = function(current,next) {
 };
 
 SpellToken.prototype.matchCast = function(current,next){
-	if(next !== 0)
+	if(next !== 0 && next !== undefined)
 		return 'reset';
 	
 	this.type = 'Cast';
@@ -473,7 +486,7 @@ SpellToken.prototype.matchN = function(current,next) {
 };
 
 SpellToken.prototype.matchWeapon = function(current,next) {
-	if(next !== 0)
+	if(next !== 0 && next !== undefined)
 		return 'reset';
 	this.type= 'Weapon';
 	this.base = this.word;
@@ -549,8 +562,7 @@ SpellToken.prototype.pos2 = function(testPos){
 	}
 };
 
-
-function xParseTests(){
+function xMatchTests(){
 	// Basic tests
 	// n , n ---> Reset
 	var nn = function(){
@@ -652,6 +664,136 @@ function xParseTests(){
 	}();
 
 
+}
+
+
+function xParseToken(pos1,pos2,spec)
+{
+		var block = ["test",pos1];
+		
+		if(pos2 === 0){
+			var next = 0;
+		}
+		else{
+			next = ["orange",pos2];
+		}
+	 var dummy = new SpellToken(block,next,spec);
+	 return dummy; 
+}
+
+
+function xParseTest_singles(){
+	// n0
+	var makeWeapon = function (pos,build,type,extra){
+		
+		var dummy = new xParseToken(pos,0,"Weapon");
+	 var message = dummy.xParse(0);
+		if(build === undefined)
+		 build = "build";
+		if(type === undefined)
+			type = "Weapon";
+		if(extra === undefined)
+			extra = dummy.base !== dummy.word;
+			
+	 if(message !== build || dummy.type !== type || extra)
+			throw("makeWeapon failed " + message + " " + type);
+	};
+	
+	var makeCast = function (pos,build,type,extra){
+	 var dummy = new xParseToken(pos,0,"Cast");
+	 var message = dummy.xParse(0);
+	 if(build === undefined)
+		 build = "build";
+		if(type === undefined)
+			type = "Cast";
+	 if(extra === undefined)
+			extra = dummy.base !== dummy.word;
+	 
+	 if(message !== build || dummy.type !== type || extra)
+			throw("n0 failed " + message);
+	}; 
+	
+	var makeDefault = function  (pos,build,type,extra){
+	 var dummy = new xParseToken(pos,0,"Default");
+	 var message = dummy.xParse(0);
+	 if(build === undefined)
+		 build = "reset";
+		if(type === undefined)
+			type = "";
+	 if(extra === undefined)
+	 	return undefined;
+	 if(message !== build || dummy.type != type || extra)
+			throw("a0 failed " + message);
+	};
+	
+	makeWeapon("n");
+	makeWeapon("n,v");
+	makeWeapon("v,n");
+	makeCast("v");
+	makeCast("v,n");
+	makeCast("n,v");
+	makeDefault("adj");
+	makeDefault("adj,v","build","Cast");
+	makeDefault("adj,v","build","Weapon");
+}
+
+
+function xParseTest_doubles(){
+	var makeBuildWeapon = function (pos,pos2,build,type,extra,qSize,dummy){
+		
+		if(dummy === undefined){
+			dummy = new xParseToken(pos,pos2,"Weapon");
+		}
+		else{
+			console.log("no new token");
+		}
+		
+		if(qSize === undefined)
+			qSize = 0;
+	 var message = dummy.xParse(qSize);
+		if(build === undefined)
+		 build = "build";
+		if(type === undefined)
+			type = "Weapon";
+		if(extra === undefined)
+			extra = dummy.base !== dummy.next[WORD];
+			
+	 if(message !== build || dummy.type !== type || extra)
+			throw("makeBuildWeapon failed " + message + " " + type);
+		return dummy;
+	};
+	
+	
+	var makeCastWeapon = function (pos,pos2,build,type,extra,qSize){
+		var dummy = new xParseToken(pos,pos2,"Cast");
+		if(qSize === undefined)
+			qSize = 0;
+	 var message = dummy.xParse(qSize);
+		if(build === undefined)
+		 build = "build";
+		if(type === undefined)
+			type = "Cast";
+		if(extra === undefined)
+			extra = dummy.base !== dummy.next[WORD];
+			
+	 if(message !== build || dummy.type !== type || extra)
+			throw("makeBuildWeapon failed " + message + " " + type);
+	};
+	
+	var makeEnforceBuildWeapon = function(){
+		// need 2 dummys
+		var enforce = makeBuildWeapon("n,v,adj","adj,n,v","enforce","",false,1);
+		var nextTok = ["orange2","n,v,adj"];
+		enforce.next = nextTok;
+		makeBuildWeapon("n,v,adj","adj,n,v","build","Weapon",undefined,0,enforce);
+	};
+	
+	
+	
+	makeBuildWeapon("n,v,adj","adj,n,v");
+	makeCastWeapon("n,v,adj","adj,n,v");
+	makeBuildWeapon("n,v,adj","adj,n,v","enforce","",false,1);
+	makeEnforceBuildWeapon()
 }
 
 
