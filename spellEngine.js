@@ -52,9 +52,10 @@ SpellEngine.prototype.evaluate = function (queue,player){
 			console.log("Spellcasting");
 			console.log(player);
 			var weapon = player.search(spell.base);
-			if(weapon === 0)
+			if(weapon === 0 || weapon === undefined)
 			{
 				spell.power = spell.base.length;
+				spell.power *= 1 + (spell.word.length/10);
 			}
 			else
 			{
@@ -90,7 +91,7 @@ SpellEngine.prototype.buildSpell = function(spell,player,spec){
 	var length = spell.length;
 	for(var i=0; i<length; i++)
 	{
-		if (token === 0)
+		if (token === undefined)
 		{
 			try{
 			debug = spell;
@@ -122,7 +123,7 @@ SpellEngine.prototype.buildSpell = function(spell,player,spec){
 			}
 		}
 		console.log(spell.length);
-		var msg = token.parse(spell.length);
+		var msg = token.xParse(spell.length);
 		switch(msg)
 		{
 			case 'build':
@@ -131,7 +132,7 @@ SpellEngine.prototype.buildSpell = function(spell,player,spec){
 				this.enforce(token,nextTok);
 				token.next = spell.splice(0,1).pop();
 				nextTok = token.next;
-				if(token.next === 0)
+				if(token.next === undefined)
 				{
 					console.log("Unable to finish enforce");
 					return;
@@ -170,7 +171,7 @@ SpellEngine.prototype.build = function(token,finisher){
 			  token.full += " " + token.seq[i][WORD];
 			  token.power += (combo * token.seq[i].length);
 			}
-			if(finisher !== 0){
+			if(finisher !== undefined && finisher !== 0){
 				token.full += " " + finisher[WORD];
 				token.power *= finisher[WORD].length; //later ^ 1.5
 				token.base = finisher;
@@ -304,11 +305,6 @@ SpellToken.prototype.xParse = function(tokesLeft){
  }
 };
 	 	
-	 	
-	 
-
-
-
 SpellToken.prototype.parse = function(tokesLeft){
 
 		var buff = buffToken(this.next);
@@ -498,7 +494,7 @@ SpellToken.prototype.matchWeapon = function(current,next) {
 
 function getBuffPos(buff,targetPos)
 {
-	if(buff === 0)
+	if(buff === 0 || buff === undefined)
 		return 0;
 	return buff.pos.indexOf(targetPos);
 }
@@ -669,8 +665,7 @@ function xMatchTests(){
 }
 
 
-function xParseToken(pos1,pos2,spec)
-{
+function xParseToken(pos1,pos2,spec){
 		var block = ["test",pos1];
 		
 		if(pos2 === 0 || pos2 === "" || pos2 === undefined){

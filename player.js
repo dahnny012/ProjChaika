@@ -11,6 +11,7 @@ Mage.prototype.health = 100;
 Mage.prototype.reduceHealth = function(damage)
 {
 	this.health -= damage;
+	this.health = this.health.toFixed(2);
 }
 
 
@@ -49,7 +50,7 @@ Human.prototype.search = function(base){
 	var length = this.history.length;
 	for (var i=0;i < length;i++)
 	{
-	  if(this.history[i].base[WORD] == base)
+	  if(this.history[i].base == base)
 	  {
 		return this.history.splice(i,1).pop();
 	  }
