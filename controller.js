@@ -60,7 +60,7 @@ function BattleController()
 	
 	function dumpQueue()
 	{
-		console.log(spellQueue);
+		console.log(player);
 	}
 	
 	function checkPromise(promise,spell)

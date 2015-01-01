@@ -487,7 +487,7 @@ SpellToken.prototype.matchWeapon = function(current,next) {
 	if(next !== 0 && next !== undefined)
 		return 'reset';
 	this.type= 'Weapon';
-	this.base = this.word;
+	this.base = [this.word];
 	return 'build';
 };
 

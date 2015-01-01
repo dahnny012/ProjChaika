@@ -50,7 +50,7 @@ Human.prototype.search = function(base){
 	var length = this.history.length;
 	for (var i=0;i < length;i++)
 	{
-	  if(this.history[i].base == base)
+	  if(this.history[i].base[WORD] == base)
 	  {
 		return this.history.splice(i,1).pop();
 	  }
