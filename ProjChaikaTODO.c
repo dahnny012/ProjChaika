@@ -25,3 +25,7 @@
 	- Implemented system to check enforcing.
 	    - writing test cases to speed up debugging.
 	        - basic cases done. nn..nv...aa
+            - Single tests done
+            - partial double tests done
+            - specification done.
+	        

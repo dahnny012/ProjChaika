@@ -3,7 +3,6 @@ var POS = 1;
 
 function Mage()
 {
-	
 	return this;
 }
 
@@ -25,19 +24,55 @@ Mage.prototype.update = function()
 function AI(ID)
 {
 	this.id = ID;
-	console.log(this.id);
 	this.update();
-	this.reduceHealth(50);
-	this.update();
+	this.castTimer = 3000; //ms
+	//this.cast("SomeSpell");
 }
 
 AI.prototype = new Mage();
 AI.prototype.constructor = AI;
 AI.prototype.health = 200;
+AI.prototype.cast = function(spell,boss){
+	boss.currentSpell = spell;
+	boss.spellUpdate(spell);
+	return boss.startCast(boss);
+}
+
+AI.prototype.startCast = function(boss,player){
+	boss.timerUpdate(boss.castTimer);
+	if(boss.castTimer <= 0) {
+		boss.execute();
+		boss.castTimer = 3000;
+		return 10;
+	}
+	else{
+		boss.castTimer -= 100;
+		setTimeout(boss.startCast,100,boss,player);
+	}
+}
+
+AI.prototype.execute = function(){
+	// Do damage to player
+	console.log("Dealing dmg to player");
+}
+
+AI.prototype.spellUpdate = function(string)
+{
+	$("#bossSpell").html(string);
+}
+AI.prototype.timerUpdate = function(num){
+	$("#bossSpellTimer").html(num/1000);
+}
 
 
+
+
+
+/// Humans
 function Human()
 {
+	this.health.toFixed(2);
+	this.update();
 	return this;
 }
 
@@ -45,6 +80,7 @@ function Human()
 
 
 Human.prototype = new Mage;
+Human.prototype.id = "#playerHealth";
 Human.prototype.history = Array();
 Human.prototype.search = function(base){
 	var length = this.history.length;

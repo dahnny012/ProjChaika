@@ -20,6 +20,8 @@ function BattleController()
 	var spellBook = new Dictionary();
 	var engine = new SpellEngine();
 	var player = new Human();
+	console.log(player);
+	cDebug = player;
 	var boss = new AI("#bossHealth");
 	console.log(boss.health);
 	var spellQueue = new Array();
@@ -89,6 +91,7 @@ function BattleController()
 	$(document).on("keydown","#controller",processSpell);
 	$(document).on("click","#queue",dumpQueue);
 	setInterval(processQueue,100);
+	
 }
 
 
