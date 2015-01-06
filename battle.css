@@ -5,31 +5,55 @@ body{
 
 
 #bossWrapper{
+    margin-top:5%;
+}
+
+
+#boss{
+
 }
 
 #bossName{
     font-family: 'Ubuntu', sans-serif;
-    font-size:60px;
+    font-size:200px;
+    text-align: center;
 }
+
+#bossBarWrapper{
+    	box-shadow: none;
+	border-radius: 0px;
+	border:2px solid black;
+	width:80%;
+	margin-left:auto;
+	margin-right:auto;
+}
+
 #bossBar{
-    width:420px;
+    width:inherit;
+    height:25px;
     font-size:20px;
 	font-family: 'Source Sans Pro', sans-serif;
 	-webkit-appearance: textfield;
 	background:white;
 	padding:0px;
-	box-shadow: none;
-	border-radius: 0px;
-	border:4px solid black;
+
 }
 
-#bossTimer{
-    
+#bossHealth{
+position:absolute;
+    width:inherit;
+    height:25px;
+    font-size:18px;
+	font-family: 'Ubuntu', sans-serif;
+	-webkit-appearance: textfield;
+	background:red;
+	color:white;
+	text-align:center;
 }
 
 #uiWrapper{
     width:500px;
-    margin-top:20%;
+    margin-top:10%;
     margin-left:auto;
     margin-right:auto;
 }
@@ -48,7 +72,7 @@ body{
 }
 
 #playerHealthWrapper{
-    width:120px;
+    width:150px;
     padding:0px;
     padding-top:22px;
     padding-bottom:13px;
@@ -65,6 +89,9 @@ body{
 #playerHealth
 {
     margin-left:10px;
+    color:white;
+    font-size:16px;
+    text-align:center;
 }
 
 
