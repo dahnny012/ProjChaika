@@ -8,52 +8,68 @@ body{
     margin-top:5%;
 }
 
-
-#boss{
-
-}
-
 #bossName{
     font-family: 'Ubuntu', sans-serif;
     font-size:200px;
     text-align: center;
 }
 
-#bossBarWrapper{
-    	box-shadow: none;
-	border-radius: 0px;
+#bossHealthWrapper{
 	border:2px solid black;
 	width:80%;
-	margin-left:auto;
 	margin-right:auto;
-}
-
-#bossBar{
-    width:inherit;
-    height:25px;
-    font-size:20px;
-	font-family: 'Source Sans Pro', sans-serif;
-	-webkit-appearance: textfield;
-	background:white;
-	padding:0px;
-
+	margin-left:auto;
+	height:25px;
+	margin-bottom:10px;
 }
 
 #bossHealth{
-position:absolute;
-    width:inherit;
-    height:25px;
-    font-size:18px;
-	font-family: 'Ubuntu', sans-serif;
-	-webkit-appearance: textfield;
-	background:red;
-	color:white;
+	font-size:18px;
+	font-family: 'Source Sans Pro', sans-serif;
 	text-align:center;
 }
 
-#uiWrapper{
+#bossHealthBar{
+    position:absolute;
+    width:inherit;
+    height:25px;
+	background:red;
+	text-align:center;
+	line-height:150%;
+	z-index:-100;
+}
+
+
+#bossCastWrapper{
+	border:2px solid black;
+	width:40%;
+	margin-right:auto;
+	margin-left:auto;
+	height:25px;
+	
+}
+
+#bossCast{
+	font-size:18px;
+	font-family: 'Source Sans Pro', sans-serif;
+	text-align:center;
+}
+
+#bossCastBar{
+    position:absolute;
+    width:inherit;
+    height:25px;
+	background:#0099CC;
+	text-align:center;
+	line-height:150%;
+	z-index:-100;
+}
+
+
+
+#playerWrapper, #battleLogWrapper{
     width:500px;
-    margin-top:10%;
+    margin-top:5%;
     margin-left:auto;
     margin-right:auto;
 }
