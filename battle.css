@@ -1,6 +1,7 @@
 body{
     padding: 0px;
-    margin: 0px
+    margin: 0px;
+    font-family: 'Ubuntu', sans-serif;
 }
 
 
@@ -66,10 +67,34 @@ body{
 }
 
 
-
-#playerWrapper, #battleLogWrapper{
+#battleLogWrapper{
+    border:2px solid black;
+    height:15%;
     width:500px;
-    margin-top:5%;
+    margin-top:3%;
+    margin-left:auto;
+    margin-right:auto;
+    overflow-y: scroll;
+}
+#battleLog{
+    padding-top:5px;
+    padding-left:2%;
+    padding-bottom:5px;
+    font-family: 'Ubuntu', sans-serif;
+    font-size:20px;
+}
+ .playerLog{
+     margin-top:1%;
+     color:#004B81;
+ }
+ .bossLog{
+     margin-top:1%;
+     color:#810000;
+ }
+
+
+#playerWrapper{
+    width:500px;
     margin-left:auto;
     margin-right:auto;
 }
@@ -88,7 +113,7 @@ body{
 }
 
 #playerHealthWrapper{
-    width:150px;
+    width:195px;
     padding:0px;
     padding-top:22px;
     padding-bottom:13px;
@@ -104,19 +129,32 @@ body{
 }
 #playerHealth
 {
-    margin-left:10px;
     color:white;
     font-size:16px;
     text-align:center;
 }
 
 
-spell{
+#weaponWrapper{
+    width:500px;
+    margin-top:3%;
     position:relative;
     bottom:20px;
-    font-size:20px;
+    font-size:15px;
     clear:left;
     float:left;
+    font-weight:700;
+}
+
+.weapon{
+    border:1px solid black;
+    text-align:center;
+    padding:3px;
+    padding-top:5px;
+    padding-bottom:5px;
+    width:31%;
+    background:#41B3B5;
+    display:inline-block;
 }
 
 #controller{
@@ -135,3 +173,21 @@ spell{
 	border:2px solid black;
 	border-right:0px;
 }
+
+
+
+/* Scrollbars */
+
+::-webkit-scrollbar {  
+    width: 8px;  
+}  
+::-webkit-scrollbar-track {  
+    background-color: #eaeaea;  
+    border-left: 1px solid #ccc;  
+}  
+::-webkit-scrollbar-thumb {  
+    background-color: #1F1F1F;  
+}  
+::-webkit-scrollbar-thumb:hover {  
+    background-color: #aaa;  
+}  
