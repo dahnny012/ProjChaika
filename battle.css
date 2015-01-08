@@ -24,11 +24,13 @@ body{
 	margin-bottom:10px;
 }
 
-#bossHealth{
-	font-size:18px;
-	font-family: 'Source Sans Pro', sans-serif;
+#bossHealth, #playerHealth{
+	font-size:20px;
+    font-weight:600;
 	text-align:center;
+	font-family: 'Source Sans Pro', sans-serif;
 }
+
 
 #bossHealthBar{
     position:absolute;
@@ -50,7 +52,7 @@ body{
 	
 }
 
-#bossCast{
+#bossSpell{
 	font-size:18px;
 	font-family: 'Source Sans Pro', sans-serif;
 	text-align:center;
@@ -116,7 +118,7 @@ body{
     width:195px;
     padding:0px;
     padding-top:22px;
-    padding-bottom:13px;
+    padding-bottom:10px;
     background:red;
     margin-top:15px;
     margin-left:0px;
@@ -127,15 +129,10 @@ body{
     font-size: 18px;
     font-family: 'Source Sans Pro', sans-serif;
 }
-#playerHealth
-{
-    color:white;
-    font-size:16px;
-    text-align:center;
-}
 
 
-#weaponWrapper{
+
+#weaponQueue{
     width:500px;
     margin-top:3%;
     position:relative;

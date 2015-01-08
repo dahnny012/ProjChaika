@@ -1,8 +1,8 @@
 <html>
 <head>
 	<title></title>
-	<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300" rel="stylesheet" type="text/css">
-<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="battle.css">
 	<meta charset="UTF-8">
 </head>
@@ -13,28 +13,20 @@
 <section id="bossWrapper">
 	
 	<div id="boss">
-		<div id="bossName">Boss Name</div>
+		<div id="bossName"></div>
 		<div id="bossHealthWrapper">
 			<div id="bossHealthBar"></div>
-			<div id="bossHealth">100%</div>
+			<div id="bossHealth"></div>
 		</div>
 		<div id="bossCastWrapper">
 			<div id="bossCastBar"></div>
-			<div id="bossCast">some spell</div>
+			<div id="bossSpell">sdsd</div>
 		</div>
 	</div>
 </section>
 <section id="battleLogWrapper">
 	<div id="battleLog">
 		<div class="playerLog">[Name]: Fireball &#60;4% dmg&#62;</div>
-		<div class="bossLog">[Boss Name]: Some spell &#60;4% dmg&#62;</div>
-		<div class="bossLog">[Boss Name]: Some spell &#60;4% dmg&#62;</div>
-		<div class="bossLog">[Boss Name]: Some spell &#60;4% dmg&#62;</div>
-		<div class="bossLog">[Boss Name]: Some spell &#60;4% dmg&#62;</div>
-		<div class="bossLog">[Boss Name]: Some spell &#60;4% dmg&#62;</div>
-		<div class="bossLog">[Boss Name]: Some spell &#60;4% dmg&#62;</div>
-		<div class="bossLog">[Boss Name]: Some spell &#60;4% dmg&#62;</div>
-		<div class="bossLog">[Boss Name]: Some spell &#60;4% dmg&#62;</div>
 		<div class="bossLog">[Boss Name]: Some spell &#60;4% dmg&#62;</div>
 	</div>	
 </section>
@@ -45,13 +37,12 @@
 	<img class="battleBar"  id="divide" src="Assets/Divide2px.png">
 	<div class="battleBar" id="playerHealthWrapper">		
 		<div id="playerHealth">
-		100%
 		</div> 
 	</div>
-	<div id="weaponWrapper">
-		<div class="weapon" id="Weapon1">&#60;Weadfdsfdsfdpon1&#62; <br>200 dmg</div>
-		<div class="weapon" id="Weapon2">&#60;Weapon2&#62; <br>100 dmg</div>
-		<div class="weapon" id="Weapon3">&#60;Weapon3&#62;<br> 50 dmg</div>
+	<div id="weaponQueue">
+		<div class="weapon 0"></div>
+		<div class="weapon 1"></div>
+		<div class="weapon 2"></div>
 	</div>
 
 	</div>
@@ -59,5 +50,12 @@
 
 </body>
 <footer>
+	<script src="jquery-1.11.1.js"></script>
+	<script src="db.js"></script>
+	<script src="dictionary.js"></script>
+	<script src="spellEngine.js"></script>
+	<script src="player.js"></script>
+	<script src="controller.js"></script>
+	<script src="main.js"></script>
 </footer>
 </html>
