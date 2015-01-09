@@ -12,6 +12,7 @@ Mage.prototype.healthWidth;
 Mage.prototype.healthStartWidth;
 // All mages must implement this
 Mage.prototype.init = function(){};
+//
 Mage.prototype.reduceHealth = function(damage)
 {
 	this.health -= damage;
@@ -29,11 +30,11 @@ function AI(name,health,castTimer)
 {
 	this.name = name;
 	this.health = health;
+	this.health = this.health.toFixed(2);
 	this.startHealth = health;
 	this.castTimer = castTimer; //ms
 	this.startTimer=  castTimer;
 	this.init();
-
 }
 
 
