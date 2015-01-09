@@ -47,14 +47,13 @@ function BattleController()
 			var spell = engine.evaluate(spellQueue,player);
 			if(spell.damage !== 0)
 			{
-				boss.reduceHealth(spell.damage);
-				boss.healthUpdate();
+				boss.reduceHealth(spell.damage);;
 				battleLog(spell,"playerLog",player);
 			}
 		}
 	}
 	
-	function processBossQueue()
+	/*function processBossQueue()
 	{
 		if(boss.castQueue.length !== 0)
 		{
@@ -66,14 +65,14 @@ function BattleController()
 			battleLog(bossSpell,"bossLog",boss);
 			boss.cast(bossSpell.full,boss);
 		}
-	}
+	}*/
 	
 	function battleStart()
 	{
 		$(document).on("keydown","#controller",processSpell);
 		setInterval(processQueue,100);
-		setInterval(processBossQueue,100);
-		boss.cast("Some Spell",boss);
+		//setInterval(processBossQueue,100);
+		boss.cast("Some Spell",boss,player);
 	}
 	battleStart();
 	
@@ -90,7 +89,11 @@ function BattleController()
 
 function battleLog(spell,type,mage)
 {
-	var node = '<div class=\'{0}\'>[{1}]: {2} &#60;{3}&#62;</div>'.format(type,mage.name,spell.full,spell.dmg);
+	var div = "<div class='"+type+"'>";
+	var log = "[" + mage.name + "]:" + " " + spell.full;
+	var dmg = "&#60;"+spell.dmg+"&#62";
+	var close ="</div>";
+	var node = div + log + dmg + close;
 	$("#battleLog").append(node);
 }
 

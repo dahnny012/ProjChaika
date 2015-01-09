@@ -1,6 +1,7 @@
 var WORD = 0;
 var POS = 1;
-
+var FPS30 = 33.33;
+var FPS60 = 16.66;
 function Mage()
 {
 	return this;
@@ -14,6 +15,7 @@ Mage.prototype.reduceHealth = function(damage)
 {
 	this.health -= damage;
 	this.health = this.health.toFixed(2);
+	this.healthUpdate();
 }
 
 Mage.prototype.healthUpdate = function()
@@ -52,27 +54,31 @@ AI.prototype.healthId = "#bossHealth";
 AI.prototype.castBarId= "#bossCastBar";
 AI.prototype.castBar = $(this.castBarId);
 
-AI.prototype.cast = function(spell,boss){
+AI.prototype.cast = function(spell,boss,player){
 	boss.currentSpell = spell;
 	boss.spellUpdate(spell);
-	return boss.startCast(boss);
+	return boss.startCast(boss,player);
 }
 AI.prototype.startCast = function(boss,player){
 	boss.timerUpdate(boss.castTimer);
 	if(boss.castTimer <= 0) {
-		boss.execute();
+		boss.execute(boss,10,player);
 		boss.castTimer = boss.startTimer;
-		var dmg = 10;
-		boss.castQueue.push([boss.currentSpell,dmg]);
+		//boss.castQueue.push([boss.currentSpell,dmg]);
 	}
 	else{
-		boss.castTimer -= 33.33;
-		setTimeout(boss.startCast,33.33,boss,player);
+		boss.castTimer -= FPS30;
+		setTimeout(boss.startCast,FPS30,boss,player);
 	}
 }
-AI.prototype.execute = function(){
+AI.prototype.execute = function(boss,dmg,player){
 	// Do damage to player
 	console.log("Dealing dmg to player");
+	player.reduceHealth(dmg);
+	var spell = {};
+	spell.full = boss.currentSpell;
+	spell.dmg = dmg;
+	battleLog(spell,"bossLog",boss);
 }
 AI.prototype.spellUpdate = function(string)
 {
