@@ -73,6 +73,7 @@ function BattleController()
 		$(document).on("keydown","#controller",processSpell);
 		setInterval(processQueue,100);
 		setInterval(processBossQueue,100);
+		boss.cast("Some Spell",boss);
 	}
 	battleStart();
 	

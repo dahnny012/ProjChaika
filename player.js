@@ -28,9 +28,10 @@ function AI(name,health,castTimer)
 	this.name = name;
 	this.health = health;
 	this.startHealth = health;
-	this.init();
 	this.castTimer = castTimer; //ms
 	this.startTimer=  castTimer;
+	this.init();
+
 }
 
 
@@ -65,8 +66,8 @@ AI.prototype.startCast = function(boss,player){
 		boss.castQueue.push([boss.currentSpell,dmg]);
 	}
 	else{
-		boss.castTimer -= 100;
-		setTimeout(boss.startCast,100,boss,player);
+		boss.castTimer -= 33.33;
+		setTimeout(boss.startCast,33.33,boss,player);
 	}
 }
 AI.prototype.execute = function(){
@@ -78,8 +79,13 @@ AI.prototype.spellUpdate = function(string)
 	$("#bossSpell").html(string);
 }
 AI.prototype.timerUpdate = function(num){
-	this.timerStartWidth += ((num/this.startTimer) * pxToNum(this.timerWidth));
-	$(this.castBarId).css("width",numToPx(this.timerStartWidth));
+	var percent = (this.startTimer - num)/this.startTimer;
+	var amount = percent * pxToNum(this.timerWidth);
+	//console.log(pxToNum(this.timerWidth));
+	this.timerStartWidth = amount * percent;
+	if(this.timerStartWidth >= pxToNum(this.timerWidth))
+		this.timerStartWidth = this.timerWidth;
+	$(this.castBarId).css("width",this.timerStartWidth);
 }
 
 AI.prototype.nameUpdate = function(){
@@ -155,7 +161,7 @@ function numToPx(num)
 	return num + "px";
 }
 function pxToNum(px){
-	px.substr(0,px.search("px"))
+	return parseFloat(px.substr(0,px.search("px")));
 }
 
 
