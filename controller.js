@@ -47,7 +47,9 @@ function BattleController()
 			var spell = engine.evaluate(spellQueue,player);
 			if(spell.damage !== 0)
 			{
-				boss.reduceHealth(spell.damage);;
+				boss.reduceHealth(spell.damage);
+				boss.healthBarUpdate();
+				
 				battleLog(spell,"playerLog",player);
 			}
 		}

@@ -8,7 +8,8 @@ function Mage()
 }
 
 Mage.prototype.health = 100;
-
+Mage.prototype.healthWidth;
+Mage.prototype.healthStartWidth;
 // All mages must implement this
 Mage.prototype.init = function(){};
 Mage.prototype.reduceHealth = function(damage)
@@ -23,6 +24,7 @@ Mage.prototype.healthUpdate = function()
 	console.log("updating");
 	console.log(this.healthId);
 	$(this.healthId).html(this.health);
+	console.log(this.healthWidth);
 }
 
 function AI(name,health,castTimer)
@@ -75,6 +77,7 @@ AI.prototype.execute = function(boss,dmg,player){
 	// Do damage to player
 	console.log("Dealing dmg to player");
 	player.reduceHealth(dmg);
+	player.healthBarUpdate();
 	var spell = {};
 	spell.full = boss.currentSpell;
 	spell.dmg = dmg;
@@ -144,7 +147,6 @@ Human.prototype.updateWeaponQueue = function(){
 			this.queueIndex += 1;
 		}
 }
-
 
 // in a refactor this will be neater. No time for that tho.
 function cssBar(id,val)
