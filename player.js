@@ -22,9 +22,7 @@ Mage.prototype.reduceHealth = function(damage)
 Mage.prototype.healthUpdate = function()
 {
 	console.log("updating");
-	console.log(this.healthId);
 	$(this.healthId).html(this.health);
-	console.log(this.healthWidth);
 }
 
 function AI(name,health,castTimer)
@@ -41,17 +39,32 @@ function AI(name,health,castTimer)
 
 AI.prototype = new Mage();
 AI.prototype.constructor = AI;
+AI.prototype.healthUpdate = function(){
+	Mage.prototype.healthUpdate.call(this);
+	this.healthBarUpdate();
+}
 AI.prototype.init = function(){
+
 	this.healthUpdate();
 	this.nameUpdate();
 	this.timerWidth = getWidth(this.castBarId);
 	this.timerStartWidth = 0;
-	this.healthWidth = getWidth(this.healthId);
-	this.healthStartWidth =this.healthWidth;
 	this.timerUpdate(0);
 }
 
+AI.prototype.healthBarUpdate = function(){
+	if(this.healthStartWidth === undefined){
+		this.healthStartWidth = $(this.healthId).css("width");
+	}
+	this.healthStartWidth = $(this.healthId).css("width");
+	var percent = (this.health/this.startHealth);
+	var amount = pxToNum(this.healthStartWidth);
+	this.healthWidth = percent * amount;
+	$(this.healthBarId).css("width",this.healthWidth);
+}
+
 // Predef vars
+AI.prototype.healthBarId="#bossHealthBar";
 AI.prototype.healthId = "#bossHealth";
 AI.prototype.castBarId= "#bossCastBar";
 AI.prototype.castBar = $(this.castBarId);
@@ -77,7 +90,6 @@ AI.prototype.execute = function(boss,dmg,player){
 	// Do damage to player
 	console.log("Dealing dmg to player");
 	player.reduceHealth(dmg);
-	player.healthBarUpdate();
 	var spell = {};
 	spell.full = boss.currentSpell;
 	spell.dmg = dmg;
@@ -90,7 +102,6 @@ AI.prototype.spellUpdate = function(string)
 AI.prototype.timerUpdate = function(num){
 	var percent = (this.startTimer - num)/this.startTimer;
 	var amount = percent * pxToNum(this.timerWidth);
-	//console.log(pxToNum(this.timerWidth));
 	this.timerStartWidth = amount * percent;
 	if(this.timerStartWidth >= pxToNum(this.timerWidth))
 		this.timerStartWidth = this.timerWidth;
@@ -115,15 +126,37 @@ function Human(name,health)
 	return this;
 }
 
+Human.prototype = new Mage();
+Human.prototype.gui = new guiUtils;
+Human.prototype.healthUpdate = function(){
+	Mage.prototype.healthUpdate.call(this);
+	this.healthBarUpdate();
+}
+
+/*
+Human.prototype.reduceHealth = function(dmg){
+	Mage.prototype.reduceHealth.call(this,dmg);
+	this.gui.flashScreen();
+}*/
+Human.prototype.healthBarUpdate = function(){
+	if(this.healthStartWidth === undefined){
+		this.healthStartWidth = $(this.healthId).css("width");
+	}
+	this.healthStartWidth = $(this.healthId).css("width");
+	var percent = (this.health/this.startHealth);
+	var amount = pxToNum(this.healthStartWidth);
+	this.healthWidth = percent * amount;
+	$(this.healthBarId).css("width",this.healthWidth);
+}
 
 
 
-Human.prototype = new Mage;
 Human.prototype.init = function(){
 	this.healthUpdate();
 	this.healthWidth = getWidth(this.healthId);
 	this.healthStartWidth = this.healthWidth;
 }
+Human.prototype.healthBarId = "#playerHealthBar";
 Human.prototype.healthId = "#playerHealth";
 Human.prototype.history = Array();
 Human.prototype.search = function(base){
