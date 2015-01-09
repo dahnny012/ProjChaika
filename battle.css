@@ -164,6 +164,7 @@ body{
 	-webkit-appearance: textfield;
 	background:white;
 	padding:0px;
+	padding-left:10px;
 	box-shadow: none;
 	border:none;
 	border-radius: 0px;

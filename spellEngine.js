@@ -692,10 +692,9 @@ function xParseTest_singles(){
 		if(type === undefined)
 			type = "Weapon";
 		if(extra === undefined)
-			extra = dummy.base !== dummy.word;
-			
+			extra = dummy.base[WORD] !== dummy.word;
 	 if(message !== build || dummy.type !== type || extra)
-			throw("makeWeapon failed " + message + " " + type);
+			throw("makeWeapon failed " + message + " " + type + " " + dummy.base + " " + dummy.word);
 	};
 	
 	var makeCast = function (pos,build,type,extra){
@@ -709,7 +708,8 @@ function xParseTest_singles(){
 			extra = dummy.base !== dummy.word;
 	 
 	 if(message !== build || dummy.type !== type || extra)
-			throw("n0 failed " + message);
+			throw("a0 failed " + message);
+		console.log("pass");
 	}; 
 	
 	var makeDefault = function  (pos,build,type,extra){
@@ -756,7 +756,6 @@ function xParseTest_doubles(){
 			type = "Weapon";
 		if(extra === undefined)
 			extra = dummy.base !== dummy.next[WORD];
-			
 	 if(message !== build || dummy.type !== type || extra)
 			throw("makeBuildWeapon failed " + message + " " + type);
 		return dummy;

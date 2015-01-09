@@ -45,9 +45,10 @@ function BattleController()
 	{
 		if(spellQueue.length !== 0){
 			var spell = engine.evaluate(spellQueue,player);
-			if(spell.damage !== 0)
+			console.log(spell);
+			if(spell.power !== 0)
 			{
-				boss.reduceHealth(spell.damage);
+				boss.reduceHealth(spell.power);
 				boss.healthBarUpdate();
 				
 				battleLog(spell,"playerLog",player);
@@ -74,7 +75,7 @@ function BattleController()
 		$(document).on("keydown","#controller",processSpell);
 		setInterval(processQueue,100);
 		//setInterval(processBossQueue,100);
-		boss.cast("Some Spell",boss,player);
+		//boss.cast("Some Spell",boss,player);
 	}
 	battleStart();
 	
@@ -93,10 +94,11 @@ function battleLog(spell,type,mage)
 {
 	var div = "<div class='"+type+"'>";
 	var log = "[" + mage.name + "]:" + " " + spell.full;
-	var dmg = "&#60;"+spell.dmg+"&#62";
+	var dmg = "&#60;"+spell.power+"&#62";
 	var close ="</div>";
 	var node = div + log + dmg + close;
 	$("#battleLog").append(node);
+	$("#battleLogWrapper").scrollTop($("#battleLog").height());
 }
 
 // Debugging tools
