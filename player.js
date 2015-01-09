@@ -30,6 +30,7 @@ function AI(name,health,castTimer)
 	this.startHealth = health;
 	this.init();
 	this.castTimer = castTimer; //ms
+	this.startTimer=  castTimer;
 }
 
 
@@ -42,6 +43,7 @@ AI.prototype.init = function(){
 	this.timerStartWidth = 0;
 	this.healthWidth = getWidth(this.healthId);
 	this.healthStartWidth =this.healthWidth;
+	this.timerUpdate(0);
 }
 
 // Predef vars
@@ -58,8 +60,9 @@ AI.prototype.startCast = function(boss,player){
 	boss.timerUpdate(boss.castTimer);
 	if(boss.castTimer <= 0) {
 		boss.execute();
-		boss.castTimer = 3000;
-		return 10;
+		boss.castTimer = boss.startTimer;
+		var dmg = 10;
+		boss.castQueue.push([boss.currentSpell,dmg]);
 	}
 	else{
 		boss.castTimer -= 100;
@@ -75,15 +78,15 @@ AI.prototype.spellUpdate = function(string)
 	$("#bossSpell").html(string);
 }
 AI.prototype.timerUpdate = function(num){
-	/***** TODO *////////////////
-	0/timerWidth = numTotal/Total
+	this.timerStartWidth += ((num/this.startTimer) * pxToNum(this.timerWidth));
+	$(this.castBarId).css("width",numToPx(this.timerStartWidth));
 }
 
 AI.prototype.nameUpdate = function(){
 	$("#bossName").html(this.name);
 }
 
-
+AI.prototype.castQueue = [];
 
 /// Humans
 function Human(name,health)

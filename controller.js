@@ -26,7 +26,7 @@ function BattleController()
 	
 	// Queue of spell requests by player. Should do boss too....In later refactor
 	var spellQueue = new Array();
-	
+	var stopGame;
 
 	function processSpell(event){
 		// 13 -> enter
@@ -44,32 +44,56 @@ function BattleController()
 	function processQueue()
 	{
 		if(spellQueue.length !== 0){
-			var damage = engine.evaluate(spellQueue,player);
-			if(damage !== 0)
+			var spell = engine.evaluate(spellQueue,player);
+			if(spell.damage !== 0)
 			{
-				boss.reduceHealth(damage);
+				boss.reduceHealth(spell.damage);
 				boss.healthUpdate();
+				battleLog(spell,"playerLog",player);
 			}
 		}
 	}
 	
-	// Debugging tools
+	function processBossQueue()
+	{
+		if(boss.castQueue.length !== 0)
+		{
+			var bossSpell = {};
+			var spellToken = boss.castQueue.pop();
+			bossSpell.full = spellToken[0];
+			bossSpell.dmg = spellToken[1];
+			player.reduceHealth(bossSpell.dmg);
+			battleLog(bossSpell,"bossLog",boss);
+			boss.cast(bossSpell.full,boss);
+		}
+	}
+	
+	function battleStart()
+	{
+		$(document).on("keydown","#controller",processSpell);
+		setInterval(processQueue,100);
+		setInterval(processBossQueue,100);
+	}
+	battleStart();
+	
+	
+	
 	function playerDump()
 	{
 		console.log(player);
 	}
-	
 
-	
-	
-	
 	//$(document).on("input","#controller",printSpell);
-	$(document).on("keydown","#controller",processSpell);
-	setInterval(processQueue,100);
 	
 }
 
+function battleLog(spell,type,mage)
+{
+	var node = '<div class=\'{0}\'>[{1}]: {2} &#60;{3}&#62;</div>'.format(type,mage.name,spell.full,spell.dmg);
+	$("#battleLog").append(node);
+}
 
+// Debugging tools
 
 
 

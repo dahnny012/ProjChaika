@@ -8,12 +8,14 @@ Data incoming in the form:
 			[     ] Token layer
 				Word, Pos
 */
+
 var WORD = 0;
 var POS = 1;
 function SpellEngine()
 {
 	return this;
 }
+
 SpellEngine.prototype.evaluate = function (queue,player){
 	
 	if(queue.length > 0)
@@ -64,7 +66,7 @@ SpellEngine.prototype.evaluate = function (queue,player){
 				
 				spell.power = combo *  weapon.power;
 			}
-			return spell.power;
+			return spell;
 		}
 		else
 		{
