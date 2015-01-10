@@ -95,6 +95,10 @@ function battleLog(spell,type,mage)
 {
 	var div = "<div class='"+type+"'>";
 	var log = "[" + mage.name + "]:" + " " + spell.full;
+	if(spell.base !== undefined)
+	{
+		log += " " + spell.base;
+	}
 	var dmg = "&#60;"+spell.power+"&#62";
 	var close ="</div>";
 	var node = div + log + dmg + close;

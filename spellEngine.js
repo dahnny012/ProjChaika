@@ -27,12 +27,10 @@ SpellEngine.prototype.evaluate = function (queue,player){
 	console.log("Spell layer");
 	console.log(spellLayer);
 	/// Protect the loop
-	if(queue.length == 1)
-	{
+	if(queue.length == 1){
 		queue.pop();
 	}
-	else
-	{
+	else{
 		queue.splice(0,1);
 	}
 	
@@ -40,31 +38,30 @@ SpellEngine.prototype.evaluate = function (queue,player){
 	{
 		var spell =  this.buildSpell(spellLayer,player,spellLayer.spec);
 		if(spell === 0)
-		{
-			return undefined
-		}
-		if(spell.type == 'Weapon')
-		{
+			return undefined;
+			
+		if(spell.type == 'Weapon'){
 			player.history.push(spell);
 			player.updateWeaponQueue();
 			console.log("Made weapon");
 		}
-		else if(spell.type == 'Cast')
-		{
+		/// TODO pass player to build so i can move this.
+		else if(spell.type == 'Cast'){
 			console.log("Spellcasting");
 			console.log(player);
 			var weapon = player.search(spell.base);
-			if(weapon === 0 || weapon === undefined)
-			{
-				spell.power = spell.base.length;
-				spell.power *= 1 + (spell.word.length/10);
-			}
-			else
-			{
+			if(weapon !== 0 && weapon !== undefined)
+		 {
 				var base = 1;
 				var combo = base + spell.power/10;
-				
-				spell.power = combo *  weapon.power;
+				spell.power += (combo *  weapon.power);
+			}
+			else{
+				if(spell.base !== undefined){
+					var base = 1;
+				 var combo = base + spell.power/10;
+			 	spell.power += (combo *  spell.base.length);
+				}
 			}
 			return spell;
 		}
@@ -76,15 +73,6 @@ SpellEngine.prototype.evaluate = function (queue,player){
 	return 0;
 };
 
-
-
- /*
- [[["test","v,n"],["spell","n,"]]]
- Array of tokens
-	[ X ] Queue layer
-		[  O  ] Spell layer
-*/
-
 var debug;
 SpellEngine.prototype.buildSpell = function(spell,player,spec){
 	var token;
@@ -93,7 +81,7 @@ SpellEngine.prototype.buildSpell = function(spell,player,spec){
 	var length = spell.length;
 	for(var i=0; i<length; i++)
 	{
-		if (token === undefined)
+		if(token === undefined)
 		{
 			try{
 			debug = spell;
@@ -107,8 +95,7 @@ SpellEngine.prototype.buildSpell = function(spell,player,spec){
 				nextTok = spell.splice(0,1).pop();
 			}
 			token = new SpellToken(splice,nextTok,spec); // Token layer
-			switch(spec)
-			{
+			switch(spec){
 				case 'Weapon':
 				case 'Cast':
 					this.addSpecQueue(token,spell);
@@ -348,7 +335,6 @@ SpellToken.prototype.matchCast = function(current,next){
 		return 'reset';
 	
 	this.type = 'Cast';
-	this.base = this.word;
 	return 'build';
 };
 
