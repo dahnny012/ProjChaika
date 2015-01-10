@@ -28,4 +28,5 @@
             - Single tests done
             - partial double tests done
             - specification done.
-	        
+	- All ui done.
+	- Weapon Queue implemented.

@@ -41,7 +41,7 @@ SpellEngine.prototype.evaluate = function (queue,player){
 			return undefined;
 			
 		if(spell.type == 'Weapon'){
-			player.history.push(spell);
+			//player.history.push(spell);
 			//player.updateWeaponQueue();
 			player.addInventory(spell);
 			console.log("Made weapon");
@@ -50,9 +50,9 @@ SpellEngine.prototype.evaluate = function (queue,player){
 		else if(spell.type == 'Cast'){
 			console.log("Spellcasting");
 			console.log(player);
-			var weapon = player.search(spell.base);
+			var weapon = player.useWeapon(spell);
 			
-			// New 1/10
+			/* New 1/10
 			if(player.xSearch(spell.base) !== undefined){
 				console.log("Found in inventory");
 				var inven  = player.useWeapon(spell);
@@ -64,7 +64,7 @@ SpellEngine.prototype.evaluate = function (queue,player){
 			}
 			else{
 				console.log("No matches in inventory");
-			}
+			}*/
 			//
 			if(weapon !== 0 && weapon !== undefined)
 		 {

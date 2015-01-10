@@ -171,8 +171,10 @@ Human.prototype.addInventory = function(spell){
 Human.prototype.useWeapon = function(weapon)
 {
 	var match = this.xSearch(weapon.base);
+	if(match !== undefined){
 	this.removeWeapon(match.index);
 	this.xUpdateWeaponQueue(match.index);
+	}
 	return match;
 }
 
