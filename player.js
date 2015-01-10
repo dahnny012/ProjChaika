@@ -163,9 +163,8 @@ Human.prototype.healthId = "#playerHealth";
 Human.prototype.history = Array();
 Human.prototype.inventory = Array(3);
 Human.prototype.addInventory = function(spell){
-	var index = this.weaponSlot % 3;
+	var index = this.findOpenSlot();
 	this.inventory[index] = spell;
-	this.weaponSlot++;
 	this.xUpdateWeaponQueue(index,spell);
 }
 
@@ -173,20 +172,22 @@ Human.prototype.useWeapon = function(weapon)
 {
 	var match = this.xSearch(weapon.base);
 	this.removeWeapon(match.index);
-	this.updateWeaponQueue(match.index);
+	this.xUpdateWeaponQueue(match.index);
 	return match;
 }
 
 Human.prototype.removeWeapon = function(index){
-	this.inventory[index] = 0;
-	
+	this.inventory[index] = undefined;
+	this.findOpenSlot();
 }
 
 Human.prototype.xSearch = function(base){
+	
 	for(var i=0; i<wQLength; i++){
-		if(this.inventory[i].base[WORD] == base)
+		if(this.inventory[i] !== undefined && this.inventory[i].base[WORD] == base){
 			this.inventory[i].index = i;
 			return this.inventory[i];
+		}
 	}
 }
 
@@ -209,7 +210,7 @@ Human.prototype.xUpdateWeaponQueue = function(slot,weapon)
 	if(slot > 2)
 		slot = slot%3;
 	if(weapon !== undefined)
-		$("#weapon"+slot).html('&#60;The '+current.full + "&#62; <br>" +current.power+' dmg');
+		$("#weapon"+slot).html('&#60;The '+weapon.full + "&#62; <br>" +weapon.power+' dmg');
 	else{
 		$("#weapon"+slot).html("");
 	}
@@ -217,13 +218,21 @@ Human.prototype.xUpdateWeaponQueue = function(slot,weapon)
 
 
 Human.prototype.updateWeaponQueue = function(){
-		var slot = this.weaponSlot % 3;
+		var slot = this.findOpenSlot();
 		if(this.history !== undefined){
 			var length = this.history.length - 1;
 			var current = this.history[length];
 			$("#weapon"+slot).html('&#60;The '+current.full + "&#62; <br>" +current.power+' dmg');
-			this.weaponSlot += 1;
 		}
+}
+
+Human.prototype.findOpenSlot = function(){
+	for(var i=0; i<wQLength; i++){
+		if(this.inventory[i] === undefined){
+			this.weaponSlot = i;
+			return i;
+		}
+	}
 }
 
 // in a refactor this will be neater. No time for that tho.

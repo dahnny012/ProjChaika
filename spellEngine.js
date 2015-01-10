@@ -42,7 +42,8 @@ SpellEngine.prototype.evaluate = function (queue,player){
 			
 		if(spell.type == 'Weapon'){
 			player.history.push(spell);
-			player.updateWeaponQueue();
+			//player.updateWeaponQueue();
+			player.addInventory(spell);
 			console.log("Made weapon");
 		}
 		/// TODO pass player to build so i can move this.
@@ -50,6 +51,21 @@ SpellEngine.prototype.evaluate = function (queue,player){
 			console.log("Spellcasting");
 			console.log(player);
 			var weapon = player.search(spell.base);
+			
+			// New 1/10
+			if(player.xSearch(spell.base) !== undefined){
+				console.log("Found in inventory");
+				var inven  = player.useWeapon(spell);
+				if(inven === undefined)
+				{
+					console.log("error with useWeapon");
+				}
+				
+			}
+			else{
+				console.log("No matches in inventory");
+			}
+			//
 			if(weapon !== 0 && weapon !== undefined)
 		 {
 				var base = 1;
