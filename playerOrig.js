@@ -2,7 +2,6 @@ var WORD = 0;
 var POS = 1;
 var FPS30 = 33.33;
 var FPS60 = 16.66;
-var wQLength = 3; 
 function Mage()
 {
 	return this;
@@ -124,7 +123,7 @@ function Human(name,health)
 	this.startHealth = health;
 	this.health.toFixed(2);
 	this.init();
-	this.weaponSlot = 0;
+	this.queueIndex = 0;
 	return this;
 }
 
@@ -161,68 +160,25 @@ Human.prototype.init = function(){
 Human.prototype.healthBarId = "#playerHealthBar";
 Human.prototype.healthId = "#playerHealth";
 Human.prototype.history = Array();
-Human.prototype.inventory = Array(3);
-Human.prototype.addInventory = function(spell){
-	var index = this.weaponSlot % 3;
-	this.inventory[index] = spell;
-	this.weaponSlot++;
-	this.xUpdateWeaponQueue(index,spell);
-}
-
-Human.prototype.useWeapon = function(weapon)
-{
-	var match = this.xSearch(weapon.base);
-	this.removeWeapon(match.index);
-	this.updateWeaponQueue(match.index);
-	return match;
-}
-
-Human.prototype.removeWeapon = function(index){
-	this.inventory[index] = 0;
-	
-}
-
-Human.prototype.xSearch = function(base){
-	for(var i=0; i<wQLength; i++){
-		if(this.inventory[i].base[WORD] == base)
-			this.inventory[i].index = i;
-			return this.inventory[i];
-	}
-}
-
 Human.prototype.search = function(base){
 	var length = this.history.length;
 	for (var i=0;i < length;i++)
 	{
 	  if(this.history[i].base[WORD] == base)
 	  {
-	  	// TODO This could be this.history[i];
 		return this.history.splice(i,1).pop();
 	  }
 	}
 	return undefined;
 }
 
-
-Human.prototype.xUpdateWeaponQueue = function(slot,weapon)
-{
-	if(slot > 2)
-		slot = slot%3;
-	if(weapon !== undefined)
-		$("#weapon"+slot).html('&#60;The '+current.full + "&#62; <br>" +current.power+' dmg');
-	else{
-		$("#weapon"+slot).html("");
-	}
-}
-
-
 Human.prototype.updateWeaponQueue = function(){
-		var slot = this.weaponSlot % 3;
+		var slot = this.queueIndex % 3;
 		if(this.history !== undefined){
 			var length = this.history.length - 1;
 			var current = this.history[length];
 			$("#weapon"+slot).html('&#60;The '+current.full + "&#62; <br>" +current.power+' dmg');
-			this.weaponSlot += 1;
+			this.queueIndex += 1;
 		}
 }
 

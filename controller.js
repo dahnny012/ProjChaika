@@ -46,12 +46,13 @@ function BattleController()
 		if(spellQueue.length !== 0){
 			var spell = engine.evaluate(spellQueue,player);
 			console.log(spell);
-			if(spell.power !== 0)
+			if(spell.power !== 0 && spell !== 0)
 			{
 				boss.reduceHealth(spell.power);
 				boss.healthBarUpdate();
-				
-				battleLog(spell,"playerLog",player);
+				if(spell.type == "Cast"){
+					battleLog(spell,"playerLog",player);
+				}
 			}
 		}
 	}
