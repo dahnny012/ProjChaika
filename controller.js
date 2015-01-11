@@ -1,3 +1,4 @@
+var ENTER = 13;
 function mainController()
 {
 	//contains story controller
@@ -22,20 +23,22 @@ function BattleController()
 	var player = new Human("Name",100);
 	
 	// For testing. Wont be hardcoded later
-	var boss = new AI("Boss Name",200,3000);
+	var boss;
+	//var boss = new AI("Boss Name",200,3000);
+	var bossManager = new BossManager();
 	
 	// Queue of spell requests by player. Should do boss too....In later refactor
 	var spellQueue = new Array();
 	var stopGame;
 
 	function processSpell(event){
-		// 13 -> enter
-		if(event.which == 13)
+		if(event.which == ENTER)
 		{	
-			var spell = $("#controller").val();
+			var spell = $("#controller").val().toLowerCase();
 			$("#controller").val(null);
 			spell = spellBook.spellSearch(spell);
 			spellQueue.push(spell);
+			//TODO Later i need to put process queue in here.
 		}
 	}
 	
@@ -74,10 +77,12 @@ function BattleController()
 	
 	function battleStart()
 	{
+		var boss = bossManager.getNextBoss();
+		boss.init();
 		$(document).on("keydown","#controller",processSpell);
 		setInterval(processQueue,100);
 		//setInterval(processBossQueue,100);
-		//boss.cast("Some Spell",boss,player);
+		boss.cast(boss,player);
 	}
 	battleStart();
 	
@@ -106,7 +111,9 @@ function battleLog(spell,type,mage)
 	$("#battleLog").append(node);
 	$("#battleLogWrapper").scrollTop($("#battleLog").height());
 }
-
+function dmgBracket(dmg){
+	return "&#60;"+dmg+"&#62";
+}
 // Debugging tools
 
 

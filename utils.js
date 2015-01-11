@@ -20,3 +20,8 @@ guiUtils.prototype.flashScreen = function(){
         $("#flashScreen").hide();
     },100);
 }
+
+guiUtils.prototype.deathScreen = function(){
+    
+}
+

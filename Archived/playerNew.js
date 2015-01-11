@@ -1,3 +1,5 @@
+temp
+
 var WORD = 0;
 var POS = 1;
 var FPS30 = 33.33;
@@ -33,7 +35,9 @@ function AI(name,health,castTimer)
 	this.health = health;
 	this.health = this.health.toFixed(2);
 	this.startHealth = health;
-	this.castQueue = [];
+	this.castTimer = castTimer; //ms
+	this.startTimer=  castTimer;
+	this.init();
 }
 
 
@@ -68,42 +72,36 @@ AI.prototype.healthBarId="#bossHealthBar";
 AI.prototype.healthId = "#bossHealth";
 AI.prototype.castBarId= "#bossCastBar";
 AI.prototype.castBar = $(this.castBarId);
-AI.prototype.castIndex = 0;
-AI.prototype.cast = function(boss,player){
-	if(boss.health <= 0 || player.health <= 0){
-		return;
-	}
-	boss.castIndex = boss.castIndex % boss.castQueue.length;
-	boss.currentSpell = boss.castQueue[boss.castIndex];
-	var spell = boss.currentSpell;
-	boss.castTimer = spell.castTimer; //ms
-	boss.startTimer=  spell.castTimer;
+
+AI.prototype.cast = function(spell,boss,player){
+	boss.currentSpell = spell;
 	boss.spellUpdate(spell);
-	boss.startCast(boss,player);
-	boss.castIndex++;
+	return boss.startCast(boss,player);
 }
 AI.prototype.startCast = function(boss,player){
 	boss.timerUpdate(boss.castTimer);
 	if(boss.castTimer <= 0) {
-		boss.execute(boss,player);
-		boss.cast(boss,player);
+		boss.execute(boss,10,player);
+		boss.castTimer = boss.startTimer;
+		//boss.castQueue.push([boss.currentSpell,dmg]);
 	}
 	else{
 		boss.castTimer -= FPS30;
 		setTimeout(boss.startCast,FPS30,boss,player);
 	}
 }
-AI.prototype.execute = function(boss,player){
+AI.prototype.execute = function(boss,dmg,player){
 	// Do damage to player
 	console.log("Dealing dmg to player");
-	var dmg = boss.currentSpell.power;
 	player.reduceHealth(dmg);
-	battleLog(boss.currentSpell,"bossLog",boss);
+	var spell = {};
+	spell.full = boss.currentSpell;
+	spell.dmg = dmg;
+	battleLog(spell,"bossLog",boss);
 }
-AI.prototype.spellUpdate = function(spell)
+AI.prototype.spellUpdate = function(string)
 {
-	var dmg = dmgBracket(spell.power)
-	$("#bossSpell").html(spell.full+dmg);
+	$("#bossSpell").html(string);
 }
 AI.prototype.timerUpdate = function(num){
 	var percent = (this.startTimer - num)/this.startTimer;
@@ -117,9 +115,8 @@ AI.prototype.timerUpdate = function(num){
 AI.prototype.nameUpdate = function(){
 	$("#bossName").html(this.name);
 }
-AI.prototype.addSpell = function(spell){
-	this.castQueue.push(spell);
-}
+
+AI.prototype.castQueue = [];
 
 /// Humans
 function Human(name,health)
@@ -149,6 +146,7 @@ Human.prototype.healthBarUpdate = function(){
 	if(this.healthStartWidth === undefined){
 		this.healthStartWidth = $(this.healthId).css("width");
 	}
+	this.healthStartWidth = $(this.healthId).css("width");
 	var percent = (this.health/this.startHealth);
 	var amount = pxToNum(this.healthStartWidth);
 	this.healthWidth = percent * amount;
@@ -167,33 +165,30 @@ Human.prototype.healthId = "#playerHealth";
 Human.prototype.history = Array();
 Human.prototype.inventory = Array(3);
 Human.prototype.addInventory = function(spell){
-	var index = this.findOpenSlot();
+	var index = this.weaponSlot % 3;
 	this.inventory[index] = spell;
+	this.weaponSlot++;
 	this.xUpdateWeaponQueue(index,spell);
 }
 
 Human.prototype.useWeapon = function(weapon)
 {
 	var match = this.xSearch(weapon.base);
-	if(match !== undefined){
 	this.removeWeapon(match.index);
-	this.xUpdateWeaponQueue(match.index);
-	}
+	this.updateWeaponQueue(match.index);
 	return match;
 }
 
 Human.prototype.removeWeapon = function(index){
-	this.inventory[index] = undefined;
-	this.findOpenSlot();
+	this.inventory[index] = 0;
+	
 }
 
 Human.prototype.xSearch = function(base){
-	
 	for(var i=0; i<wQLength; i++){
-		if(this.inventory[i] !== undefined && this.inventory[i].base[WORD] == base){
+		if(this.inventory[i].base[WORD] == base)
 			this.inventory[i].index = i;
 			return this.inventory[i];
-		}
 	}
 }
 
@@ -216,7 +211,7 @@ Human.prototype.xUpdateWeaponQueue = function(slot,weapon)
 	if(slot > 2)
 		slot = slot%3;
 	if(weapon !== undefined)
-		$("#weapon"+slot).html('&#60;The '+weapon.full + "&#62; <br>" +weapon.power+' dmg');
+		$("#weapon"+slot).html('&#60;The '+current.full + "&#62; <br>" +current.power+' dmg');
 	else{
 		$("#weapon"+slot).html("");
 	}
@@ -224,21 +219,13 @@ Human.prototype.xUpdateWeaponQueue = function(slot,weapon)
 
 
 Human.prototype.updateWeaponQueue = function(){
-		var slot = this.findOpenSlot();
+		var slot = this.weaponSlot % 3;
 		if(this.history !== undefined){
 			var length = this.history.length - 1;
 			var current = this.history[length];
 			$("#weapon"+slot).html('&#60;The '+current.full + "&#62; <br>" +current.power+' dmg');
+			this.weaponSlot += 1;
 		}
-}
-
-Human.prototype.findOpenSlot = function(){
-	for(var i=0; i<wQLength; i++){
-		if(this.inventory[i] === undefined){
-			this.weaponSlot = i;
-			return i;
-		}
-	}
 }
 
 // in a refactor this will be neater. No time for that tho.
@@ -250,58 +237,6 @@ function cssBar(id,val)
 	this.startVal = val;
 	this.val = val;
 }
-
-
-
-
-
-//AI Manager
-function BossManager(){
-	this.init();
-}
-
-
-BossManager.prototype.bossList = [];
-BossManager.prototype.index = 0;
-BossManager.prototype.getNextBoss=function(){
-	var boss = this.bossList[this.index];
-	this.index++;
-	return boss;
-}
-BossManager.prototype.currentBoss= function(){
-	return this.bossList[this.index];
-}
-
-// TODO in the future.
-// Should move this to the node. Dunno how to work that shit yet.
-BossManager.prototype.init = function(){
-	var tutBoss = new AI("Tutorial Boss",100,2000);
-	tutBoss.addSpell(new bossSpell("Use rookie mistake",3000,10));
-	tutBoss.addSpell(new bossSpell("Hello World",5000,20));
-	this.bossList.push(tutBoss);
-	
-	
-	var Lvl1Boss =new AI("Lvl 1 Boss",150);
-	Lvl1Boss.addSpell(new bossSpell("Teach lesson",1000,10));
-	Lvl1Boss.addSpell(new bossSpell("Throw textbook",900,20));
-	Lvl1Boss.addSpell(new bossSpell("Give homework",5000,30));
-	this.bossList.push(Lvl1Boss);
-	
-	// For later	
-//	var Lvl2Boss = new AI("Lvl 2 Boss",200);
-	// Push some spells.
-//	this.bossList.push(Lvl2Boss);
-}
-
-// Boss currently cheats the spell engine.
-function bossSpell(word,castTimer,dmg){
-    this.full = word;
-    this.castTimer = castTimer;
-    this.power = dmg;
-}
-//End AI Manager
-
-
 
 
 
