@@ -51,7 +51,6 @@ function BattleController()
 			console.log(spell);
 			if(spell.power !== 0 && spell !== 0)
 			{
-				spell.power = spell.power.toFixed(2);
 				boss.reduceHealth(spell.power);
 				boss.healthBarUpdate();
 				if(spell.type == "Cast"){

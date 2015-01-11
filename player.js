@@ -167,6 +167,7 @@ Human.prototype.healthId = "#playerHealth";
 Human.prototype.history = Array();
 Human.prototype.inventory = Array(3);
 Human.prototype.addInventory = function(spell){
+	spell.power = spell.power.toFixed(2);
 	var index = this.findOpenSlot();
 	this.inventory[index] = spell;
 	this.xUpdateWeaponQueue(index,spell);
