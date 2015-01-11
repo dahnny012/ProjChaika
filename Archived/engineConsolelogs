@@ -44,7 +44,6 @@ SpellEngine.prototype.evaluate = function (queue,player){
 			player.history.push(spell);
 			player.addInventory(spell);
 			console.log("Made weapon");
-			return spell;
 		}
 		/// TODO pass player to build so i can move this.
 		else if(spell.type == 'Cast'){
@@ -85,22 +84,28 @@ SpellEngine.prototype.buildSpell = function(spell,player,spec){
 		if(token === undefined)
 		{
 			try{
+			console.log("Splice");
 			var splice = spell.splice(0,1).pop();
 			var nextTok;
 			console.log(splice);
 			console.log("spell length " +  spell.length);
-			
 			if(spell.length !== 0)
+			{
 				nextTok = spell.splice(0,1).pop();
-				
+			}
 			token = new SpellToken(splice,nextTok,spec); // Token layer
-			
-			if(spec === "Weapon" || spec === "Cast")
+			switch(spec){
+				case 'Weapon':
+				case 'Cast':
 					this.addSpecQueue(token,spell);
+					break;
+				default:
+			}
+				
 			}
 			catch(err){
 				console.log(err);
-				console.log("Error in buildSpell");
+				console.log("spell is null");
 				console.log(nextTok);
 				return;
 			}
@@ -129,7 +134,10 @@ SpellEngine.prototype.buildSpell = function(spell,player,spec){
 	}
 	
 	if(token === 0)
+	{
+		
 		return new SpellToken(null,null);
+	}
 		
 	
 };

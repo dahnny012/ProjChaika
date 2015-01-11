@@ -40,10 +40,10 @@ function Dictionary()
 		spell = trimSpec(spell,spec);
 		var list = spell.split(" ");
 		
-		list = list.map(function(word){
+		var spellList = list.map(function(word){
 			// Format which the db accepts
 			var modWord = dbFormat(word);
-			if(db[modWord] !== 0)
+			if(db[modWord] !== 0 && db[modWord] !== undefined)
 			{
 				console.log("found one");
 				console.log(db[modWord]);
@@ -71,11 +71,22 @@ function Dictionary()
 				pos = pos.join(",");
 				return [word,pos];
 			}
-		})
+		});
 		
-		list.spec = spec;
-		console.log("Spell Specifer: " + list.spec);
-		return list;
+		var newList =[];
+		newList.errors = [];
+		for(var i=0; i<spellList.length; i++){
+		   if(spellList[i] !== undefined){
+		  	newList.push(spellList[i]);
+		   }
+		   else{
+		   	newList.errors.push(list[i]);
+		   }
+		}
+		spellList = newList;
+		spellList.spec = spec;
+		//console.log("Spell Specifer: " + spellList.spec);
+		return spellList;
 	}
 	
 	

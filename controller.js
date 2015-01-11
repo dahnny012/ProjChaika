@@ -38,6 +38,7 @@ function BattleController()
 			$("#controller").val(null);
 			spell = spellBook.spellSearch(spell);
 			spellQueue.push(spell);
+			//TODO Print out words that we couldnt find in dictionary.
 			//TODO Later i need to put process queue in here.
 		}
 	}
@@ -48,8 +49,14 @@ function BattleController()
 	{
 		if(spellQueue.length !== 0){
 			var spell = engine.evaluate(spellQueue,player);
-			console.log(spell);
-			if(spell.power !== 0 && spell !== 0)
+			if(spell === undefined)
+			{
+				//TODO Do some sort of error.
+			}
+			else if(spell.type == "Weapon"){
+				weaponLog(spell,"playerLog",player);
+			}
+			else if(spell.power !== 0 && spell !== 0)
 			{
 				boss.reduceHealth(spell.power);
 				boss.healthBarUpdate();
@@ -81,7 +88,7 @@ function BattleController()
 		$(document).on("keydown","#controller",processSpell);
 		setInterval(processQueue,100,boss);
 		//setInterval(processBossQueue,100);/
-		boss.cast(boss,player);
+		//boss.cast(boss,player);
 	}
 	battleStart();
 	
@@ -112,6 +119,17 @@ function battleLog(spell,type,mage)
 }
 function dmgBracket(dmg){
 	return "&#60;"+dmg+"&#62";
+}
+
+function weaponLog(weapon,type,mage)
+{
+	var div = "<div class='"+type+"'>";
+	var log = "[" + mage.name + "]:" + "Created "+ dmgBracket("The "+ weapon.full);
+	var close ="</div>";
+	var node = div + log + close;
+	$("#battleLog").append(node);
+	$("#battleLogWrapper").scrollTop($("#battleLog").height());
+	
 }
 // Debugging tools
 
