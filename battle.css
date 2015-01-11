@@ -134,12 +134,6 @@ body{
     font-family: 'Source Sans Pro', sans-serif;
 }
 
-#errorList{
-    position:absolute;
-    margin-top:5px;
-    float:left;
-    clear:left;
-}
 
 #weaponQueue{
     width:500px;
