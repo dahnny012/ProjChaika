@@ -127,3 +127,18 @@ SpellToken.prototype.match = function(current,next)
 	
 	return message;
 };
+
+
+	/*function processBossQueue()
+	{
+		if(boss.castQueue.length !== 0)
+		{
+			var bossSpell = {};
+			var spellToken = boss.castQueue.pop();
+			bossSpell.full = spellToken[0];
+			bossSpell.dmg = spellToken[1];
+			player.reduceHealth(bossSpell.dmg);
+			battleLog(bossSpell,"bossLog",boss);
+			boss.cast(bossSpell.full,boss);
+		}
+	}*/

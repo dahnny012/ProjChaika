@@ -93,6 +93,10 @@ body{
      margin-top:1%;
      color:#810000;
  }
+ .errorLog{
+     margin-top:1%;
+     color:#7C7C7C;
+ }
 
 
 #playerWrapper{
@@ -130,11 +134,16 @@ body{
     font-family: 'Source Sans Pro', sans-serif;
 }
 
-
+#errorList{
+    position:absolute;
+    margin-top:5px;
+    float:left;
+    clear:left;
+}
 
 #weaponQueue{
     width:500px;
-    margin-top:3%;
+    margin-top:4%;
     position:relative;
     bottom:20px;
     font-size:15px;
