@@ -43,7 +43,11 @@ function BattleController()
 				errorLog(spell.errors);
 			}
 			spellQueue.push(spell);
-			processQueue(event.data.boss);
+			if(event.data !== undefined){
+				processQueue(event.data.boss);}
+			else{
+				processQueue(); }
+				
 		}
 	}
 	
@@ -65,7 +69,8 @@ function BattleController()
 			}
 			else if(spell.power !== 0 && spell !== 0)
 			{
-				boss.reduceHealth(spell.power);
+				if(boss !== undefined)
+					boss.reduceHealth(spell.power);
 				if(spell.type == "Cast")
 					battleLog(spell,"playerLog",player);
 			}
@@ -79,8 +84,11 @@ function BattleController()
 		$(document).on("keydown","#controller",{boss:boss},processSpell);
 		//boss.cast(boss,player);
 	}
-	battleStart(boss);
-	
+	//battleStart(boss);
+	function tutorialStart(){
+		$(document).on("keydown","#controller",processSpell);	
+	}
+	tutorialStart();
 	function playerDump()
 	{
 		console.log(player);

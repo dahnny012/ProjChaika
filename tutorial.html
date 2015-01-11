@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="tutorial.css">
+       <link rel="stylesheet" type="text/css" href="battle.css">
+    </head>
+    <body>
+        <section id="mainWrapper">
+            <div id="instructions">
+                <!-- 1.Load this -->
+                <div class="text" id="start">
+                >Hello and welcome to Project Chaika.
+                </div>
+                <!--2. On 1. call js to load a continue -->
+                <div class="continue" id="c1">
+                    >Press <span class="highlight">Enter</span> to continue.
+                </div>
+                <!--3. On 2. Begin intro/context. Destroy #start. Destroy #c1 -->
+                <div class="text" id="intro1">
+                    >Project Chaika is a game about the mastery of words 
+                    and their parts of speech.
+                </div>
+                <!--4. After 4. Load #intro2 -->
+                <div class="text" id="intro2">
+                    >Go ahead and type <span class="highlight">potato</span> and press enter in the box below.
+                </div>
+                <!--5. load a battleBar box below after section? -->
+                <!--6. After player gets a potato load intro3-->
+                <div class="text" id="intro3">
+                    >You made a <span class="highlight">Weapon</span>.
+                    A weapon is word that is a <span class="highlight">noun</span>.
+                    <br>>Weapons don't do any damage themselves.
+                    They need to be <span class="highlight">casted</span> to do damage.
+                </div>
+                <!-- 7. Press enter to continue -->
+                <div class="continue" id="c1">
+                    >Press <span class="highlight">Enter</span> to continue.
+                </div>
+                
+                <!-- 8. Player presses enter 7. -->
+                <div class="text" id="intro4">
+                    >Casting is when you type in a <span class="highlight">verb</span>.
+                    <br> >Try typing in <span class="highlight">throw</span> to perform a cast.
+                </div>
+                
+                <!-- 7. Press enter to continue -->
+                <div class="continue" id="c1">
+                    >When you have done that, press <span class="highlight">Enter</span> to continue.
+                </div>
+                
+                
+                
+            </div>
+            
+        </section>
+        
+        <!--5. Load Data -->
+        <section id="battleLogWrapper" style="height:10%">
+        	<div id="battleLog">
+        	</div>	
+        </section>
+        <section id="playerWrapper">
+        
+        	<div id="battleBar">
+        	<input class="battleBar" type="text" autocomplete="off" id="controller" placeholder='[Enter Spell Here]'></input>
+        	<img class="battleBar"  id="divide" src="Assets/Divide2px.png">
+        	<div class="battleBar" id="playerHealthBar">		
+        		<div id="playerHealth">
+        		    100
+        		</div> 
+        	</div>
+        	<div id="weaponQueue">
+        		<div class="weapon" id="weapon0"></div>
+        		<div class="weapon" id="weapon1"></div>
+        		<div class="weapon" id="weapon2"></div>
+        	</div>
+        
+        	</div>
+        </section>
+    </body>
+</html>
+
+<footer>
+	<script src="jquery-1.11.1.js"></script>
+	<script src="tutorial.js"></script>
+	<script src="db.js"></script>
+	<script src="dictionary.js"></script>
+	<script src="spellEngine.js"></script>
+	<script src="utils.js"></script>
+	<script src="player.js"></script>
+	<script src="controller.js"></script>
+	<script src="main.js"></script>
+</footer>
