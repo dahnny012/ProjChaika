@@ -44,7 +44,7 @@ function BattleController()
 	
 	
 	// In later refactor boss will be using spell engine as well.
-	function processQueue()
+	function processQueue(boss)
 	{
 		if(spellQueue.length !== 0){
 			var spell = engine.evaluate(spellQueue,player);
@@ -80,8 +80,8 @@ function BattleController()
 		var boss = bossManager.getNextBoss();
 		boss.init();
 		$(document).on("keydown","#controller",processSpell);
-		setInterval(processQueue,100);
-		//setInterval(processBossQueue,100);
+		setInterval(processQueue,100,boss);
+		//setInterval(processBossQueue,100);/
 		boss.cast(boss,player);
 	}
 	battleStart();

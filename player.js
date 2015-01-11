@@ -276,8 +276,8 @@ BossManager.prototype.currentBoss= function(){
 // Should move this to the node. Dunno how to work that shit yet.
 BossManager.prototype.init = function(){
 	var tutBoss = new AI("Tutorial Boss",100,2000);
-	tutBoss.addSpell(new bossSpell("Use rookie mistake",3000,10));
-	tutBoss.addSpell(new bossSpell("Hello World",5000,20));
+	tutBoss.addSpell(new bossSpell("Use rookie mistake",10000,10));
+	tutBoss.addSpell(new bossSpell("Hello World",10000,20));
 	this.bossList.push(tutBoss);
 	
 	
