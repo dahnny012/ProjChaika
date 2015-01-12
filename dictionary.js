@@ -119,7 +119,7 @@ function convert(pos)
 		case 'noun':
 		case 'pnon':
 		case 'pn':
-    	case 'n':
+    		case 'n':
 		case 'non':
 		case 'pron':
 		case 'pronon':
