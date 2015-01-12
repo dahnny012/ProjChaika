@@ -21,6 +21,7 @@ function BattleController()
 	var spellBook = new Dictionary();
 	var engine = new SpellEngine();
 	var player = new Human("Name",100);
+	var tutorial;
 	
 	// For testing. Wont be hardcoded later
 	var boss;
@@ -85,10 +86,11 @@ function BattleController()
 		//boss.cast(boss,player);
 	}
 	//battleStart(boss);
-	function tutorialStart(){
+	function tutorialStart(tutorial){
+		tutorial = new Tutorial();
 		$(document).on("keydown","#controller",processSpell);	
 	}
-	tutorialStart();
+	tutorialStart(tutorial);
 	function playerDump()
 	{
 		console.log(player);
@@ -105,7 +107,7 @@ function battleLog(spell,type,mage)
 	{
 		log += " " + spell.base;
 	}
-	var dmg = "&#60;"+spell.power+"&#62";
+	var dmg = "&#60;"+spell.power.toFixed(2)+"&#62";
 	var close ="</div>";
 	var node = div + log + dmg + close;
 	printLog(node);
