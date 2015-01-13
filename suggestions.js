@@ -12,7 +12,6 @@ function Suggestions(){
 // Singleton
 Suggestions.prototype.bank = [];
 
-
 Suggestions.prototype.container = $("#suggestions");
 
 Suggestions.prototype.refresh = function(){
@@ -66,8 +65,8 @@ Suggestions.prototype.sendRands = function(rands){
 
 Suggestions.prototype.makeNode=function(suggestion){
     var div = "<div class= 'suggestion'>";
-	var word = dmgBracket(suggestion.word);
-	var pos = dmgBracket(suggestion.pos)
+	var word = suggestion.word;
+	var pos = suggestion.pos;
 	var close ="</div>";
 	var node = div + word + "<br>"+ pos + close;
 	return node;
@@ -86,9 +85,31 @@ function Suggestion(data){
     var obj = {};
     data = data.split(":");
     obj.word = data[0];
-    obj.pos = data[1];
+    obj.pos = fixPos(data[1]);
     return obj;
 };
+
+function fixPos(pos){
+    pos = pos.split(",");
+	pos = pos.map(
+	    function (elements){
+	        // Dictionary.js
+			return convert(elements);
+		});
+				
+	    var empty = [];
+				
+		// Get rid of duplicates
+		pos.forEach(function(element){
+	    if(empty.indexOf(element) === -1){
+		    empty.push(element)
+	    }});
+				
+				//Merge back together
+		pos = empty;
+		pos = pos.join(",");
+		return pos;
+}
 
 function SuggestionBar(){
     this.val = SUGGESTIONCD;
@@ -104,6 +125,9 @@ SuggestionBar.prototype.countDown=function(bar,suggestions,cb){
     bar.update(bar.timer);
      if(bar.timer <= 0){
          cb(suggestions);
+        bar.timer = bar.startTimer;
+        
+        bar.countDown(bar,suggestions,cb);
         return LOADCOMPLETE;
         
      }
@@ -125,7 +149,7 @@ SuggestionBar.prototype.update= function(num){
         this.startWidth = this.timerWidth;
         val = 0;
     }
-    this.cdId.html(val.toFixed(2)+"s");
+    this.cdId.html(val.toFixed(0)+"s");
     this.barId.css("width",this.startWidth);
 }
 

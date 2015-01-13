@@ -85,7 +85,11 @@ function BattleController()
 	function tutorialStart(tutorial,suggestions){
 		tutorial = new Tutorial();
 		$(document).on("keydown","#controller",processSpell);
-		suggestions.bar.countDown(suggestions.bar,suggestions,function(suggestions){suggestions.container.show()});
+		suggestions.bar.countDown(suggestions.bar,suggestions,
+		function(suggestions){
+			suggestions.fillBank();
+			suggestions.container.show()}
+		);
 	}
 	tutorialStart(tutorial,suggestions);
 	function playerDump()

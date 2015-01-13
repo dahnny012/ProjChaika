@@ -113,6 +113,7 @@ body{
         color:#343434;
     }
     .suggestion{
+        margin-left:10px;
         margin-top:2px;
         border-bottom:1px solid #9A9A9A;
         text-align:center;
