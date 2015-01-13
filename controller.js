@@ -1,4 +1,3 @@
-var ENTER = 13;
 function mainController()
 {
 	//contains story controller
@@ -80,6 +79,11 @@ function BattleController()
 		boss.init();
 		$(document).on("keydown","#controller",{boss:boss},processSpell);
 		boss.cast(boss,player);
+		suggestions.bar.countDown(suggestions.bar,suggestions,
+		function(suggestions){
+			suggestions.fillBank();
+			suggestions.container.show()}
+		);
 	}
 	//battleStart(boss);
 	function tutorialStart(tutorial,suggestions){
@@ -88,8 +92,10 @@ function BattleController()
 		suggestions.bar.countDown(suggestions.bar,suggestions,
 		function(suggestions){
 			suggestions.fillBank();
-			suggestions.container.show()}
-		);
+			suggestions.container.show();
+			
+		});
+		
 	}
 	tutorialStart(tutorial,suggestions);
 	function playerDump()

@@ -5,7 +5,6 @@ body{
 }
 
 #mainWrapper{
-    
 }
 
 #instructions{
@@ -22,11 +21,13 @@ body{
 }
 
 .continue{
+    display:none;
     color:grey;
     margin-bottom:4px;
 }
 
 .text{
+    display:none;
     margin-bottom:4px;
     /* None for now */
 }
@@ -35,6 +36,13 @@ body{
     color:blue;
 }
 
+
+#playerWrapper{
+    display:none;
+}
+#battleLogWrapper{
+    display:none;
+}
 
 ::-webkit-scrollbar {  
     width: 8px;  

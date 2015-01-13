@@ -1,12 +1,5 @@
-var MAXRANDS = 5;
-var MAXLINES = 65000;
-var SUGGESTIONCD = 3;
-var LOADCOMPLETE = 1;
-
 function Suggestions(){
     this.bar = new SuggestionBar();
-    this.container.hide();
-    //this.fillBank(MAXRANDS,MAXLINES);
 }
 
 // Singleton

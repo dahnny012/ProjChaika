@@ -9,8 +9,7 @@ Data incoming in the form:
 				Word, Pos
 */
 
-var WORD = 0;
-var POS = 1;
+
 function SpellEngine()
 {
 	return this;

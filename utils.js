@@ -1,3 +1,11 @@
+var ENTER = 13;
+var MAXRANDS = 5;
+var MAXLINES = 65000;
+var SUGGESTIONCD = 10
+var LOADCOMPLETE = 1;
+var WORD = 0;
+var POS = 1;
+
 function guiUtils()
 {
     
@@ -45,5 +53,7 @@ function numToPx(num)
 	return num + "px";
 }
 function pxToNum(px){
+    if(px === undefined)
+        return 0;
 	return parseFloat(px.substr(0,px.search("px")));
 }
