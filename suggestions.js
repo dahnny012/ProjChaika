@@ -1,9 +1,11 @@
 var MAXRANDS = 5;
 var MAXLINES = 65000;
-var SUGGESTIONCD = 10;
+var SUGGESTIONCD = 3;
+var LOADCOMPLETE = 1;
 
 function Suggestions(){
-    this.suggestBar = new SuggestionBar();
+    this.bar = new SuggestionBar();
+    this.container.hide();
     //this.fillBank(MAXRANDS,MAXLINES);
 }
 
@@ -11,7 +13,7 @@ function Suggestions(){
 Suggestions.prototype.bank = [];
 
 
-Suggestions.prototype.container = $("#container");
+Suggestions.prototype.container = $("#suggestions");
 
 Suggestions.prototype.refresh = function(){
     this.bank = [];
@@ -94,32 +96,31 @@ function SuggestionBar(){
     this.timer = this.startTimer;
     this.startWidth = 0; 
     this.width = pxToNum(this.barId.css("width"));
-    var bar = this;
-    this.countDown(bar);
 }
 
 SuggestionBar.prototype.cdId = $("#suggestCd");
 SuggestionBar.prototype.barId = $("#suggestionBar");
-SuggestionBar.prototype.countDown=function(bar){
+SuggestionBar.prototype.countDown=function(bar,suggestions,cb){
     bar.update(bar.timer);
      if(bar.timer <= 0){
-        console.log("done");
-        return "DONE";
+         cb(suggestions);
+        return LOADCOMPLETE;
+        
      }
      else{
-        bar.timer -= 100;
-        setTimeout(bar.countDown,100,bar);
+        bar.timer -= FPS30;
+        setTimeout(bar.countDown,FPS30,bar,suggestions,cb);
      }
 }
 SuggestionBar.prototype.update= function(num){
     // Do width shit
-    console.log("update");
+    //console.log("update");
     var percent = (this.startTimer - num)/this.startTimer;
-    console.log(percent);
+    //console.log(percent);
     var amount = percent * this.width;
-    console.log(amount);
+    //console.log(amount);
     this.startWidth = amount * percent;
-    var val = this.maxVal - (this.startTimer - this.timer)/1000;
+    var val = this.val - (this.startTimer - this.timer)/1000;
     if(this.startWidth >= this.width){
         this.startWidth = this.timerWidth;
         val = 0;

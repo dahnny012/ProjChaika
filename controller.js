@@ -21,7 +21,7 @@ function BattleController()
 	var spellBook = new Dictionary();
 	var engine = new SpellEngine();
 	var player = new Human("Name",100);
-	var suggestion = new Suggestions();
+	var suggestions = new Suggestions();
 	var tutorial;
 	var boss;
 	var bossManager = new BossManager();
@@ -82,11 +82,12 @@ function BattleController()
 		boss.cast(boss,player);
 	}
 	//battleStart(boss);
-	function tutorialStart(tutorial){
+	function tutorialStart(tutorial,suggestions){
 		tutorial = new Tutorial();
-		$(document).on("keydown","#controller",processSpell);	
+		$(document).on("keydown","#controller",processSpell);
+		suggestions.bar.countDown(suggestions.bar,suggestions,function(suggestions){suggestions.container.show()});
 	}
-	tutorialStart(tutorial);
+	tutorialStart(tutorial,suggestions);
 	function playerDump()
 	{
 		console.log(player);

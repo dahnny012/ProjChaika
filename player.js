@@ -65,7 +65,7 @@ AI.prototype.healthBarUpdate = function(){
 
 // Predef vars
 
-// Cache these
+//TODO Cache these
 AI.prototype.healthBarId="#bossHealthBar";
 AI.prototype.healthId = "#bossHealth";
 AI.prototype.castBarId= "#bossCastBar";
