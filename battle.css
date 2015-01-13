@@ -104,9 +104,31 @@ body{
     margin-left:auto;
     margin-right:auto;
 }
+#suggestionsWrapper{
+    margin-top:10px;
+    margin-bottom:3px;
+}
+    #suggestionCdWrapper{
+        font-size:23px;
+        border-bottom:2px solid #007AA2;
+        color:#373737;
+    }
+    .suggestion{
+        font-weight:700;
+        margin-top:2px;
+        border:2px solid black;
+        text-align:center;
+        padding:3px;
+        padding-top:2px;
+        padding-bottom:2px;
+        background:#CECECE;
+        font-size:13px;
+        display:inline-block;
+        color:#373737;
+    }
 #battleBar{
     margin:0;
-    margin-top:20px;
+    margin-top:0px;
     padding:0;
 }
 .battleBar{
@@ -156,6 +178,8 @@ body{
     background:#41B3B5;
     display:inline-block;
 }
+
+
 
 #controller{
     float:left;

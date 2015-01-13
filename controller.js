@@ -83,7 +83,7 @@ function BattleController()
 		boss = bossManager.getNextBoss();
 		boss.init();
 		$(document).on("keydown","#controller",{boss:boss},processSpell);
-		//boss.cast(boss,player);
+		boss.cast(boss,player);
 	}
 	//battleStart(boss);
 	function tutorialStart(tutorial){

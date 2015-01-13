@@ -42,6 +42,14 @@ Suggestions.prototype.sendRands = function(rands){
         data:{randNums:rands}});
 }
 
+Suggestions.prototype.log=function(suggestion){
+    var div = "<div class= 'suggestion'>";
+	var word = dmgBracket(suggestion.word);
+	var pos = dmgBracket(suggestion.pos)
+	var close ="</div>";
+	var node = div + word + pos + close;
+}
+
 function checkRandPromise(promise,Suggestions)
 {
     promise.success(function(data){
