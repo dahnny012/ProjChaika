@@ -35,7 +35,7 @@ function BattleController()
 	function processSpell(event){
 		if(event.which == ENTER)
 		{	
-			var spell = $("#controller").val().toLowerCase();
+			var spell = $("#controller").val();
 			$("#controller").val(null);
 			spell = spellBook.spellSearch(spell);
 			if(spell.errors.length >0){

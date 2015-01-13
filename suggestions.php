@@ -38,9 +38,6 @@ if(!empty($_GET['randNums'])){
    }
   //var_dump($randNums);
   echo json_encode($randNums);
-   if (!feof($file)) {  
-      return;
-   }
    fclose($file);
 
 }
