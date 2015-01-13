@@ -108,23 +108,21 @@ body{
     margin-top:10px;
     margin-bottom:3px;
 }
-    #suggestionCdWrapper{
-        font-size:23px;
-        border-bottom:2px solid #007AA2;
-        color:#373737;
+    #suggestionsCdWrapper{
+        font-size:17px;
+        border-bottom:1px solid #007AA2;
+        color:#343434;
     }
     .suggestion{
-        font-weight:700;
         margin-top:2px;
-        border:2px solid black;
+        border-bottom:1px solid #9A9A9A;
         text-align:center;
         padding:3px;
         padding-top:2px;
         padding-bottom:2px;
-        background:#CECECE;
         font-size:13px;
         display:inline-block;
-        color:#373737;
+        color:#343434;
     }
 #battleBar{
     margin:0;
