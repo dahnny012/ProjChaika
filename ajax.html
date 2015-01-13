@@ -5,25 +5,8 @@
 
 <footer>
     <script src="jquery-1.11.1.js"></script>
+    <script src="suggestions.js"></script>
     <script>
-    function genRandNums(n,range){
-        var nums = new Array(n);
-        for(var i=0; i<n; i++){
-            var rand = Math.floor((Math.random() * range) + 1);
-            while(nums.indexOf(rand) > -1)
-                rand = Math.floor((Math.random() * range) + 1);
-            nums[i] = rand;
-        }
-        return nums.join(",");
-    }
-        /*$.ajax({
-            type:"GET",
-            url:"suggestion.php",
-            data:{randNums:"53,4800,12,4,48000"},
-            success: function(output){
-                console.log(output);
-            }
-            
-        })*/
+        var suggestions = new Suggestions();
     </script>
 </footer>

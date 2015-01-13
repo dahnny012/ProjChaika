@@ -12,34 +12,35 @@ if(!empty($_GET['randNums'])){
  sort($randNums);
  $target = $randNums[$index];
  $max = count($randNums);
- var_dump($randNums);
+ //var_dump($randNums);
  //br();
-   while (($buffer = fgets($file, 4096)) !== false && $index < $max) {
+   while (($buffer = fgets($file, 4096)) 
+   !== false && $index < $max) {
       if($line < $target){
         $line++;
       }
       else{
           if(strpos($buffer," ")){
               $target++;
-              echo "Contained a space";
-              br();
+             //echo "Contained a space";
+              //br();
           }
           else{
-              echo "Line ".$line;
+              /*echo "Line ".$line;
               br();
               echo "Buffer: ".$buffer;
-              br();
-              $randNums[$index] = $buffer;
+              br();*/
+              $randNums[$index] = trim($buffer);
               $index++;
               $target = $randNums[$index];
           }
       }
    }
-
+  //var_dump($randNums);
+  echo json_encode($randNums);
    if (!feof($file)) {  
       return;
    }
-    echo "Done here";
    fclose($file);
 
 }
@@ -48,6 +49,3 @@ function br()
 {
    echo '<br>';
 }
-
-
-?>
