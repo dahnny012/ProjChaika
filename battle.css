@@ -110,7 +110,6 @@ body{
 }
     #suggestionsCdWrapper{
         font-size:17px;
-        border-bottom:1px solid #007AA2;
         color:#343434;
     }
     .suggestion{
@@ -123,6 +122,12 @@ body{
         font-size:13px;
         display:inline-block;
         color:#343434;
+    }
+    #suggestionBar{
+        width:500px;
+        background:blue;
+        border-bottom:1px solid #133F4E;
+        
     }
 #battleBar{
     margin:0;

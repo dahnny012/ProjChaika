@@ -36,3 +36,14 @@ guiUtils.prototype.deathScreen = function(){
 
 
 
+// Css helping functions
+function getWidth(query){
+	return $(query).css("width");
+}
+function numToPx(num)
+{
+	return num + "px";
+}
+function pxToNum(px){
+	return parseFloat(px.substr(0,px.search("px")));
+}

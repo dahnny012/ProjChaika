@@ -1,15 +1,17 @@
 var MAXRANDS = 5;
 var MAXLINES = 65000;
+var SUGGESTIONCD = 10;
 
 function Suggestions(){
-    this.fillBank(MAXRANDS,MAXLINES);
+    this.suggestBar = new SuggestionBar();
+    //this.fillBank(MAXRANDS,MAXLINES);
 }
 
 // Singleton
 Suggestions.prototype.bank = [];
 
 
-Suggestions.prototype.container = "#container";
+Suggestions.prototype.container = $("#container");
 
 Suggestions.prototype.refresh = function(){
     this.bank = [];
@@ -27,7 +29,7 @@ Suggestions.prototype.fillBank = function(n,range){
 }
 
 Suggestions.prototype.clear = function(){
-    $(this.container).html("");
+    this.container.html("");
 }
 Suggestions.prototype.genRandNums = function(n,range){
     this.n = n;
@@ -86,6 +88,49 @@ function Suggestion(data){
     return obj;
 };
 
+function SuggestionBar(){
+    this.val = SUGGESTIONCD;
+    this.startTimer = this.val * 1000;
+    this.timer = this.startTimer;
+    this.startWidth = 0; 
+    this.width = pxToNum(this.barId.css("width"));
+    var bar = this;
+    this.countDown(bar);
+}
+
+SuggestionBar.prototype.cdId = $("#suggestCd");
+SuggestionBar.prototype.barId = $("#suggestionBar");
+SuggestionBar.prototype.countDown=function(bar){
+    bar.update(bar.timer);
+     if(bar.timer <= 0){
+        console.log("done");
+        return "DONE";
+     }
+     else{
+        bar.timer -= 100;
+        setTimeout(bar.countDown,100,bar);
+     }
+}
+SuggestionBar.prototype.update= function(num){
+    // Do width shit
+    console.log("update");
+    var percent = (this.startTimer - num)/this.startTimer;
+    console.log(percent);
+    var amount = percent * this.width;
+    console.log(amount);
+    this.startWidth = amount * percent;
+    var val = this.maxVal - (this.startTimer - this.timer)/1000;
+    if(this.startWidth >= this.width){
+        this.startWidth = this.timerWidth;
+        val = 0;
+    }
+    this.cdId.html(val.toFixed(2)+"s");
+    this.barId.css("width",this.startWidth);
+}
+
+
+
+
 function checkRandPromise(promise,Suggestions)
 {
     promise.success(function(data){
@@ -102,7 +147,4 @@ function checkRandPromise(promise,Suggestions)
 
 function setPromiseTimer(promise,Suggestions){
     setTimeout(checkRandPromise,10,promise,Suggestions);
-}
-function dmgBracket(dmg){
-	return "&#60;"+dmg+"&#62";
 }

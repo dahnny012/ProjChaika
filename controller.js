@@ -21,14 +21,10 @@ function BattleController()
 	var spellBook = new Dictionary();
 	var engine = new SpellEngine();
 	var player = new Human("Name",100);
+	var suggestion = new Suggestions();
 	var tutorial;
-	
-	// For testing. Wont be hardcoded later
 	var boss;
-	//var boss = new AI("Boss Name",200,3000);
 	var bossManager = new BossManager();
-	
-	// Queue of spell requests by player. Should do boss too....In later refactor
 	var spellQueue = new Array();
 	var stopGame;
 

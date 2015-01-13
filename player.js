@@ -64,6 +64,8 @@ AI.prototype.healthBarUpdate = function(){
 }
 
 // Predef vars
+
+// Cache these
 AI.prototype.healthBarId="#bossHealthBar";
 AI.prototype.healthId = "#bossHealth";
 AI.prototype.castBarId= "#bossCastBar";
@@ -106,6 +108,7 @@ AI.prototype.spellUpdate = function(spell)
 	$("#bossSpell").html(spell.full+dmg);
 }
 AI.prototype.timerUpdate = function(num){
+	console.log("Timer update");
 	var percent = (this.startTimer - num)/this.startTimer;
 	var amount = percent * pxToNum(this.timerWidth);
 	this.timerStartWidth = amount * percent;
@@ -306,17 +309,7 @@ function bossSpell(word,castTimer,dmg){
 
 
 
-// Css helping functions
-function getWidth(query){
-	return $(query).css("width");
-}
-function numToPx(num)
-{
-	return num + "px";
-}
-function pxToNum(px){
-	return parseFloat(px.substr(0,px.search("px")));
-}
+
 
 
 
