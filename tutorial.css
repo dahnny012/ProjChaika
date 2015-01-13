@@ -36,6 +36,9 @@ body{
     color:blue;
 }
 
+#bossWrapper{
+    display:none;
+}
 
 #playerWrapper{
     display:none;

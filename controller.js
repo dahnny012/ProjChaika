@@ -89,15 +89,15 @@ function BattleController()
 	function tutorialStart(tutorial,suggestions){
 		tutorial = new Tutorial();
 		$(document).on("keydown","#controller",processSpell);
-		suggestions.bar.countDown(suggestions.bar,suggestions,
-		function(suggestions){
-			suggestions.fillBank();
-			suggestions.container.show();
-			
-		});
 		
 	}
 	tutorialStart(tutorial,suggestions);
+	function loadTutorialBoss(boss){
+		boss = bossManager.getNextBoss();
+		boss.init();
+		boss.cast(boss,player);
+	}
+	
 	function playerDump()
 	{
 		console.log(player);

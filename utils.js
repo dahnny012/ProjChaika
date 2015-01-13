@@ -5,6 +5,8 @@ var SUGGESTIONCD = 10
 var LOADCOMPLETE = 1;
 var WORD = 0;
 var POS = 1;
+var DONE = 2;
+var INPROGRESS = 1;
 
 function guiUtils()
 {

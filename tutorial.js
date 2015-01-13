@@ -3,6 +3,10 @@ function Tutorial()
     this.init();
 }
 
+Tutorial.prototype.done = INPROGRESS;
+
+Tutorial.prototype.container=$("#mainWrapper");
+
 Tutorial.prototype.step = 2;
  
 Tutorial.prototype.queue = [];
@@ -26,16 +30,19 @@ Tutorial.prototype.continue = function(e){
         tut.queue = []
         tut.step++;
         tut.loadNext();
-        // How this is determined is check c+step , instr+step.
-            // Which ever exists load it.
-            // If instr load next one.
     }
 }
 
 Tutorial.prototype.loadNext = function(){
     var cEmpty = $("#c"+this.step).length === 0;
     var instrEmpty = $("#intro"+this.step).length === 0;
-    if(!cEmpty){
+    if(this.step == 28)
+    {
+        this.done = DONE;
+        this.turnOn("#bossWrapper");
+        this.container.slideToggle("100",function(){});
+    }
+    else if(!cEmpty){
         this.turnOn("#c"+this.step);
         if(this.step == 4){
             $("#battleLogWrapper").slideToggle("100",function(){});
