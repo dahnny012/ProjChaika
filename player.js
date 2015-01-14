@@ -324,15 +324,13 @@ Ability.prototype.init = function(){
 	" " + this.val + ":" + " ");
 }
 Ability.prototype.activate = function(spell){
-	// Check if cast.
-	// if it exists.
-	//
+		
 }
 
 
 function VerbArmor(val){
 	this.val = val;
-	this.armorList = new Array(val);
+	this.armorList = new Array();
 	this.init();
 }
 
@@ -343,7 +341,7 @@ VerbArmor.prototype.init = function(){
 	Ability.prototype.init.call(this);
 	this.armorJQ = [];
 	for(var i =0; i<this.val; i++){
-		this.container.append(this.makeArmor(i));
+		this.container.append(this.makeArmor(i)).animate({opacity:.2},1000);
 		this.armorJQ.push($("#armor" + i));
 	}
 }
@@ -358,12 +356,13 @@ VerbArmor.prototype.add = function(verb){
 	if(this.armorList.length >= this.val)
 		this.armorList.shift();
 	this.armorList.push(verb);
+	this.updateArmor();
 }
 
 VerbArmor.prototype.updateArmor = function(){
 	for(var i=0; i<this.val; i++){
 		if(this.armorList[i] !== undefined){
-			this.armorJQ[i].html(this.armorList[i]);
+			this.armorJQ[i].html("["+this.armorList[i]+"]");
 		}
 	}
 }
@@ -372,7 +371,20 @@ VerbArmor.prototype.exists = function(verb){
 	return this.armorList.indexOf(verb) != -1;
 }
 
-
+VerbArmor.prototype.activate = function(spell){
+	if(spell === undefined)
+		return
+	if(spell.type != "Cast")
+		return;
+	if(this.exists(spell.word)){
+		console.log("DEALING Decreased damage");
+	}
+	else{
+		this.add(spell.word);
+		console.log("Broke through armor")
+	}
+	
+}
 
 
 

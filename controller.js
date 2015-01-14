@@ -55,6 +55,9 @@ function BattleController()
 		console.log(boss);
 		if(spellQueue.length !== 0){
 			var spell = engine.evaluate(spellQueue,player);
+			
+			boss.ability.activate(spell);
+			
 			if(spell === undefined)
 			{
 				console.log("You done fked");
