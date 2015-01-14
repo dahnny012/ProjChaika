@@ -89,7 +89,7 @@ function BattleController()
 	//battleStart(boss,player);
 	function tutorialStart(tutorial,suggestions,boss,player){
 		tutorial = new Tutorial();
-		$(document).on("keydown","#controller",processSpell);
+		$("#controller").on("keydown",processSpell);
 		setTimeout(checkTutorial,1000,tutorial,suggestions,boss,player);
 	}
 	tutorialStart(tutorial,suggestions,boss,player);
@@ -97,6 +97,7 @@ function BattleController()
 	function loadTutorialBoss(boss){
 		boss = bossManager.getNextBoss();
 		boss.init();
+		$("#controller").unbind().on("keydown",{boss:boss},processSpell);
 		///boss.cast(boss,player);
 	}
 	function loadSuggestions(suggestions){
