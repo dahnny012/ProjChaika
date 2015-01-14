@@ -53,6 +53,8 @@ AI.prototype.init = function(){
 	this.timerWidth = getWidth(this.castBarId);
 	this.timerStartWidth = 0;
 	this.timerUpdate(0);
+	if(this.ability !== undefined)
+		this.ability.init();
 }
 
 AI.prototype.healthBarUpdate = function(){
@@ -331,17 +333,17 @@ Ability.prototype.activate = function(spell){
 function VerbArmor(val){
 	this.val = val;
 	this.armorList = new Array();
-	this.init();
 }
 
 VerbArmor.prototype = new Ability();
 VerbArmor.prototype.constructor = VerbArmor;
 VerbArmor.prototype.name ="Verb-Armor";
 VerbArmor.prototype.init = function(){
+	console.log("Ability presets init()")
 	Ability.prototype.init.call(this);
 	this.armorJQ = [];
 	for(var i =0; i<this.val; i++){
-		this.container.append(this.makeArmor(i)).animate({opacity:.2},1000);
+		this.container.append(this.makeArmor(i)).animate({opacity:1},1000);
 		this.armorJQ.push($("#armor" + i));
 	}
 }
@@ -362,7 +364,8 @@ VerbArmor.prototype.add = function(verb){
 VerbArmor.prototype.updateArmor = function(){
 	for(var i=0; i<this.val; i++){
 		if(this.armorList[i] !== undefined){
-			this.armorJQ[i].html("["+this.armorList[i]+"]");
+			if(this.armorJQ[i].html() !== ("["+this.armorList[i]+"]"))
+				this.armorJQ[i].html("["+this.armorList[i]+"]");
 		}
 	}
 }

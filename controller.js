@@ -55,8 +55,8 @@ function BattleController()
 		console.log(boss);
 		if(spellQueue.length !== 0){
 			var spell = engine.evaluate(spellQueue,player);
-			
-			boss.ability.activate(spell);
+			if(boss !== undefined)
+				boss.ability.activate(spell);
 			
 			if(spell === undefined)
 			{
@@ -93,13 +93,13 @@ function BattleController()
 			suggestions.container.show()}
 		);
 	}
-	battleStart(boss,player);
+	//battleStart(boss,player);
 	function tutorialStart(tutorial,suggestions,boss,player){
 		tutorial = new Tutorial();
 		$("#controller").on("keydown",processSpell);
 		setTimeout(checkTutorial,1000,tutorial,suggestions,boss,player);
 	}
-	//tutorialStart(tutorial,suggestions,boss,player);
+	tutorialStart(tutorial,suggestions,boss,player);
 	
 	function loadTutorialBoss(boss){
 		boss = bossManager.getNextBoss();
