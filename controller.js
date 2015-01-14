@@ -73,11 +73,12 @@ function BattleController()
 		}
 	}
 	
-	function battleStart(boss)
+	function battleStart(boss,player)
 	{
 		boss = bossManager.getNextBoss();
 		boss.init();
 		$(document).on("keydown","#controller",{boss:boss},processSpell);
+		player.init();
 		boss.cast(boss,player);
 		suggestions.bar.countDown(suggestions.bar,suggestions,
 		function(suggestions){
@@ -85,17 +86,36 @@ function BattleController()
 			suggestions.container.show()}
 		);
 	}
-	//battleStart(boss);
-	function tutorialStart(tutorial,suggestions){
+	//battleStart(boss,player);
+	function tutorialStart(tutorial,suggestions,boss,player){
 		tutorial = new Tutorial();
 		$(document).on("keydown","#controller",processSpell);
-		
+		setTimeout(checkTutorial,1000,tutorial,suggestions,boss,player);
 	}
-	tutorialStart(tutorial,suggestions);
+	tutorialStart(tutorial,suggestions,boss,player);
+	
 	function loadTutorialBoss(boss){
 		boss = bossManager.getNextBoss();
 		boss.init();
-		boss.cast(boss,player);
+		///boss.cast(boss,player);
+	}
+	function loadSuggestions(suggestions){
+		suggestions.bar.countDown(suggestions.bar,suggestions,
+		function(suggestions){
+			suggestions.fillBank();
+			suggestions.container.show()}
+		);
+	}
+	
+	function checkTutorial(tutorial,suggestions,boss,player){
+		if(tutorial.status == DONE){
+			player.init();
+			loadTutorialBoss(boss);
+			loadSuggestions(suggestions);
+		}
+		else{
+			setTimeout(checkTutorial,1000,tutorial,suggestions,boss,player);
+		}
 	}
 	
 	function playerDump()

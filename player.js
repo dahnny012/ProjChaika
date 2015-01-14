@@ -131,7 +131,6 @@ function Human(name,health)
 	this.health = health;
 	this.startHealth = health;
 	this.health.toFixed(2);
-	this.init();
 	this.weaponSlot = 0;
 	return this;
 }
@@ -161,12 +160,14 @@ Human.prototype.healthBarUpdate = function(){
 
 
 Human.prototype.init = function(){
+	$(this.healthBarId).css(this.defaultHealthWidth);
 	this.healthUpdate();
 	this.healthWidth = getWidth(this.healthId);
 	this.healthStartWidth = this.healthWidth;
 }
 Human.prototype.healthBarId = "#playerHealthBar";
 Human.prototype.healthId = "#playerHealth";
+Human.prototype.defaultHealthWidth ="195px";
 Human.prototype.history = Array();
 Human.prototype.inventory = Array(3);
 Human.prototype.addInventory = function(spell){

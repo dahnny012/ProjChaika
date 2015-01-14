@@ -47,6 +47,10 @@ body{
     display:none;
 }
 
+#suggestionsWrapper{
+    display:none;
+}
+
 ::-webkit-scrollbar {  
     width: 8px;  
 }  

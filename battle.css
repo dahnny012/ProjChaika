@@ -112,6 +112,10 @@ body{
         font-size:17px;
         color:#343434;
     }
+    #suggestions
+    {
+        height:35px;
+    }
     .suggestion{
         margin-left:10px;
         margin-top:2px;

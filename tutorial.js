@@ -3,11 +3,10 @@ function Tutorial()
     this.init();
 }
 
-Tutorial.prototype.done = INPROGRESS;
 
 Tutorial.prototype.container=$("#mainWrapper");
 
-Tutorial.prototype.step = 2;
+Tutorial.prototype.step = INPROGRESS;
  
 Tutorial.prototype.queue = [];
 
@@ -15,7 +14,7 @@ Tutorial.prototype.init = function(){
     this.turnOn("#start");
     this.turnOn("#c" + this.step);
     var tut = this;
-    $("#mainWrapper").on("keydown",{tut:tut},tut.continue);
+    this.container.on("keydown",{tut:tut},tut.continue);
 };
 
 
@@ -36,18 +35,15 @@ Tutorial.prototype.continue = function(e){
 Tutorial.prototype.loadNext = function(){
     var cEmpty = $("#c"+this.step).length === 0;
     var instrEmpty = $("#intro"+this.step).length === 0;
-    if(this.step == 28)
-    {
-        this.done = DONE;
-        this.turnOn("#bossWrapper");
-        this.container.slideToggle("100",function(){});
-    }
+    if(this.step == DONE){
+        this.container.unbind();
+        this.loadBossGui();
+        this.loadSuggestions();
+    }   
     else if(!cEmpty){
         this.turnOn("#c"+this.step);
-        if(this.step == 4){
-            $("#battleLogWrapper").slideToggle("100",function(){});
-            $("#playerWrapper").slideToggle("100",function(){});
-        }
+        if(this.step == 4)
+            this.loadPlayerGui();
     }
     else if(!instrEmpty){
         this.turnOn("#intro"+this.step)
@@ -58,8 +54,21 @@ Tutorial.prototype.loadNext = function(){
 
 Tutorial.prototype.turnOn = function(query){
     query = $(query);
-     query.slideToggle("100",function(){});
+    query.slideToggle("100",function(){});
     this.queue.push(query);
 }
 
 
+Tutorial.prototype.loadBossGui = function(){
+    this.status = DONE;
+    this.turnOn("#bossWrapper");
+    this.container.slideToggle("100",function(){});
+};
+Tutorial.prototype.loadPlayerGui = function(){
+    $("#battleLogWrapper").slideToggle("100",function(){});
+    $("#playerWrapper").slideToggle("100",function(){});
+};
+
+Tutorial.prototype.loadSuggestions = function(){
+    $("#suggestionsWrapper").slideToggle("100",function(){});
+}
