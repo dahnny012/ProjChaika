@@ -1,5 +1,5 @@
 var ENTER = 13;
-var MAXRANDS = 5;
+var MAXRANDS = 3;
 var MAXLINES = 65000;
 var SUGGESTIONCD = 10;
 var LOADCOMPLETE = 1;

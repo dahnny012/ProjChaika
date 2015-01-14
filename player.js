@@ -29,13 +29,14 @@ Mage.prototype.healthUpdate = function()
 	$(this.healthId).html(this.health);
 }
 
-function AI(name,health,castTimer)
+function AI(name,health,ability)
 {
 	this.name = name;
 	this.health = health;
 	this.health = this.health.toFixed(2);
 	this.startHealth = health;
 	this.castQueue = [];
+	this.ability = ability;
 }
 
 
@@ -283,9 +284,9 @@ BossManager.prototype.currentBoss= function(){
 // TODO in the future.
 // Should move this to the node. Dunno how to work that shit yet.
 BossManager.prototype.init = function(){
-	var tutBoss = new AI("Tutorial Boss",100,2000);
-	tutBoss.addSpell(new bossSpell("Use rookie mistake",1000,50));
-	tutBoss.addSpell(new bossSpell("Hello World",1000,20));
+	var tutBoss = new AI("Tutorial Boss",100,new VerbArmor(3));
+	tutBoss.addSpell(new bossSpell("Use rookie mistake",8000,30));
+	tutBoss.addSpell(new bossSpell("Hello World",3000,10));
 	this.bossList.push(tutBoss);
 	
 	
@@ -312,9 +313,64 @@ function bossSpell(word,castTimer,dmg){
 
 
 
+function Ability(){
+}
+
+Ability.prototype.name;
+Ability.prototype.val;
+Ability.prototype.container = $("#bossAbilities");
+Ability.prototype.init = function(){
+	this.container.html(this.name +
+	" " + this.val + ":" + " ");
+}
+Ability.prototype.activate = function(spell){
+	// Check if cast.
+	// if it exists.
+	//
+}
 
 
+function VerbArmor(val){
+	this.val = val;
+	this.armorList = new Array(val);
+	this.init();
+}
 
+VerbArmor.prototype = new Ability();
+VerbArmor.prototype.constructor = VerbArmor;
+VerbArmor.prototype.name ="Verb-Armor";
+VerbArmor.prototype.init = function(){
+	Ability.prototype.init.call(this);
+	this.armorJQ = [];
+	for(var i =0; i<this.val; i++){
+		this.container.append(this.makeArmor(i));
+		this.armorJQ.push($("#armor" + i));
+	}
+}
+
+VerbArmor.prototype.makeArmor = function(index){
+	return "<div class='abilityArmor' id="+
+	"'armor"+index+"'>[Verb]</div>";
+}
+
+
+VerbArmor.prototype.add = function(verb){
+	if(this.armorList.length >= this.val)
+		this.armorList.shift();
+	this.armorList.push(verb);
+}
+
+VerbArmor.prototype.updateArmor = function(){
+	for(var i=0; i<this.val; i++){
+		if(this.armorList[i] !== undefined){
+			this.armorJQ[i].html(this.armorList[i]);
+		}
+	}
+}
+
+VerbArmor.prototype.exists = function(verb){
+	return this.armorList.indexOf(verb) != -1;
+}
 
 
 

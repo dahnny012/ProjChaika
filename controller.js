@@ -90,13 +90,13 @@ function BattleController()
 			suggestions.container.show()}
 		);
 	}
-	//battleStart(boss,player);
+	battleStart(boss,player);
 	function tutorialStart(tutorial,suggestions,boss,player){
 		tutorial = new Tutorial();
 		$("#controller").on("keydown",processSpell);
 		setTimeout(checkTutorial,1000,tutorial,suggestions,boss,player);
 	}
-	tutorialStart(tutorial,suggestions,boss,player);
+	//tutorialStart(tutorial,suggestions,boss,player);
 	
 	function loadTutorialBoss(boss){
 		boss = bossManager.getNextBoss();
