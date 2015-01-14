@@ -84,18 +84,18 @@ AI.prototype.cast = function(boss,player,cb){
 	boss.castTimer = spell.castTimer; //ms
 	boss.startTimer=  spell.castTimer;
 	boss.spellUpdate(spell);
-	boss.startCast(boss,player);
+	boss.startCast(boss,player,cb);
 	boss.castIndex++;
 }
-AI.prototype.startCast = function(boss,player){
+AI.prototype.startCast = function(boss,player,cb){
 	boss.timerUpdate(boss.castTimer);
 	if(boss.castTimer <= 0) {
 		boss.execute(boss,player);
-		boss.cast(boss,player);
+		boss.cast(boss,player,cb);
 	}
 	else{
 		boss.castTimer -= FPS30;
-		setTimeout(boss.startCast,FPS30,boss,player);
+		setTimeout(boss.startCast,FPS30,boss,player,cb);
 	}
 }
 AI.prototype.execute = function(boss,player){
@@ -284,8 +284,8 @@ BossManager.prototype.currentBoss= function(){
 // Should move this to the node. Dunno how to work that shit yet.
 BossManager.prototype.init = function(){
 	var tutBoss = new AI("Tutorial Boss",100,2000);
-	tutBoss.addSpell(new bossSpell("Use rookie mistake",10000,10));
-	tutBoss.addSpell(new bossSpell("Hello World",10000,20));
+	tutBoss.addSpell(new bossSpell("Use rookie mistake",1000,50));
+	tutBoss.addSpell(new bossSpell("Hello World",1000,20));
 	this.bossList.push(tutBoss);
 	
 	

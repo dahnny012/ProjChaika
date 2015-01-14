@@ -102,7 +102,7 @@ function BattleController()
 		boss = bossManager.getNextBoss();
 		boss.init();
 		$("#controller").unbind().on("keydown",{boss:boss},processSpell);
-		///boss.cast(boss,player,endGame);
+		boss.cast(boss,player,endGame);
 	}
 	function loadSuggestions(suggestions){
 		suggestions.bar.countDown(suggestions.bar,suggestions,
