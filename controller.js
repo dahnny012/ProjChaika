@@ -65,8 +65,12 @@ function BattleController()
 			}
 			else if(spell.power !== 0 && spell !== 0)
 			{
-				if(boss !== undefined)
+				if(boss !== undefined){
 					boss.reduceHealth(spell.power);
+					if(boss.health <= 0){
+						endGame();
+					}
+				}
 				if(spell.type == "Cast")
 					battleLog(spell,"playerLog",player);
 			}
@@ -98,7 +102,7 @@ function BattleController()
 		boss = bossManager.getNextBoss();
 		boss.init();
 		$("#controller").unbind().on("keydown",{boss:boss},processSpell);
-		///boss.cast(boss,player);
+		///boss.cast(boss,player,endGame);
 	}
 	function loadSuggestions(suggestions){
 		suggestions.bar.countDown(suggestions.bar,suggestions,
@@ -122,6 +126,9 @@ function BattleController()
 	function playerDump()
 	{
 		console.log(player);
+	}
+	function endGame(){
+		alert("You have Won");
 	}
 }
 

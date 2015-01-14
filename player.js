@@ -18,6 +18,8 @@ Mage.prototype.reduceHealth = function(damage)
 {
 	this.health -= damage;
 	this.health = this.health.toFixed(2);
+	if(this.health < 0)
+		this.health = 0;
 	this.healthUpdate();
 }
 
@@ -71,8 +73,9 @@ AI.prototype.healthId = "#bossHealth";
 AI.prototype.castBarId= "#bossCastBar";
 AI.prototype.castBar = $(this.castBarId);
 AI.prototype.castIndex = 0;
-AI.prototype.cast = function(boss,player){
+AI.prototype.cast = function(boss,player,cb){
 	if(boss.health <= 0 || player.health <= 0){
+		cb();
 		return;
 	}
 	boss.castIndex = boss.castIndex % boss.castQueue.length;

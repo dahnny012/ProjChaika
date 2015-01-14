@@ -167,6 +167,7 @@ body{
 
 #weaponQueue{
     width:500px;
+    height:45px;
     margin-top:4%;
     position:relative;
     bottom:20px;
