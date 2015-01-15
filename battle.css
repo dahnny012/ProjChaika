@@ -18,7 +18,7 @@ body{
 #bossAbilities{
     font-size:30px;
     text-align:center;
-    opacity:0;
+    opacity:1;
 }
     .abilityArmor{
         display:inline;

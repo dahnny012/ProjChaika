@@ -20,6 +20,44 @@ body{
     overflow-y: scroll;
 }
 
+#dummyWrapper{
+    margin-top:1%;
+}
+
+#dummyName{
+    font-family: 'Ubuntu', sans-serif;
+    font-size:35px;
+    text-align: center;
+}
+
+#dummyHealthWrapper{
+	border:2px solid black;
+	width:30%;
+	margin-right:auto;
+	margin-left:auto;
+	height:25px;
+	margin-bottom:10px;
+}
+
+#dummyHealth{
+	font-size:20px;
+    font-weight:600;
+	text-align:center;
+	font-family: 'Source Sans Pro', sans-serif;
+}
+
+
+#dummyHealthBar{
+    position:absolute;
+    width:inherit;
+    height:25px;
+	background:red;
+	text-align:center;
+	line-height:150%;
+	z-index:-100;
+}
+
+
 .continue{
     display:none;
     color:grey;

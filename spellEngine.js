@@ -49,7 +49,8 @@ SpellEngine.prototype.evaluate = function (queue,player){
 		else if(spell.type == 'Cast'){
 			console.log("Spellcasting");
 			console.log(player);
-			var weapon = player.useWeapon(spell);
+			var weapon 
+			while ((weapon = player.useWeapon(spell)) !== undefined){
 			//
 			if(weapon !== 0 && weapon !== undefined)
 		 {
@@ -64,7 +65,8 @@ SpellEngine.prototype.evaluate = function (queue,player){
 			 	spell.power += (combo *  spell.base.length);
 				}
 			}
-			return spell;
+		}
+					return spell;
 		}
 		else
 		{

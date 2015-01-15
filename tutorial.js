@@ -36,6 +36,7 @@ Tutorial.prototype.loadNext = function(){
     var cEmpty = $("#c"+this.step).length === 0;
     var instrEmpty = $("#intro"+this.step).length === 0;
     if(this.step == DONE){
+        this.unloadDummy();
         this.container.unbind();
         this.loadBossGui();
         this.loadSuggestions();
@@ -71,4 +72,8 @@ Tutorial.prototype.loadPlayerGui = function(){
 
 Tutorial.prototype.loadSuggestions = function(){
     $("#suggestionsWrapper").slideToggle("100",function(){});
+}
+
+Tutorial.prototype.unloadDummy = function(){
+    $("#dummyWrapper").slideToggle("100",function(){});
 }

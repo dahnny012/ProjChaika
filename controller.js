@@ -55,8 +55,10 @@ function BattleController()
 		console.log(boss);
 		if(spellQueue.length !== 0){
 			var spell = engine.evaluate(spellQueue,player);
-			if(boss !== undefined)
-				boss.ability.activate(spell);
+			if(boss !== undefined){
+				if(boss.ability !== undefined)
+					boss.ability.activate(spell);
+			}
 			
 			if(spell === undefined)
 			{
@@ -96,11 +98,17 @@ function BattleController()
 	//battleStart(boss,player);
 	function tutorialStart(tutorial,suggestions,boss,player){
 		tutorial = new Tutorial();
-		$("#controller").on("keydown",processSpell);
+		boss = loadDummyAI(boss);
+		$("#controller").on("keydown",{boss:boss},processSpell);
 		setTimeout(checkTutorial,1000,tutorial,suggestions,boss,player);
 	}
 	tutorialStart(tutorial,suggestions,boss,player);
 	
+	function loadDummyAI(boss){
+		boss = new DummyAI();
+		boss.init();
+		return boss;
+	}
 	function loadTutorialBoss(boss){
 		boss = bossManager.getNextBoss();
 		boss.init();

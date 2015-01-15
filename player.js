@@ -78,7 +78,8 @@ AI.prototype.castBar = $(this.castBarId);
 AI.prototype.castIndex = 0;
 AI.prototype.cast = function(boss,player,cb){
 	if(boss.health <= 0 || player.health <= 0){
-		cb();
+		if(player.health <= 0)
+			alert("You have lost");
 		return;
 	}
 	boss.castIndex = boss.castIndex % boss.castQueue.length;
@@ -129,6 +130,45 @@ AI.prototype.nameUpdate = function(){
 AI.prototype.addSpell = function(spell){
 	this.castQueue.push(spell);
 }
+
+
+function DummyAI(){
+	this.name = "Training Dummy";
+	this.health = 1000;
+	this.health = this.health.toFixed(2);
+	this.startHealth = this.health;
+	this.init();
+}
+
+DummyAI.prototype = new Mage();
+DummyAI.prototype.constructor = DummyAI;
+DummyAI.prototype.healthBarId="#dummyHealthBar";
+DummyAI.prototype.healthId = "#dummyHealth";
+DummyAI.prototype.nameUpdate = function(){
+	$("#dummyName").html(this.name);
+}
+DummyAI.prototype.init=function(){
+	this.healthUpdate();
+	this.nameUpdate();
+}
+
+DummyAI.prototype.healthUpdate = function(){
+	Mage.prototype.healthUpdate.call(this);
+	this.healthBarUpdate();
+}
+
+DummyAI.prototype.healthBarUpdate = function(){
+	if(this.healthStartWidth === undefined){
+		this.healthStartWidth = $(this.healthId).css("width");
+	}
+	this.healthStartWidth = $(this.healthId).css("width");
+	var percent = (this.health/this.startHealth);
+	var amount = pxToNum(this.healthStartWidth);
+	this.healthWidth = percent * amount;
+	$(this.healthBarId).css("width",this.healthWidth);
+}
+
+
 
 /// Humans
 function Human(name,health)
@@ -380,17 +420,13 @@ VerbArmor.prototype.activate = function(spell){
 	if(spell.type != "Cast")
 		return;
 	if(this.exists(spell.word)){
-		console.log("DEALING Decreased damage");
+		spell.power *= .2;
 	}
 	else{
 		this.add(spell.word);
-		console.log("Broke through armor")
 	}
 	
 }
-
-
-
 
 
 
