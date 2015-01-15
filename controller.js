@@ -26,6 +26,7 @@ function BattleController()
 	var bossManager = new BossManager();
 	var spellQueue = new Array();
 	var stopGame;
+	var killedTutBoss;
 
 	function processSpell(event){
 		if(event.which == ENTER)
@@ -73,7 +74,7 @@ function BattleController()
 				if(boss !== undefined){
 					boss.reduceHealth(spell.power);
 					if(boss.health <= 0){
-						endGame();
+						
 					}
 				}
 				if(spell.type == "Cast")
@@ -112,6 +113,7 @@ function BattleController()
 	function loadTutorialBoss(boss){
 		boss = bossManager.getNextBoss();
 		boss.init();
+		boss.type = "Tutorial";
 		$("#controller").unbind().on("keydown",{boss:boss},processSpell);
 		boss.cast(boss,player,endGame);
 	}

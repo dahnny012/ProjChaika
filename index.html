@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="index.css">
+        <link rel="stylesheet" type="text/css" href="battle.css">
+        <link rel="stylesheet" type="text/css" href="tutorial.css">
+        <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+    <section id="mainWrapper">
+        <section id="titleWrapper">
+            <div id="title">
+                Chaika
+            </div>
+            <div id="subTitle">
+                A fast paced word game.
+            </div>
+            <div id="divider">
+                
+            </div>
+        </section>
+        <section id="optionsWrapper">
+            <div class="option" id="tut">
+                <span class="carot">&#62</span>Tutorial
+            </div>
+            <div class="option">
+                <span class="carot" id="main">&#62</span>Main Story
+            </div>
+        </section>
+    </section>
+    </body>
+</html>
+
+<footer>
+    <script src="jquery-1.11.1.js"></script>
+    <script>
+    // Show carrots
+        $(".option").hover(function(e){
+            $(this).find(".carot").slideToggle(100);
+        },function(e){
+             $(this).find(".carot").hide();
+        })
+    // Set click handlers
+    $("#main").click(function(){alert("GG")});
+    $("#tut").click(loadTut);
+    
+    function clear(){
+        $("link[href='index.css'").remove();
+        $("body").html("");
+    }
+    function loadTut(){
+        $.ajax({
+            url:"tutorial.html",
+            type:"GET",
+            success:function(output)
+            {
+                clear();
+                $("body").append(output);
+            }
+        });
+        $("#mainWrapper").slideToggle("300");
+        $("body").append(loadScreen());
+    }
+    
+    function loadScreen(){
+       return "<div id='loadingScreen'>Game is loading</div>"; 
+    }
+    </script>
+</footer>
