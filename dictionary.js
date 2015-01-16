@@ -39,8 +39,17 @@ function Dictionary()
 		var spec = getSpecfier(spell);
 		spell = trimSpec(spell,spec);
 		var list = spell.split(" ");
-		
-		var spellList = list.map(function(word){
+		var spellList=[];
+		var errors = [];
+		list.forEach(function(word){
+			if(spellList.indexOf(word) == -1){
+				spellList.push(word);
+			}
+			else{
+				errors.push("Duplicate " + word);
+			}
+		});
+		spellList = spellList.map(function(word){
 			// Format which the db accepts
 			var modWord = dbFormat(word);
 			if(db[modWord] !== 0 && db[modWord] !== undefined)
@@ -74,7 +83,7 @@ function Dictionary()
 		});
 		
 		var newList =[];
-		newList.errors = [];
+		newList.errors = errors;
 		for(var i=0; i<spellList.length; i++){
 		   if(spellList[i] !== undefined){
 		  	newList.push(spellList[i]);
