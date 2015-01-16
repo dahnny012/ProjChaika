@@ -22,6 +22,7 @@ body{
 }
     .abilityArmor{
         display:inline;
+        color:#004B81;
     }
 #bossHealthWrapper{
 	border:2px solid black;

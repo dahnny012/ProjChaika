@@ -7,7 +7,8 @@ var WORD = 0;
 var POS = 1;
 var DONE = 28;
 var INPROGRESS = 2;
-
+var TRUE = 1;
+var FALSE = 0;
 function guiUtils()
 {
     

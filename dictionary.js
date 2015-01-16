@@ -36,6 +36,8 @@ function Dictionary()
 	Dictionary.prototype.spellSearch = function(spell)
 	{
 		//Determine spec and trim them.
+		if(spell.trim().length <= 0)
+		   return undefined;
 		var spec = getSpecfier(spell);
 		spell = trimSpec(spell,spec);
 		var list = spell.split(" ");

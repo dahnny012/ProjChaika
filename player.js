@@ -93,7 +93,10 @@ AI.prototype.cast = function(boss,player,cb){
 }
 AI.prototype.startCast = function(boss,player,cb){
 	boss.timerUpdate(boss.castTimer);
-	if(boss.castTimer <= 0) {
+	if(boss.health <= 0){
+		return;
+	}
+	else if(boss.castTimer <= 0) {
 		boss.execute(boss,player);
 		boss.cast(boss,player,cb);
 	}
@@ -104,7 +107,7 @@ AI.prototype.startCast = function(boss,player,cb){
 }
 AI.prototype.execute = function(boss,player){
 	// Do damage to player
-	console.log("Dealing dmg to player");
+	console.log("Dealing DMG to player");
 	var dmg = boss.currentSpell.power;
 	player.reduceHealth(dmg);
 	battleLog(boss.currentSpell,"bossLog",boss);
@@ -131,6 +134,10 @@ AI.prototype.addSpell = function(spell){
 	this.castQueue.push(spell);
 }
 
+
+AI.prototype.die = function(){
+	alert("GG");
+}
 
 function DummyAI(){
 	this.name = "Training Dummy";
@@ -267,7 +274,7 @@ Human.prototype.xUpdateWeaponQueue = function(slot,weapon)
 	if(slot > 2)
 		slot = slot%3;
 	if(weapon !== undefined)
-		$("#weapon"+slot).html('&#60;The '+weapon.full + "&#62; <br>" +weapon.power+' dmg');
+		$("#weapon"+slot).html('&#60;The '+weapon.full + "&#62; <br>" +weapon.power+' DMG');
 	else{
 		$("#weapon"+slot).html("");
 	}
@@ -279,7 +286,7 @@ Human.prototype.updateWeaponQueue = function(){
 		if(this.history !== undefined){
 			var length = this.history.length - 1;
 			var current = this.history[length];
-			$("#weapon"+slot).html('&#60;The '+current.full + "&#62; <br>" +current.power+' dmg');
+			$("#weapon"+slot).html('&#60;The '+current.full + "&#62; <br>" +current.power+' DMG');
 		}
 }
 
@@ -326,7 +333,7 @@ BossManager.prototype.currentBoss= function(){
 // TODO in the future.
 // Should move this to the node. Dunno how to work that shit yet.
 BossManager.prototype.init = function(){
-	var tutBoss = new AI("Tutorial Boss",100,new VerbArmor(3));
+	var tutBoss = new AI("Tutorial Boss",100,new WordThreshold(5));
 	tutBoss.addSpell(new bossSpell("Use rookie mistake",8000,30));
 	tutBoss.addSpell(new bossSpell("Hello World",3000,10));
 	this.bossList.push(tutBoss);
@@ -368,7 +375,9 @@ Ability.prototype.init = function(){
 Ability.prototype.activate = function(spell){
 		
 }
-
+Ability.prototype.passive = function(){
+	
+}
 
 function VerbArmor(val){
 	this.val = val;
@@ -387,6 +396,7 @@ VerbArmor.prototype.init = function(){
 		this.armorJQ.push($("#armor" + i));
 	}
 }
+
 
 VerbArmor.prototype.makeArmor = function(index){
 	return "<div class='abilityArmor' id="+
@@ -428,6 +438,33 @@ VerbArmor.prototype.activate = function(spell){
 	
 }
 
+function WordThreshold(val){
+	this.val = val;
+	this.armorList = new Array();
+}
 
-
-
+WordThreshold.prototype = new Ability();
+WordThreshold.prototype.constructor = WordThreshold;
+WordThreshold.prototype.name = "Word Threshold";
+WordThreshold.prototype.activate = function(spell){
+	var power = spell.power;
+	var full = spell.full.replace("!","");
+	var words= full.split(" ");
+	var reduce =0;
+	for(var i=0; i<words.length; i++){
+		if(words[i].length < this.val){
+			if(words[i].length > 0){
+				console.log("reducing dmg from player");
+				spell.power = spell.power / 2;
+			}
+		}
+	}
+	
+	if(spell.power !== power)
+		spell.modded = TRUE;
+}
+WordThreshold.prototype.init = function(){
+	console.log("Ability presets init()")
+	Ability.prototype.init.call(this);
+	this.container.append("Be wary of low length words");
+}

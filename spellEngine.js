@@ -15,7 +15,7 @@ function SpellEngine()
 	return this;
 }
 
-SpellEngine.prototype.evaluate = function (queue,player){
+SpellEngine.prototype.evaluate = function (queue,player,boss){
 	
 	if(queue.length > 0)
 	{
@@ -38,7 +38,6 @@ SpellEngine.prototype.evaluate = function (queue,player){
 		var spell =  this.buildSpell(spellLayer,player,spellLayer.spec);
 		if(spell === undefined)
 			return undefined;
-			
 		if(spell.type == 'Weapon'){
 			player.history.push(spell);
 			player.addInventory(spell);
@@ -49,24 +48,44 @@ SpellEngine.prototype.evaluate = function (queue,player){
 		else if(spell.type == 'Cast'){
 			console.log("Spellcasting");
 			console.log(player);
-			var weapon 
-			while ((weapon = player.useWeapon(spell)) !== undefined){
-			//
-			if(weapon !== 0 && weapon !== undefined)
-		 {
-				var base = 1;
-				var combo = base + spell.power/10;
-				spell.power += (combo *  weapon.power);
+			var weapon ;
+			var base;
+			var combo;
+			var noWeapon = 1;
+			var power = spell.power;
+			spell.full = "";
+			while (true){
+			weapon = player.useWeapon(spell)
+			if(weapon !== 0 && weapon !== undefined){
+				if(noWeapon == 0)
+					spell.power += power;
+				base = 1;
+				combo = base + power/10;
+				spell.power = spell.power + (combo *  weapon.power);
+				spell.full += spell.word + " " + weapon.full + "! ";
+				noWeapon = 0;
 			}
 			else{
-				if(spell.base !== undefined){
-					var base = 1;
-				 var combo = base + spell.power/10;
+				if(spell.base !== undefined && spell.base !== "" && noWeapon){
+					base = 1;
+				 combo = base + spell.power/10;
 			 	spell.power += (combo *  spell.base.length);
+			 	spell.full = spell.word +" "+spell.base;
 				}
+				else{
+					if(noWeapon)
+					spell.full = spell.word;
+				}
+				break;
 			}
 		}
-					return spell;
+		
+		spell.full = spell.full.trim();
+		if(boss !== undefined){
+			if(boss.ability !== undefined)
+				boss.ability.activate(spell);
+		}
+			return spell;
 		}
 		else
 		{
@@ -199,8 +218,10 @@ function SpellToken(block,spell,spec)
 	this.base = '';
 	this.specQueue = [];
 	this.full = this.word;
+	this.modded = FALSE;
 	return this;
 }
+
 
 function buffToken(block)
 {

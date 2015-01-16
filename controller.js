@@ -39,7 +39,8 @@ function BattleController()
 				console.log("Printing to error log");
 				errorLog(spell.errors);
 			}
-			spellQueue.push(spell);
+			if(spell !== undefined)
+				spellQueue.push(spell);
 			if(event.data !== undefined){
 				processQueue(event.data.boss);}
 			else{
@@ -55,30 +56,24 @@ function BattleController()
 		console.log("EVENT");
 		console.log(boss);
 		if(spellQueue.length !== 0){
-			var spell = engine.evaluate(spellQueue,player);
-			if(boss !== undefined){
-				if(boss.ability !== undefined)
-					boss.ability.activate(spell);
-			}
-			
+			var spell = engine.evaluate(spellQueue,player,boss);
 			if(spell === undefined)
 			{
 				console.log("You done fked");
 				// <No matches>
 			}
 			else if(spell.type == "Weapon"){
-				weaponLog(spell,"playerLog",player);
+				weaponLog(spell,"playerLog",player,boss);
 			}
-			else if(spell.power !== 0 && spell !== 0)
+			else if(spell !== 0)
 			{
 				if(boss !== undefined){
 					boss.reduceHealth(spell.power);
+					battleLog(spell,"playerLog",player,boss);
 					if(boss.health <= 0){
-						
+						boss.die();
 					}
 				}
-				if(spell.type == "Cast")
-					battleLog(spell,"playerLog",player);
 			}
 		}
 	}
@@ -147,15 +142,11 @@ function BattleController()
 
 
 // Logging stuff
-function battleLog(spell,type,mage)
+function battleLog(spell,type,mage,boss)
 {
 	var div = "<div class='"+type+"'>";
 	var log = "[" + mage.name + "]:" + " " + spell.full;
-	if(spell.base !== undefined)
-	{
-		log += " " + spell.base;
-	}
-	var dmg = "&#60;"+spell.power.toFixed(2)+"&#62";
+	var dmg = "&#60;"+spell.power.toFixed(2)+"&#62" + checkMod(spell,boss);
 	var close ="</div>";
 	var node = div + log + dmg + close;
 	printLog(node);
@@ -164,10 +155,11 @@ function dmgBracket(dmg){
 	return "&#60;"+dmg+"&#62";
 }
 
-function weaponLog(weapon,type,mage)
+function weaponLog(weapon,type,mage,boss)
 {
 	var div = "<div class='"+type+"'>";
-	var log = "[" + mage.name + "]:" + "Created "+ dmgBracket("The "+ weapon.full);
+	var log = "[" + mage.name + "]:" + "Created "+ dmgBracket("The "+ weapon.full)
+	+ checkMod(weapon,boss);
 	var close ="</div>";
 	var node = div + log + close;
 	printLog(node);
@@ -186,6 +178,11 @@ function errorLog(errors)
 	var close = "</div>";
 	var node = div + log + close;
 	printLog(node);
+}
+function checkMod(spell,boss){
+	if(boss !== undefined && spell.modded)
+		return "(" + boss.ability.name +")";
+	return "";
 }
 
 function printLog(node){
