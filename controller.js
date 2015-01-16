@@ -71,14 +71,15 @@ function BattleController()
 					boss.reduceHealth(spell.power);
 					battleLog(spell,"playerLog",player,boss);
 					if(boss.health <= 0){
-						boss.die();
+						bossManager.newBoss(boss,player,endGame);
+						player.resetHealth();
 					}
 				}
 			}
 		}
 	}
 	
-	function battleStart(boss,player)
+	function battleStart(boss,player,suggestions)
 	{
 		boss = bossManager.getNextBoss();
 		boss.init();
@@ -91,14 +92,14 @@ function BattleController()
 			suggestions.container.show()}
 		);
 	}
-	//battleStart(boss,player);
+	battleStart(boss,player,suggestions);
 	function tutorialStart(tutorial,suggestions,boss,player){
 		tutorial = new Tutorial();
 		boss = loadDummyAI(boss);
 		$("#controller").on("keydown",{boss:boss},processSpell);
 		setTimeout(checkTutorial,1000,tutorial,suggestions,boss,player);
 	}
-	tutorialStart(tutorial,suggestions,boss,player);
+	//tutorialStart(tutorial,suggestions,boss,player);
 	
 	function loadDummyAI(boss){
 		boss = new DummyAI();

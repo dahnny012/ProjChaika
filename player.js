@@ -47,10 +47,10 @@ AI.prototype.healthUpdate = function(){
 	this.healthBarUpdate();
 }
 AI.prototype.init = function(){
-
 	this.healthUpdate();
 	this.nameUpdate();
 	this.timerWidth = getWidth(this.castBarId);
+	this.maxWidth = this.timerWidth;
 	this.timerStartWidth = 0;
 	this.timerUpdate(0);
 	if(this.ability !== undefined)
@@ -136,7 +136,7 @@ AI.prototype.addSpell = function(spell){
 
 
 AI.prototype.die = function(){
-	alert("GG");
+	$(this.castBarId).css("width",this.maxWidth);
 }
 
 function DummyAI(){
@@ -208,6 +208,10 @@ Human.prototype.healthBarUpdate = function(){
 	var amount = pxToNum(this.healthStartWidth);
 	this.healthWidth = percent * amount;
 	$(this.healthBarId).css("width",this.healthWidth);
+}
+Human.prototype.resetHealth = function(){
+	this.health = this.startHealth;
+	this.healthUpdate();
 }
 
 
@@ -333,8 +337,8 @@ BossManager.prototype.currentBoss= function(){
 // TODO in the future.
 // Should move this to the node. Dunno how to work that shit yet.
 BossManager.prototype.init = function(){
-	var tutBoss = new AI("Tutorial Boss",100,new WordThreshold(5));
-	tutBoss.addSpell(new bossSpell("Use rookie mistake",8000,30));
+	var tutBoss = new AI("Tutorial Boss",10);
+	tutBoss.addSpell(new bossSpell("Use rookie mistake",1000,30));
 	tutBoss.addSpell(new bossSpell("Hello World",3000,10));
 	this.bossList.push(tutBoss);
 	
@@ -349,6 +353,13 @@ BossManager.prototype.init = function(){
 //	var Lvl2Boss = new AI("Lvl 2 Boss",200);
 	// Push some spells.
 //	this.bossList.push(Lvl2Boss);
+}
+
+BossManager.prototype.newBoss=function(boss,player,endGame){
+	boss.die();
+	boss = this.getNextBoss();
+	boss.init();
+	boss.cast(boss,player,endGame);
 }
 
 // Boss currently cheats the spell engine.
