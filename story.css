@@ -1,0 +1,61 @@
+body{
+    padding: 0px;
+    margin: 0px;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+
+#storyContainer{
+    
+}
+
+#bossWarning{
+   position:absolute;
+   width:100%;
+   text-align:center;
+   font-size:75px;
+}
+
+#bossWarningWrapper{
+   position:absolute;
+   width:100%;
+   height:10%;
+   background:red;
+   clear:left;
+   opacity:.5;
+}
+#story{
+    margin-top:2.5%;
+    padding-top:10px;
+    padding-left:10px;
+    border:4px solid grey;
+    height:300px;
+    width:700px;
+    margin-left:auto;
+    margin-right:auto;
+    font-size:20px;
+    overflow-y: scroll;
+    background:white;
+}
+
+
+.story{
+    color: #3A3939;
+    margin-bottom:4px;
+}
+
+.chat{
+    color:blue;
+}
+
+.prompt{
+   color:grey;
+}
+
+.event{
+   color:#41A027;        
+}
+
+.enemyChat{
+    color:red;
+}
