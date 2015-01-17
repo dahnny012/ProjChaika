@@ -153,7 +153,7 @@ function BattleController(type)
 		console.log(player);
 	}
 	function endGame(boss,player){
-	    var x;
+	    player.gui.deathScreen();
     	if (confirm("Would you like to retry?") == true) {
     		boss.reset();
     		player.reset();

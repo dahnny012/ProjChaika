@@ -202,17 +202,14 @@ function Human(name,health)
 }
 
 Human.prototype = new Mage();
-Human.prototype.gui = new guiUtils;
+Human.prototype.gui = new GuiUtils();
 Human.prototype.healthUpdate = function(){
 	Mage.prototype.healthUpdate.call(this);
 	this.healthBarUpdate();
 }
 
-/*
-Human.prototype.reduceHealth = function(dmg){
-	Mage.prototype.reduceHealth.call(this,dmg);
-	this.gui.flashScreen();
-}*/
+
+
 Human.prototype.healthBarUpdate = function(){
 	if(this.healthStartWidth === undefined){
 		this.healthStartWidth = $(this.healthId).css("width");
@@ -322,6 +319,7 @@ Human.prototype.reset = function(){
 	for(var i=0; i<wQLength; i++)
 		this.xUpdateWeaponQueue(i);
 	$("#controller").val(null);
+	$("#deathScreen").remove();
 }
 
 // in a refactor this will be neater. No time for that tho.
@@ -359,7 +357,7 @@ BossManager.prototype.currentBoss= function(){
 // Should move this to the node. Dunno how to work that shit yet.
 BossManager.prototype.init = function(){
 	var tutBoss = new AI("Tutorial Boss",10,new VerbArmor(3));
-	tutBoss.addSpell(new bossSpell("Use rookie mistake",5000,1));
+	tutBoss.addSpell(new bossSpell("Use rookie mistake",1000,1));
 	tutBoss.addSpell(new bossSpell("Hello World",1,100));
 	this.bossList.push(tutBoss);
 	

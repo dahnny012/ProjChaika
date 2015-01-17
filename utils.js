@@ -13,12 +13,12 @@ var STORYSTART = 3;
 var STORYDONE = 57;
 var TUTORIAL= 2;
 var STORY = 1;
-function guiUtils()
+function GuiUtils()
 {
     
 }
 
-guiUtils.prototype.flashScreen = function(){
+GuiUtils.prototype.flashScreen = function(){
     
     var body = $("body")
     var node = document.createElement("div");
@@ -32,23 +32,56 @@ guiUtils.prototype.flashScreen = function(){
     node.style.left="0px";
     body.append(node);
     setTimeout(function(){
-        $("#flashScreen").hide();
+        $("#flashScreen").remove();
     },100);
 }
 
-guiUtils.prototype.deathScreen = function(){
+GuiUtils.prototype.deathScreen = function(){
     var body = $("body")
     var node = document.createElement("div");
-    node.id = "flashScreen";
+    node.id = "deathScreen";
     node.style.width = "100%";
     node.style.height= "100%";
-    node.style.opacity = ".8";
+    node.style.opacity = ".5";
     node.style.background="black";
     node.style.position ="absolute";
     node.style.top = "0px";
     node.style.left="0px";
+    body.append(node);
 }
 
+GuiUtils.prototype.removeDeathScreen = function(){
+    $("#deathScreen").remove();
+}
+
+
+GuiUtils.prototype.fadeBlack = function(string){
+    // pretend the black element is there.
+    
+    $("#fadeBlack").html(string);
+    $("#fadeBlack").show().animate({opacity:"1"},2000,function(){
+        setTimeout(function() {
+            $("#fadeBlack").animate({opacity:"0"},1000,function(){
+                $("#fadeBlack").hide();
+            });
+        }, 1000);
+    });
+}
+
+GuiUtils.prototype.blackOut=function(string){
+    $("#fadeBlack").html(string);
+    $("#fadeBlack").show().animate({opacity:"1"},2000,function(){
+        setTimeout(function() {
+            $("#fadeBlack").html("Wake up");
+            setTimeout(function(){
+                $("#fadeBlack").html("Wake up mister");
+                $(setTimeout(function() {
+                    $("#fadeBlack").html("Wake up!");
+                }),3000)
+            },1000)
+        }, 3000);
+    });
+}
 
 
 // Css helping functions
