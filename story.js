@@ -1,10 +1,15 @@
 
-function Story()
+function Story(boss,player,suggestions,mgr)
 {
 	this.init();
 	this.gui = new GuiUtils();
+	this.boss = boss;
+	this.player = player;
+	this.suggestions = suggestions;
+	this.mgr = mgr;
 }
 
+Story.prototype.status = NOBOSS;
 Story.prototype.container = $("#storyContainer");
 Story.prototype.step = STORYSTART;//INPROGRESS;
 Story.prototype.queue = [];
@@ -16,14 +21,28 @@ Story.prototype.init = function(){
 }
 Story.prototype.continue = function(e){
     console.log("FF");
-    var tut = e.data.story;
+    var story = e.data.story;
     if(e.which == ENTER)
     {
-        //tut.queue.forEach(function(e){
+        //story.queue.forEach(function(e){
             //e.toggle();
         //})
-        tut.loadNext();
-        tut.step++;
+        switch(story.step){
+            case 14:
+            case 25:
+            case 34:
+            case 45:
+                console.log("UNbinding")
+                story.container.unbind();
+                story.status = BOSS;
+                story.loadBossGui();
+                break;
+            default:
+                story.status = NOBOSS;
+                story.loadNext();
+                story.step++;
+        }
+        
     }
 }
 Story.prototype.turnOn = function(query){
@@ -78,6 +97,14 @@ Story.prototype.checkFade = function(){
             this.gui.blackOut("End of Prologue");
     }
 }
+
+Story.prototype.loadBossGui = function(){
+    this.turnOn("#bossWrapper");
+    this.container.slideToggle("100",function(){});
+}
+
+
+
 function start(){
    var battle = new BattleController(STORY); 
 };

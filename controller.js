@@ -27,7 +27,7 @@ function BattleController(type)
 				tutorialStart(tutorial,suggestions,boss,player);
 				break;
 			case STORY:
-				storyStart();
+				storyStart(boss,player,suggestions,bossManager);
 		}
 	}
 	main();
@@ -93,15 +93,19 @@ function BattleController(type)
 	
 	function storyStart(){
 		story=new Story();
+		setTimeout(checkStory,1000,story,suggestions,boss,player);
 	}
 	
 	function battleStart(boss,player,suggestions)
 	{
+		console.log("battle start");
 		boss = bossManager.getNextBoss();
+		if(boss.name == "Tutorial Boss")
+			boss = bossManager.getNextBoss();
 		boss.init();
 		$(document).unbind().on("keydown","#controller",{boss:boss},processSpell);
 		player.init();
-		boss.cast(boss,player);
+		boss.cast(boss,player,endGame);
 		suggestions.bar.countDown(suggestions.bar,suggestions,
 		function(suggestions){
 			suggestions.fillBank();
@@ -130,11 +134,16 @@ function BattleController(type)
 		boss.cast(boss,player,endGame);
 	}
 	function loadSuggestions(suggestions){
+		$("#suggestionsWrapper").show();
 		suggestions.bar.countDown(suggestions.bar,suggestions,
 		function(suggestions){
 			suggestions.fillBank();
 			suggestions.container.show()}
 		);
+	}
+	
+	function toggleBattleLog(){
+		$("#battleLogWrapper").slideToggle("100");
 	}
 	
 	function checkTutorial(tutorial,suggestions,boss,player){
@@ -145,6 +154,23 @@ function BattleController(type)
 		}
 		else{
 			setTimeout(checkTutorial,1000,tutorial,suggestions,boss,player);
+		}
+	}
+	
+	function checkStory(story,suggestions,boss,player){
+		if(story.status == BOSS){
+			console.log("loading boss");
+			if(player !== undefined)
+				player.reset();
+			if(boss !== undefined)
+				boss.reset();
+			battleStart(boss,player,suggestions);
+			loadSuggestions(suggestions);
+			toggleBattleLog();
+			story.status = BATTLE;
+		}
+		else{
+			setTimeout(checkStory,500,story,suggestions,boss,player);
 		}
 	}
 	

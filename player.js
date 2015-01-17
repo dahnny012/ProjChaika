@@ -362,10 +362,10 @@ BossManager.prototype.init = function(){
 	this.bossList.push(tutBoss);
 	
 	
-	var Lvl1Boss =new AI("Lvl 1 Boss",150);
-	Lvl1Boss.addSpell(new bossSpell("Teach lesson",1000,10));
-	Lvl1Boss.addSpell(new bossSpell("Throw textbook",900,20));
-	Lvl1Boss.addSpell(new bossSpell("Give homework",5000,30));
+	var Lvl1Boss =new AI("Spere,Boss of Literature",150);
+	Lvl1Boss.addSpell(new bossSpell("Teach lesson",1000,100));
+	Lvl1Boss.addSpell(new bossSpell("Throw textbook",1000,20));
+	Lvl1Boss.addSpell(new bossSpell("Give homework",1000,30));
 	this.bossList.push(Lvl1Boss);
 	
 	// For later	

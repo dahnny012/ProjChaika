@@ -13,6 +13,9 @@ var STORYSTART = 3;
 var STORYDONE = 57;
 var TUTORIAL= 2;
 var STORY = 1;
+var NOBOSS = 0;
+var BOSS = 1
+var BATTLE =2;
 function GuiUtils()
 {
     
