@@ -364,20 +364,26 @@ BossManager.prototype.init = function(){
 	
 	var Lvl1Boss =new AI("Spere,Boss of Literature",150);
 	Lvl1Boss.addSpell(new bossSpell("Romeo oh Romeo",5000,10));
-	Lvl1Boss.addSpell(new bossSpell("To be or not to be",5000,20));
-	Lvl1Boss.addSpell(new bossSpell("The green-eyed monster",5000,30));
+	Lvl1Boss.addSpell(new bossSpell("To be or not to be",5000,15));
+	Lvl1Boss.addSpell(new bossSpell("The green-eyed monster",5000,15));
 	this.bossList.push(Lvl1Boss);
 	
 	var Lvl2Boss =new AI("Zeno,Boss of Mathematics",150);
 	Lvl2Boss.addSpell(new bossSpell("Make paradox",5000,10));
-	Lvl2Boss.addSpell(new bossSpell("Summate to Infinity",5000,20));
-	Lvl2Boss.addSpell(new bossSpell("Run Achilles run",5000,30));
+	Lvl2Boss.addSpell(new bossSpell("Summate to Infinity",5000,15));
+	Lvl2Boss.addSpell(new bossSpell("Run Achilles run",5000,15));
 	this.bossList.push(Lvl2Boss);
 	
 	var Lvl3Boss =new AI("Ein,Boss of Science",150);
 	Lvl3Boss.addSpell(new bossSpell("Atomic bomb",5000,10));
-	Lvl3Boss.addSpell(new bossSpell("Relative theory",5000,20));
-	Lvl3Boss.addSpell(new bossSpell("Public paper",5000,30));
+	Lvl3Boss.addSpell(new bossSpell("Relative theory",5000,15));
+	Lvl3Boss.addSpell(new bossSpell("Public paper",5000,15));
+	this.bossList.push(Lvl3Boss);
+	
+	var Lvl4Boss =new AI("Merlin,Boss of Magic",150);
+	Lvl3Boss.addSpell(new bossSpell("Knights of the Round",5000,10));
+	Lvl3Boss.addSpell(new bossSpell("Summon Lancelot",5000,15));
+	Lvl3Boss.addSpell(new bossSpell("Summon Arthur",5000,15));
 	this.bossList.push(Lvl3Boss);
 	
 	// For later	

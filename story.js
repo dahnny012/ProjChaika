@@ -115,6 +115,7 @@ Story.prototype.procede = function(){
     this.step++;
     var story = this;
     this.container.on("keydown",{story:story},story.continue);
+    $("#controller").unbind();
 }
 
 
