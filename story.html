@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
     </head>
     <body>
-        <section id="storyContainer">
+        <section id="storyContainer" tabindex="0">
             <!--div id="bossWarningWrapper">
                 
             </div>
@@ -13,18 +13,18 @@
                     Boss name
             </div--->
 
-            <div id="story">
+            <div id="story" tabindex="0">
                 <div class="story" id="start">
                    After banishing Potato a golden chest appears where he once stood and  
                    the mysterious voice who instructed you disappears. 
-                   A familiar figure appears from the ruin's entrance. 
+                   A familiar figure appears from the ruin's entrance.
                 </div>
                 <div class="story" id="story3">
                     <span class="chat">"How are you feeling?" </span> The man asks you.
                 </div>
                 
                 <div class="prompt" id="prompt4">
-                    (Player types something)
+                    [Press enter to nod]
                 </div>
                 <div class="story" id="story5">
                     <span class="chat">“I’m glad you’ve recovered from the accident. 
@@ -41,7 +41,7 @@
                     <span class="chat">“Well what are you waiting for? Go on open the chest. You’ve earned it”</span>
                 </div>
                  <div class="prompt" id="prompt8">
-                    (Player is forced to type pickup crystal)
+                    [Press enter to open the treasure chest]
                 </div>
                 <div class="event" id="story9">
                     You found the crystal of agriculture.
@@ -59,7 +59,7 @@
                     <span class="enemyChat">“Shall I compare you 
                     to a summers day”?</span> It says and begins to awaken.
                 </div>
-                <div class="prompt" id="propmt13">
+                <div class="prompt" id="prompt13">
                     Press enter when ready
                 </div>
                 <!-- wait for the niggie to kill him -->
@@ -262,26 +262,62 @@
                 </div>
             </div>
         </section>
-        <section id="playerWrapper">
-            <div id="battleBar">
-            	<input class="battleBar" type="text" autocomplete="off" id="controller" placeholder='[Enter Spell Here]'></input>
-            	<img class="battleBar"  id="divide" src="Assets/Divide2px.png">
-            	<div class="battleBar" id="playerHealthBar">		
-            		<div id="playerHealth">
-            		</div> 
-            	</div>
-            	<div id="weaponQueue">
-            		<div class="weapon" id="weapon0"></div>
-            		<div class="weapon" id="weapon1"></div>
-            		<div class="weapon" id="weapon2"></div>
-            	</div>
-            
-            </div>
+        <section id="bossWrapper">
+        	<div id="boss">
+        		<div id="bossName"></div>
+        		<div id="bossAbilities"></div>
+        		<div id="bossHealthWrapper">
+        			<div id="bossHealthBar"></div>
+        			<div id="bossHealth"></div>
+        		</div>
+        		<div id="bossCastWrapper">
+        			<div id="bossCastBar"></div>
+        			<div id="bossSpell"></div>
+        		</div>
+        	</div>
+        </section>
+        <section id="battleLogWrapper">
+        	<div id="battleLog">
+        	</div>	
+          </section>
+          <section id="playerWrapper">
+            <section id="suggestionsWrapper">
+        		<div id="suggestionsCdWrapper">
+        			Suggestions in <span id="suggestCd"></span>
+        			<div id="suggestionBar">
+        				
+        			</div>
+        		</div>
+        		<div id="suggestions">
+        		</div>
+        	</section>
+        	<div id="battleBar">
+        	<input class="battleBar" type="text" autocomplete="off" id="controller" placeholder='[Enter Spell Here]'></input>
+        	<img class="battleBar"  id="divide" src="Assets/Divide2px.png">
+        	<div class="battleBar" id="playerHealthBar">		
+        		<div id="playerHealth">
+        		</div> 
+        	</div>
+        	<div id="weaponQueue">
+        		<div class="weapon" id="weapon0"></div>
+        		<div class="weapon" id="weapon1"></div>
+        		<div class="weapon" id="weapon2"></div>
+        	</div>
+        
+        	</div>
         </section>
     </body>
 </html>
 
 <footer>
     <script src="jquery-1.11.1.js"></script>
+    <script src="utils.js"></script>
     <script src="story.js"></script>
+    <script src="db.js"></script>
+	<script src="dictionary.js"></script>
+	<script src="spellEngine.js"></script>
+	<script src="player.js"></script>
+	<script src="suggestions.js"></script>
+	<script src="controller.js"></script>
+	<script src="main.js"></script>
 </footer>

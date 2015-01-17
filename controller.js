@@ -20,7 +20,11 @@ function BattleController()
 	var spellQueue = new Array();
 	var stopGame;
 	var killedTutBoss;
-
+	var story;
+	function main(){
+		// switch global localstorage
+	}
+	main();
 	function processSpell(event){
 		if(event.which == ENTER)
 		{	
@@ -76,7 +80,7 @@ function BattleController()
 	{
 		boss = bossManager.getNextBoss();
 		boss.init();
-		$(document).on("keydown","#controller",{boss:boss},processSpell);
+		$(document).unbind().on("keydown","#controller",{boss:boss},processSpell);
 		player.init();
 		boss.cast(boss,player);
 		suggestions.bar.countDown(suggestions.bar,suggestions,
@@ -85,7 +89,7 @@ function BattleController()
 			suggestions.container.show()}
 		);
 	}
-	battleStart(boss,player,suggestions);
+	//battleStart(boss,player,suggestions);
 	function tutorialStart(tutorial,suggestions,boss,player){
 		tutorial = new Tutorial();
 		boss = loadDummyAI(boss);
