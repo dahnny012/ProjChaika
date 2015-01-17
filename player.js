@@ -48,7 +48,8 @@ AI.prototype.healthUpdate = function(){
 }
 
 AI.prototype.reduceHealth = function(dmg){
-	Mage.prototype.reduceHealth.call(this);
+	Mage.prototype.reduceHealth.call(this,dmg);
+	
 }
 AI.prototype.init = function(){
 	this.healthUpdate();
