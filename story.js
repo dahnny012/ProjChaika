@@ -29,7 +29,7 @@ Story.prototype.continue = function(e){
         //})
         switch(story.step){
             case 14:
-            case 25:
+            case 24:
             case 34:
             case 45:
                 console.log("UNbinding")
@@ -46,11 +46,13 @@ Story.prototype.continue = function(e){
     }
 }
 Story.prototype.turnOn = function(query){
+    var id = query;
 	query = $(query);
 	query.slideToggle("500",function(){
 	    $("#storyContainer").scrollTop($("#story").height());
 	});
-	this.queue.push(query);
+	if(id !== "#bossWrapper")
+	    this.queue.push(query);
 	
 }
 Story.prototype.loadNext = function(){
@@ -103,6 +105,17 @@ Story.prototype.loadBossGui = function(){
     this.container.slideToggle("100",function(){});
 }
 
+Story.prototype.load = function(){
+    this.container.slideToggle("100");
+}
+
+Story.prototype.procede = function(){
+    this.load();
+    this.loadNext();
+    this.step++;
+    var story = this;
+    this.container.on("keydown",{story:story},story.continue);
+}
 
 
 function start(){

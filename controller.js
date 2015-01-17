@@ -81,9 +81,12 @@ function BattleController(type)
 								tutorial.reload();
 								break;
 							case STORY:
-								alert("Moving on");
+								story.procede();
+								unloadSuggestions(suggestions);
+								toggleBattleLog();
+								unloadBoss();
+								checkStory(story,suggestions,boss,player);
 						}
-						//bossManager.newBoss(boss,player,endGame);
 						player.resetHealth();
 					}
 				}
@@ -141,11 +144,19 @@ function BattleController(type)
 			suggestions.container.show()}
 		);
 	}
+	function unloadSuggestions(suggestions){
+		$("#suggestionsWrapper").hide();
+		suggestions.bar.stop = TRUE;
+	}
 	
 	function toggleBattleLog(){
+		$("#battleLog").html("");
 		$("#battleLogWrapper").slideToggle("100");
 	}
 	
+	function unloadBoss(){
+		$("#bossWrapper").slideToggle("100");
+	}
 	function checkTutorial(tutorial,suggestions,boss,player){
 		if(tutorial.status == DONE){
 			player.init();

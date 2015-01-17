@@ -116,6 +116,10 @@ SuggestionBar.prototype.cdId = $("#suggestCd");
 SuggestionBar.prototype.barId = $("#suggestionBar");
 SuggestionBar.prototype.countDown=function(bar,suggestions,cb){
     bar.update(bar.timer);
+    if(bar.stop){
+        bar.stop = FALSE;
+        return
+    }
      if(bar.timer <= 0){
          cb(suggestions);
         bar.timer = bar.startTimer;
@@ -146,8 +150,7 @@ SuggestionBar.prototype.update= function(num){
     this.barId.css("width",this.startWidth);
 }
 
-
-
+SuggestionBar.prototype.stop = FALSE;
 
 function checkRandPromise(promise,Suggestions)
 {

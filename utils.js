@@ -1,7 +1,7 @@
 var ENTER = 13;
-var MAXRANDS = 3;
-var MAXLINES = 65000;
-var SUGGESTIONCD = 10;
+var MAXRANDS = 4;
+var MAXLINES = 112000;
+var SUGGESTIONCD = 15;
 var LOADCOMPLETE = 1;
 var WORD = 0;
 var POS = 1;
@@ -16,6 +16,7 @@ var STORY = 1;
 var NOBOSS = 0;
 var BOSS = 1
 var BATTLE =2;
+var STOP = 1;
 function GuiUtils()
 {
     
