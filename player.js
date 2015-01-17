@@ -41,6 +41,10 @@ function AI(name,health,ability)
 	this.startHealth = health;
 	this.castQueue = [];
 	this.ability = ability;
+	if(this.ability !== undefined){
+		if(this.ability.name == "Extreme Focus")
+			this.focus = TRUE;
+	}
 }
 
 
@@ -53,7 +57,8 @@ AI.prototype.healthUpdate = function(){
 
 AI.prototype.reduceHealth = function(dmg){
 	Mage.prototype.reduceHealth.call(this,dmg);
-	this.interrupt(dmg);
+	if(this.focus === undefined)
+		this.interrupt(dmg);
 }
 AI.prototype.interrupt = function(dmg){
 	if(dmg * interruptConst > this.castTimer){
@@ -374,9 +379,10 @@ BossManager.prototype.currentBoss= function(){
 // TODO in the future.
 // Should move this to the node. Dunno how to work that shit yet.
 BossManager.prototype.init = function(){
-	var tutBoss = new AI("Tutorial Boss",100,new VerbArmor(1));
-	tutBoss.addSpell(new bossSpell("Use rookie mistake",8000,5));
-	tutBoss.addSpell(new bossSpell("Hello World",8000,5));
+	var tutBoss = new AI("Potato,Boss of Potatoes",100,new VerbArmor(1));
+	tutBoss.addSpell(new bossSpell("Throw potato",8000,5));
+	tutBoss.addSpell(new bossSpell("Sling red potato",8000,5));
+	tutBoss.addSpell(new bossSpell("Summon giant potato",10000,10));
 	this.bossList.push(tutBoss);
 	
 	
@@ -393,15 +399,15 @@ BossManager.prototype.init = function(){
 	this.bossList.push(Lvl2Boss);
 	
 	var Lvl3Boss =new AI("Ein,Boss of Science",200,new BigWordShield(6));
-	Lvl3Boss.addSpell(new bossSpell("Atomic bomb",6000,10));
-	Lvl3Boss.addSpell(new bossSpell("Relative theory",6000,15));
-	Lvl3Boss.addSpell(new bossSpell("Public paper",6000,15));
+	Lvl3Boss.addSpell(new bossSpell("Atomic bomb",6500,10));
+	Lvl3Boss.addSpell(new bossSpell("Relative theory",6500,15));
+	Lvl3Boss.addSpell(new bossSpell("Public paper",6500,15));
 	this.bossList.push(Lvl3Boss);
 	
-	var Lvl4Boss =new AI("Merlin,Boss of Magic",200);
-	Lvl3Boss.addSpell(new bossSpell("Knights of the Round",5000,10),new VerbArmor(4));
-	Lvl3Boss.addSpell(new bossSpell("Summon Lancelot",5000,15));
-	Lvl3Boss.addSpell(new bossSpell("Summon Arthur",5000,15));
+	var Lvl4Boss =new AI("Merlin,Boss of Magic",250,new ExtremeFocus());
+	Lvl4Boss.addSpell(new bossSpell("Knights of the Round",10000,20));
+	Lvl4Boss.addSpell(new bossSpell("Summon Lancelot",10000,10));
+	Lvl4Boss.addSpell(new bossSpell("Summon Arthur",10000,20));
 	this.bossList.push(Lvl4Boss);
 	
 	// For later	
@@ -435,6 +441,8 @@ Ability.prototype.name;
 Ability.prototype.val;
 Ability.prototype.container = $("#bossAbilities");
 Ability.prototype.init = function(){
+	if(this.val === undefined)
+		this.val = "";
 	this.container.html(this.name +
 	" " + this.val + ":" + " ");
 }
@@ -569,10 +577,10 @@ BigWordShield.prototype.activate = function(spell){
 		if(words[i].length > this.val){
 			if(words[i].length > 0){
 				console.log("reducing dmg from player");
-				spell.power = spell.power / 1.5;
+				spell.power = spell.power / 3;
 			}
 		}else{
-			spell.power *= 1.5
+			spell.power *= 1.1
 		}
 	}
 	
@@ -584,8 +592,16 @@ BigWordShield.prototype.reset = function(){
 	return;
 }
 
-function BlindingMagic(){
-	
+
+function ExtremeFocus(){
+	this.name ="Extreme Focus";
 }
-BlindingMagic.prototype.init= function(){};
-BlindingMagic.pr
+ExtremeFocus.prototype = new Ability();
+ExtremeFocus.prototype.constructor = ExtremeFocus;
+ExtremeFocus.prototype.name ="Exteme Focus";
+ExtremeFocus.prototype.init= function(){
+	Ability.prototype.init.call(this);
+	this.container.append("This boss cannot be interrupted");
+};
+ExtremeFocus.prototype.activate = function(){};
+ExtremeFocus.prototype.reset = function(){};

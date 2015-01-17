@@ -103,7 +103,7 @@ function BattleController(type)
 	{
 		console.log("battle start");
 		boss = bossManager.getNextBoss();
-		if(boss.name == "Tutorial Boss")
+		if(boss.name == "Potato,Boss of Potatoes")
 			boss = bossManager.getNextBoss();
 		boss.init();
 		$(document).unbind().on("keydown","#controller",{boss:boss},processSpell);
@@ -147,11 +147,11 @@ function BattleController(type)
 	
 	function toggleBattleLog(){
 		$("#battleLog").html("");
-		$("#battleLogWrapper").slideToggle("100");
+		$("#battleLogWrapper").hide("100");
 	}
 	
 	function unloadBoss(){
-		$("#bossWrapper").slideToggle("100");
+		$("#bossWrapper").hide("100");
 	}
 	function checkTutorial(tutorial,suggestions,boss,player){
 		if(tutorial.status == DONE){

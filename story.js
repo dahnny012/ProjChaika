@@ -97,6 +97,10 @@ Story.prototype.checkFade = function(){
         case 57:
             this.clearQueue();
             this.gui.blackOut("End of Prologue");
+            break;
+        case 59:
+            this.gui.credits("Chaika was created by Danh Nguyen<br> with the help of " +
+            "Wen Chuan Lee and Charles McGregor")
     }
 }
 

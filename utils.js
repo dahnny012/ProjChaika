@@ -10,7 +10,7 @@ var INPROGRESS = 2;
 var TRUE = 1;
 var FALSE = 0;
 var STORYSTART = 3;
-var STORYDONE = 57;
+var STORYDONE = 59;
 var TUTORIAL= 2;
 var STORY = 1;
 var NOBOSS = 0;
@@ -78,12 +78,22 @@ GuiUtils.prototype.blackOut=function(string){
         setTimeout(function() {
             $("#fadeBlack").html("Wake up");
             setTimeout(function(){
-                $("#fadeBlack").html("Wake up mister");
-                $(setTimeout(function() {
-                    $("#fadeBlack").html("Next chapter to be announced.");
-                }),3000)
-            },1000)
+                $("#fadeBlack").html("Wake up!");
+                setTimeout(function(){
+                    $("#fadeBlack").animate({"opacity":"0"},function(){
+                        $("#fadeBlack").hide();
+                    })
+                },1000)
+            },2000)
         }, 3000);
+    });
+}
+
+GuiUtils.prototype.credits = function(string){
+    // pretend the black element is there.
+    
+    $("#fadeBlack").html(string);
+    $("#fadeBlack").show().animate({opacity:"1"},2000,function(){
     });
 }
 
