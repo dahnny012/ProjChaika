@@ -8,7 +8,7 @@ function mainController()
 
 
 var cDebug;
-function BattleController()
+function BattleController(type)
 {
 	var spellBook = new Dictionary();
 	var engine = new SpellEngine();
@@ -18,11 +18,17 @@ function BattleController()
 	var boss;
 	var bossManager = new BossManager();
 	var spellQueue = new Array();
-	var stopGame;
-	var killedTutBoss;
+	var gameType = type;
 	var story;
 	function main(){
-		// switch global localstorage
+		gameType = type;
+		switch(type){
+			case TUTORIAL:
+				tutorialStart(tutorial,suggestions,boss,player);
+				break;
+			case STORY:
+				storyStart();
+		}
 	}
 	main();
 	function processSpell(event){
@@ -68,12 +74,23 @@ function BattleController()
 					boss.reduceHealth(spell.power);
 					battleLog(spell,"playerLog",player,boss);
 					if(boss.health <= 0){
-						bossManager.newBoss(boss,player,endGame);
+						switch(gameType){
+							case TUTORIAL:
+								alert("you beat the tutorial");
+								break;
+							case STORY:
+								alert("Moving on");
+						}
+						//bossManager.newBoss(boss,player,endGame);
 						player.resetHealth();
 					}
 				}
 			}
 		}
+	}
+	
+	function storyStart(){
+		story=new Story();
 	}
 	
 	function battleStart(boss,player,suggestions)

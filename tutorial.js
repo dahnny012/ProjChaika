@@ -77,3 +77,9 @@ Tutorial.prototype.loadSuggestions = function(){
 Tutorial.prototype.unloadDummy = function(){
     $("#dummyWrapper").slideToggle("100",function(){});
 }
+
+function start(){
+    var battle = new BattleController(TUTORIAL);
+}
+
+start();

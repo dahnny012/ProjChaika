@@ -11,6 +11,8 @@ var TRUE = 1;
 var FALSE = 0;
 var STORYSTART = 3;
 var STORYDONE = 57;
+var TUTORIAL= 2;
+var STORY = 1;
 function guiUtils()
 {
     

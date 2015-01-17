@@ -1,3 +1,4 @@
+
 function Story()
 {
 	this.init();
@@ -51,3 +52,7 @@ Story.prototype.loadNext = function(){
     }
 }
 
+function start(){
+   var battle = new BattleController(STORY); 
+};
+start();
