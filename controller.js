@@ -45,7 +45,8 @@ function BattleController(type)
 			if(spell !== undefined)
 				spellQueue.push(spell);
 			if(event.data !== undefined){
-				processQueue(event.data.boss);}
+				processQueue(event.data.boss,
+				event.data.tutorial);}
 			else{
 				processQueue(); }
 				
@@ -54,10 +55,11 @@ function BattleController(type)
 	
 	
 	// In later refactor boss will be using spell engine as well.
-	function processQueue(boss)
+	function processQueue(boss,tutorial)
 	{
 		console.log("EVENT");
 		console.log(boss);
+		console.log(tutorial);
 		if(spellQueue.length !== 0){
 			var spell = engine.evaluate(spellQueue,player,boss);
 			if(spell === undefined)
@@ -68,15 +70,15 @@ function BattleController(type)
 			else if(spell.type == "Weapon"){
 				weaponLog(spell,"playerLog",player,boss);
 			}
-			else if(spell !== 0)
-			{
+			else if(spell !== 0){
 				if(boss !== undefined){
 					boss.reduceHealth(spell.power);
 					battleLog(spell,"playerLog",player,boss);
-					if(boss.health <= 0){
+					if(boss.health <= 0 && boss.name !== "Training Dummy"){
 						switch(gameType){
 							case TUTORIAL:
-								alert("you beat the tutorial");
+								clearBoss();
+								tutorial.reload();
 								break;
 							case STORY:
 								alert("Moving on");
@@ -120,11 +122,11 @@ function BattleController(type)
 		boss.init();
 		return boss;
 	}
-	function loadTutorialBoss(boss){
+	function loadTutorialBoss(boss,tutorial){
 		boss = bossManager.getNextBoss();
 		boss.init();
 		boss.type = "Tutorial";
-		$("#controller").unbind().on("keydown",{boss:boss},processSpell);
+		$("#controller").unbind().on("keydown",{boss:boss,tutorial:tutorial},processSpell);
 		boss.cast(boss,player,endGame);
 	}
 	function loadSuggestions(suggestions){
@@ -138,7 +140,7 @@ function BattleController(type)
 	function checkTutorial(tutorial,suggestions,boss,player){
 		if(tutorial.status == DONE){
 			player.init();
-			loadTutorialBoss(boss);
+			loadTutorialBoss(boss,tutorial);
 			loadSuggestions(suggestions);
 		}
 		else{
@@ -150,8 +152,21 @@ function BattleController(type)
 	{
 		console.log(player);
 	}
-	function endGame(){
-		alert("You have Won");
+	function endGame(boss,player){
+	    var x;
+    	if (confirm("Would you like to retry?") == true) {
+    		boss.reset();
+    		player.reset();
+    		boss.cast(boss,player,endGame);
+    	} else {
+        	$("#controller").unbind();
+    	}
+	}
+	function clearBoss(){
+		$("#bossWrapper").toggle("100");
+	}
+	function endTutorial(tutorial){
+		tutorial.reload();
 	}
 }
 

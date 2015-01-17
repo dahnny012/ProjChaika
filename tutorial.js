@@ -78,6 +78,12 @@ Tutorial.prototype.unloadDummy = function(){
     $("#dummyWrapper").slideToggle("100",function(){});
 }
 
+Tutorial.prototype.reload = function(){
+    this.container.slideToggle("100",function(){
+        $("#end").slideToggle("100");
+    });
+    
+}
 function start(){
     var battle = new BattleController(TUTORIAL);
 }

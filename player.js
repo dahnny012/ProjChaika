@@ -71,6 +71,7 @@ AI.prototype.healthBarUpdate = function(){
 // Predef vars
 
 //TODO Cache these
+AI.prototype.container = "#bossWrapper";
 AI.prototype.healthBarId="#bossHealthBar";
 AI.prototype.healthId = "#bossHealth";
 AI.prototype.castBarId= "#bossCastBar";
@@ -79,7 +80,7 @@ AI.prototype.castIndex = 0;
 AI.prototype.cast = function(boss,player,cb){
 	if(boss.health <= 0 || player.health <= 0){
 		if(player.health <= 0)
-			alert("You have lost");
+			cb(boss,player,cb);
 		return;
 	}
 	boss.castIndex = boss.castIndex % boss.castQueue.length;
@@ -133,10 +134,22 @@ AI.prototype.nameUpdate = function(){
 AI.prototype.addSpell = function(spell){
 	this.castQueue.push(spell);
 }
-
-
-AI.prototype.die = function(){
+AI.prototype.resetCast = function(){
 	$(this.castBarId).css("width",this.maxWidth);
+	this.castIndex = 0;
+}
+AI.prototype.resetHealth = function(){
+	this.health = this.startHealth;
+	this.healthUpdate();
+}
+AI.prototype.reset =function(){
+	this.resetCast();
+	this.resetHealth();
+	if(this.ability !== undefined)
+		this.ability.reset();
+}
+AI.prototype.unload = function(){
+	this.container.slideToggle("100");
 }
 
 function DummyAI(){
@@ -303,6 +316,14 @@ Human.prototype.findOpenSlot = function(){
 	}
 }
 
+Human.prototype.reset = function(){
+	this.resetHealth();
+	this.inventory = [];
+	for(var i=0; i<wQLength; i++)
+		this.xUpdateWeaponQueue(i);
+	$("#controller").val(null);
+}
+
 // in a refactor this will be neater. No time for that tho.
 function cssBar(id,val)
 {
@@ -337,9 +358,9 @@ BossManager.prototype.currentBoss= function(){
 // TODO in the future.
 // Should move this to the node. Dunno how to work that shit yet.
 BossManager.prototype.init = function(){
-	var tutBoss = new AI("Tutorial Boss",10);
-	tutBoss.addSpell(new bossSpell("Use rookie mistake",1000,30));
-	tutBoss.addSpell(new bossSpell("Hello World",3000,10));
+	var tutBoss = new AI("Tutorial Boss",10,new VerbArmor(3));
+	tutBoss.addSpell(new bossSpell("Use rookie mistake",5000,1));
+	tutBoss.addSpell(new bossSpell("Hello World",1,100));
 	this.bossList.push(tutBoss);
 	
 	
@@ -356,7 +377,7 @@ BossManager.prototype.init = function(){
 }
 
 BossManager.prototype.newBoss=function(boss,player,endGame){
-	boss.die();
+	boss.resetCast();
 	boss = this.getNextBoss();
 	boss.init();
 	boss.cast(boss,player,endGame);
@@ -449,6 +470,13 @@ VerbArmor.prototype.activate = function(spell){
 	
 }
 
+VerbArmor.prototype.reset = function(){
+	this.armorList = new Array();
+	this.armorJQ.forEach(function(query){
+		query.html("[Verb]");
+	});
+}
+
 function WordThreshold(val){
 	this.val = val;
 	this.armorList = new Array();
@@ -478,4 +506,8 @@ WordThreshold.prototype.init = function(){
 	console.log("Ability presets init()")
 	Ability.prototype.init.call(this);
 	this.container.append("Be wary of low length words");
+}
+
+WordThreshold.prototype.reset = function(){
+	return ;
 }
