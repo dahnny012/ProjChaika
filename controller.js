@@ -7,13 +7,6 @@ function mainController()
 }
 
 
-
-function storyController()
-{
-	//contains the diaglogue tree
-	//has a persistent pointer to dialogue tree
-}
-
 var cDebug;
 function BattleController()
 {

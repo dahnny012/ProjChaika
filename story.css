@@ -40,6 +40,7 @@ body{
 
 
 .story{
+    display:none;
     color: #3A3939;
     margin-bottom:4px;
 }
@@ -49,10 +50,12 @@ body{
 }
 
 .prompt{
+    display:none;
    color:grey;
 }
 
 .event{
+   display:none;
    color:#41A027;        
 }
 
