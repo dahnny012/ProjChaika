@@ -1,7 +1,7 @@
 var ENTER = 13;
 var MAXRANDS = 4;
 var MAXLINES = 112000;
-var SUGGESTIONCD = 15;
+var SUGGESTIONCD = 10;
 var LOADCOMPLETE = 1;
 var WORD = 0;
 var POS = 1;
@@ -80,7 +80,7 @@ GuiUtils.prototype.blackOut=function(string){
             setTimeout(function(){
                 $("#fadeBlack").html("Wake up mister");
                 $(setTimeout(function() {
-                    $("#fadeBlack").html("Wake up!");
+                    $("#fadeBlack").html("Next chapter to be announced.");
                 }),3000)
             },1000)
         }, 3000);

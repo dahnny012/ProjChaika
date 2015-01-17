@@ -61,7 +61,6 @@ Story.prototype.loadNext = function(){
     console.log("this step:" + this.step);
     this.checkFade();
     if(this.step == STORYDONE){
-        alert("GG");
     }   
     else if(!pEmpty){
         this.turnOn("#prompt"+this.step);
@@ -91,6 +90,7 @@ Story.prototype.checkFade = function(){
         case 19:
         case 29:
         case 38:
+            this.container.blur();
             this.clearQueue();
             this.gui.fadeBlack(this.chapters.shift());
             break;

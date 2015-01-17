@@ -110,6 +110,7 @@ function SuggestionBar(){
     this.timer = this.startTimer;
     this.startWidth = 0; 
     this.width = pxToNum(this.barId.css("width"));
+    this.maxWidth = this.width;
 }
 
 SuggestionBar.prototype.cdId = $("#suggestCd");
@@ -118,6 +119,7 @@ SuggestionBar.prototype.countDown=function(bar,suggestions,cb){
     bar.update(bar.timer);
     if(bar.stop){
         bar.stop = FALSE;
+        bar.timer = bar.startTimer;
         return
     }
      if(bar.timer <= 0){
@@ -136,6 +138,7 @@ SuggestionBar.prototype.countDown=function(bar,suggestions,cb){
 SuggestionBar.prototype.update= function(num){
     // Do width shit
     //console.log("update");
+    console.log(num)
     var percent = (this.startTimer - num)/this.startTimer;
     //console.log(percent);
     var amount = percent * this.width;

@@ -1,8 +1,12 @@
 var WORD = 0;
 var POS = 1;
+var FPS15 = 66.66;
 var FPS30 = 33.33;
 var FPS60 = 16.66;
 var wQLength = 3; 
+var interruptConst = 35;
+
+
 function Mage()
 {
 	return this;
@@ -49,7 +53,16 @@ AI.prototype.healthUpdate = function(){
 
 AI.prototype.reduceHealth = function(dmg){
 	Mage.prototype.reduceHealth.call(this,dmg);
-	
+	this.interrupt(dmg);
+}
+AI.prototype.interrupt = function(dmg){
+	if(dmg * interruptConst > this.castTimer){
+		this.castTimer = this.startTimer
+	}
+	else{
+		this.castTimer += dmg*interruptConst
+	}
+	this.timerUpdate(this.castTimer);
 }
 AI.prototype.init = function(){
 	this.healthUpdate();
@@ -361,35 +374,35 @@ BossManager.prototype.currentBoss= function(){
 // TODO in the future.
 // Should move this to the node. Dunno how to work that shit yet.
 BossManager.prototype.init = function(){
-	var tutBoss = new AI("Tutorial Boss",10,new VerbArmor(3));
-	tutBoss.addSpell(new bossSpell("Use rookie mistake",1000,1));
-	tutBoss.addSpell(new bossSpell("Hello World",1,100));
+	var tutBoss = new AI("Tutorial Boss",100,new VerbArmor(1));
+	tutBoss.addSpell(new bossSpell("Use rookie mistake",8000,5));
+	tutBoss.addSpell(new bossSpell("Hello World",8000,5));
 	this.bossList.push(tutBoss);
 	
 	
-	var Lvl1Boss =new AI("Spere,Boss of Literature",150);
-	Lvl1Boss.addSpell(new bossSpell("Romeo oh Romeo",5000,10));
-	Lvl1Boss.addSpell(new bossSpell("To be or not to be",5000,15));
-	Lvl1Boss.addSpell(new bossSpell("The green-eyed monster",5000,15));
+	var Lvl1Boss =new AI("Spere,Boss of Literature",200,new VerbArmor(2));
+	Lvl1Boss.addSpell(new bossSpell("Romeo oh Romeo",10000,10));
+	Lvl1Boss.addSpell(new bossSpell("To be or not to be",9000,10));
+	Lvl1Boss.addSpell(new bossSpell("The green-eyed monster",8000,10));
 	this.bossList.push(Lvl1Boss);
 	
-	var Lvl2Boss =new AI("Zeno,Boss of Mathematics",150);
-	Lvl2Boss.addSpell(new bossSpell("Make paradox",5000,10));
-	Lvl2Boss.addSpell(new bossSpell("Summate to Infinity",5000,15));
+	var Lvl2Boss =new AI("Zeno,Boss of Mathematics",200,new WordThreshold(5));
+	Lvl2Boss.addSpell(new bossSpell("Make paradox",8000,10));
+	Lvl2Boss.addSpell(new bossSpell("Summate to Infinity",8000,15));
 	Lvl2Boss.addSpell(new bossSpell("Run Achilles run",5000,15));
 	this.bossList.push(Lvl2Boss);
 	
-	var Lvl3Boss =new AI("Ein,Boss of Science",150);
-	Lvl3Boss.addSpell(new bossSpell("Atomic bomb",5000,10));
-	Lvl3Boss.addSpell(new bossSpell("Relative theory",5000,15));
-	Lvl3Boss.addSpell(new bossSpell("Public paper",5000,15));
+	var Lvl3Boss =new AI("Ein,Boss of Science",200,new BigWordShield(6));
+	Lvl3Boss.addSpell(new bossSpell("Atomic bomb",6000,10));
+	Lvl3Boss.addSpell(new bossSpell("Relative theory",6000,15));
+	Lvl3Boss.addSpell(new bossSpell("Public paper",6000,15));
 	this.bossList.push(Lvl3Boss);
 	
-	var Lvl4Boss =new AI("Merlin,Boss of Magic",150);
-	Lvl3Boss.addSpell(new bossSpell("Knights of the Round",5000,10));
+	var Lvl4Boss =new AI("Merlin,Boss of Magic",200);
+	Lvl3Boss.addSpell(new bossSpell("Knights of the Round",5000,10),new VerbArmor(4));
 	Lvl3Boss.addSpell(new bossSpell("Summon Lancelot",5000,15));
 	Lvl3Boss.addSpell(new bossSpell("Summon Arthur",5000,15));
-	this.bossList.push(Lvl3Boss);
+	this.bossList.push(Lvl4Boss);
 	
 	// For later	
 //	var Lvl2Boss = new AI("Lvl 2 Boss",200);
@@ -483,7 +496,8 @@ VerbArmor.prototype.activate = function(spell){
 	if(spell.type != "Cast")
 		return;
 	if(this.exists(spell.word)){
-		spell.power *= .2;
+		spell.modded = TRUE;
+		spell.power *= .5;
 	}
 	else{
 		this.add(spell.word);
@@ -526,9 +540,52 @@ WordThreshold.prototype.activate = function(spell){
 WordThreshold.prototype.init = function(){
 	console.log("Ability presets init()")
 	Ability.prototype.init.call(this);
-	this.container.append("Be wary of low length words");
+	this.container.append("Be wary of length " + (this.val-1) + " or lower words");
 }
 
 WordThreshold.prototype.reset = function(){
 	return ;
 }
+
+
+
+function BigWordShield(val){
+	this.val = val
+}
+BigWordShield.prototype = new Ability();
+BigWordShield.prototype.constructor = BigWordShield;
+BigWordShield.prototype.name ="Big Word Shield";
+BigWordShield.prototype.init = function(){
+	console.log("Ability presets init()")
+	Ability.prototype.init.call(this);
+	this.container.append("Try words of length " + this.val + " or less.");
+}
+BigWordShield.prototype.activate = function(spell){
+	var power = spell.power;
+	var full = spell.full.replace("!","");
+	var words= full.split(" ");
+	var reduce =0;
+	for(var i=0; i<words.length; i++){
+		if(words[i].length > this.val){
+			if(words[i].length > 0){
+				console.log("reducing dmg from player");
+				spell.power = spell.power / 1.5;
+			}
+		}else{
+			spell.power *= 1.5
+		}
+	}
+	
+	if(spell.power !== power)
+		spell.modded = TRUE;
+}
+
+BigWordShield.prototype.reset = function(){
+	return;
+}
+
+function BlindingMagic(){
+	
+}
+BlindingMagic.prototype.init= function(){};
+BlindingMagic.pr

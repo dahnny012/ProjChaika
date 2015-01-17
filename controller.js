@@ -138,14 +138,10 @@ function BattleController(type)
 	}
 	function loadSuggestions(suggestions){
 		$("#suggestionsWrapper").show();
-		suggestions.bar.countDown(suggestions.bar,suggestions,
-		function(suggestions){
-			suggestions.fillBank();
-			suggestions.container.show()}
-		);
 	}
 	function unloadSuggestions(suggestions){
 		$("#suggestionsWrapper").hide();
+		suggestions.bar.width = suggestions.bar.maxWidth;
 		suggestions.bar.stop = TRUE;
 	}
 	
@@ -162,6 +158,11 @@ function BattleController(type)
 			player.init();
 			loadTutorialBoss(boss,tutorial);
 			loadSuggestions(suggestions);
+			suggestions.bar.countDown(suggestions.bar,suggestions,
+			function(suggestions){
+			suggestions.fillBank();
+			suggestions.container.show()}
+			);
 		}
 		else{
 			setTimeout(checkTutorial,1000,tutorial,suggestions,boss,player);
@@ -196,7 +197,7 @@ function BattleController(type)
     		player.reset();
     		boss.cast(boss,player,endGame);
     	} else {
-        	$("#controller").unbind();
+        	endGame(boss,player);
     	}
 	}
 	function clearBoss(){
@@ -238,7 +239,7 @@ function errorLog(errors)
 	var div = "<div class='errorLog'>";
 	// For each error
 	// SpellBook Error: <word>,<word>
-	var log = "SpellBook Error: "
+	var log = "Not in Spellbook: "
 	log += errors.map(function(element){
 		return dmgBracket(element);
 	}).join(" ");
