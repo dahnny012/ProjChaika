@@ -12,7 +12,7 @@ function BattleController(type)
 {
 	var spellBook = new Dictionary();
 	var engine = new SpellEngine();
-	var player = new Human("Name",100);
+	var player = new Human("Chaika",100);
 	var suggestions = new Suggestions();
 	var tutorial;
 	var boss;
@@ -147,7 +147,7 @@ function BattleController(type)
 	
 	function toggleBattleLog(){
 		$("#battleLog").html("");
-		$("#battleLogWrapper").hide("100");
+		$("#battleLogWrapper").slideToggle("100");
 	}
 	
 	function unloadBoss(){
@@ -191,8 +191,8 @@ function BattleController(type)
 		console.log(player);
 	}
 	function endGame(boss,player){
-	    player.gui.deathScreen();
     	if (confirm("Would you like to retry?") == true) {
+    		player.gui.deathScreen();
     		boss.reset();
     		player.reset();
     		boss.cast(boss,player,endGame);

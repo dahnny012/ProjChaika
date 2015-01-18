@@ -15,6 +15,13 @@ body{
     text-align: center;
 }
 
+@media screen and (max-width: 1400px) and (min-width: 800px){
+	#bossName
+	{
+	 font-size:100px;
+	}
+}
+
 #bossAbilities{
     font-size:30px;
     text-align:center;
